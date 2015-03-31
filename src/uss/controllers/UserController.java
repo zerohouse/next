@@ -58,15 +58,17 @@ public class UserController {
 		http.setView(new Json(user));
 	}
 
-	@Mapping(value = "/api/user/idCheck", method = { "GET", "POST" })
+	@Mapping(value = "/api/{}/{}", method = { "GET", "POST" })
 	public void idCheck(Http http, DAO dao) {
+		String a = http.getUriVariable(0);
+		String b = http.getUriVariable(1);
 		String id = http.getParameter("stringId");
-		User user = dao.getRecord(User.class, "SELECT * FROM User WHERE User_stringId=?", id);
-		if (user == null) {
-			http.setView(new Json(true));
+		if (id == null)
 			return;
-		}
-		http.setView(new Json(false));
+		User user = dao.getRecord(User.class, "SELECT * FROM User WHERE User_stringId=?", id);
+		user.setStringId(a);
+		user.setNickName(b);
+		http.setView(new Json(user));
 	}
 
 	@HttpMethod

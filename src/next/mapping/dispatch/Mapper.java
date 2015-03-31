@@ -3,8 +3,10 @@ package next.mapping.dispatch;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import next.database.DAO;
 import next.mapping.annotation.After;
@@ -21,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class Mapper {
 
 	private static final Logger logger = LoggerFactory.getLogger(Mapper.class);
-	private Map<String, MethodHolder> methodMap = new HashMap<String, MethodHolder>();
+	private Map<UriKey, MethodHolder> methodMap = new HashMap<UriKey, MethodHolder>();
 	private UriMap uriMap = new UriMap();
 	private List<MethodHolder> beforeList = new ArrayList<MethodHolder>();
 	private List<MethodHolder> afterList = new ArrayList<MethodHolder>();
@@ -37,7 +39,7 @@ public class Mapper {
 		});
 	}
 
-	public void execute(String url, Http http) {
+	public void execute(UriKey url, Http http) {
 		List<MethodHolder> methods = uriMap.get(url, http);
 		if (methods == null) {
 			http.sendError(404);
@@ -45,7 +47,7 @@ public class Mapper {
 		}
 		DAO dao = null;
 
-		List<MethodHolder> todo = new ArrayList<MethodHolder>();
+		Queue<MethodHolder> todo = new LinkedList<MethodHolder>();
 
 		todo.addAll(beforeList);
 		todo.addAll(methods);
@@ -53,8 +55,8 @@ public class Mapper {
 
 		logger.debug(String.format("Uri:%s -> %s", url, todo.toString()));
 
-		for (int i = 0; i < todo.size(); i++) {
-			MethodHolder mh = todo.get(i);
+		while (!todo.isEmpty()) {
+			MethodHolder mh = todo.poll();
 			if (mh == null)
 				continue;
 			if (mh.needDAO() && dao == null)
@@ -74,7 +76,7 @@ public class Mapper {
 		for (int i = 0; i < methods.length; i++) {
 			if (methods[i].isAnnotationPresent(Mapping.class)) {
 				Mapping mapping = methods[i].getAnnotation(Mapping.class);
-				String key = mapping.method()[0] + ">" + mapping.value()[0];
+				UriKey key = new UriKey(mapping.method()[0], mapping.value()[0]);
 				methodMap.put(key, new MethodHolder(methods[i]));
 			}
 			if (methods[i].isAnnotationPresent(HttpMethod.class)) {
@@ -82,7 +84,7 @@ public class Mapper {
 				String methodName = method.value();
 				if (methodName.equals(""))
 					methodName = methods[i].getName();
-				methodMap.put(methodName, new MethodHolder(methods[i]));
+				methodMap.put(new UriKey(UriKey.METHOD, methodName), new MethodHolder(methods[i]));
 			}
 			if (methods[i].isAnnotationPresent(Before.class)) {
 				beforeList.add(new MethodHolder(methods[i]));
@@ -102,14 +104,14 @@ public class Mapper {
 				List<MethodHolder> methodList = new ArrayList<MethodHolder>();
 				String[] before = mapping.before();
 				String[] after = mapping.after();
-				String key = mapping.method()[0] + ">" + mapping.value()[0];
+				UriKey key = new UriKey(mapping.method()[0], mapping.value()[0]);
 				addAll(methodList, before);
 				methodList.add(methodMap.get(key));
 				addAll(methodList, after);
 
 				for (int j = 0; j < mapping.method().length; j++)
 					for (int k = 0; k < mapping.value().length; k++) {
-						String urikey = mapping.method()[j] + ">" + mapping.value()[k];
+						UriKey urikey = new UriKey(mapping.method()[j], mapping.value()[k]);
 						uriMap.put(urikey, methodList);
 					}
 

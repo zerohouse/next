@@ -43,12 +43,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
-			<version>0.9.9</version>
-		</dependency>
-
 		<!-- embedded tomcat 설정 -->
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>

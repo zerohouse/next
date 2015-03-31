@@ -10,19 +10,19 @@ import next.mapping.http.Http;
 
 public class MethodHolder {
 
-	private static Map<String, Object> instanceMap = new HashMap<String, Object>();
+	private static Map<Class<?>, Object> instanceMap = new HashMap<Class<?>, Object>();
 
 	private Object instance;
 	private Method method;
 
 	public MethodHolder(Method method) {
 		this.method = method;
-		String className = method.getDeclaringClass().getName();
-		Object instance = instanceMap.get(className);
+		Class<?> cLass = method.getDeclaringClass();
+		Object instance = instanceMap.get(cLass);
 		if (instance == null) {
 			try {
 				instance = method.getDeclaringClass().getConstructor().newInstance();
-				instanceMap.put(className, instance);
+				instanceMap.put(cLass, instance);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
