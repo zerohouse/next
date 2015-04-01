@@ -5,6 +5,8 @@
 app.controller('registerController', ['$scope', '$http', function ($scope, $http) {
     $scope.user = {id: "", password: ""};
     $scope.register = function () {
+        if (!$scope.check.all())
+            return;
         $http(req("POST", "/api/user", {user: JSON.stringify($scope.user)})).success(function (response) {
             if (response.error) {
                 error(response.errorMessage);
@@ -43,9 +45,22 @@ app.controller('registerController', ['$scope', '$http', function ($scope, $http
         },
         profileUrl: function () {
 
+        },
+        all: function () {
+            if ($scope.existId)
+                return false;
+            if (!$scope.check.id())
+                return false;
+            if (!$scope.check.password())
+                return false;
+            if (!$scope.check.email())
+                return false;
+            if (!$scope.check.gender())
+                return false;
+            return true;
         }
+
     };
 
 }
-])
-;
+]);

@@ -2,6 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
     <title>MeetFit</title>
 </head>
 <body ng-app="meetfit">
@@ -27,6 +28,7 @@
     <input ng-model="user.email"/>
     <input type="radio" ng-model="user.gender" value="0">
     <input type="radio" ng-model="user.gender" value="1">
+
     <div>
         <span ng-show="existId">existId</span>
         <span ng-show="!check.id()">idCheck</span>
@@ -34,7 +36,30 @@
         <span ng-show="!check.email()">email</span>
         <span ng-show="!check.gender()">gender</span>
     </div>
-    <div ng-click="register()">회원가입</div>
+    <div ng-class="{opacity:!check.all()}" ng-click="register()">회원가입</div>
+</div>
+
+<div id="abc" ng-controller="mbtiController">
+    <div ng-show="testDone != 47">
+        <div>{{testDone}}/47</div>
+        <div ng-repeat="q in mbti" ng-class="{done:q.selectedType!=undefined}">
+            <div>{{q.question}}</div>
+            <ul>
+                <li ng-repeat="a in q.answers">
+                    <div ng-click="q.selectedType = a.type" ng-class="{selected:q.selectedType == a.type}">{{a.answer}}
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div ng-show="testDone == 47">
+        <div>{{userType}} {{results[userType].title}} {{results[userType].subTitle}}</div>
+        <div>{{results[userType].description}}</div>
+        <div>{{results[userType].celebrity}}</div>
+        <div ng-repeat="(key, v) in types">{{v}} {{value[key]}}</div>
+    </div>
+
 </div>
 
 
@@ -43,5 +68,6 @@
 <script src="js/index.js"></script>
 <script src="js/loginController.js"></script>
 <script src="js/registerController.js"></script>
+<script src="js/mbtiController.js"></script>
 </body>
 </html>

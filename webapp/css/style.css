@@ -1,0 +1,8 @@
+.selected{
+    font-weight: 900;
+    color:green;
+}
+
+.done{
+    opacity: 0.4;
+}

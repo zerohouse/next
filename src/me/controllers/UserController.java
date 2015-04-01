@@ -4,6 +4,7 @@ import me.exception.JsonAlert;
 import me.model.Result;
 import me.model.database.User;
 import next.database.DAO;
+import next.mapping.annotation.HttpMethod;
 import next.mapping.annotation.Mapping;
 import next.mapping.http.Http;
 import next.mapping.view.Json;
@@ -40,6 +41,13 @@ public class UserController {
 			throw new JsonAlert("패스워드가 다릅니다.");
 		http.setSessionAttribute("user", fromDB);
 		http.setView(new Json(new Result(fromDB)));
+	}
+
+	@HttpMethod
+	public void loginCheck(Http http, DAO dao) throws JsonAlert {
+		User user = http.getSessionAttribute(User.class, "user");
+		if (user == null)
+			throw new JsonAlert("로그인이 필요합니다.");
 	}
 
 }
