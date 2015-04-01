@@ -45,7 +45,6 @@ public class TableMaker {
 		if (sql == null)
 			sql = String.format(CREATE_TABLE, tableName, getColumnString(), table_suffix);
 		dao.execute(sql);
-		dao.close();
 	}
 
 	private static final String DROP_TABLE = "DROP TABLE IF EXISTS `%s`";
@@ -60,15 +59,12 @@ public class TableMaker {
 		createTable();
 	}
 
-	
 	private static final String PRIMARY_KEY = "PRIMARY KEY";
 	private Map<String, SqlFunction> functions = new HashMap<String, SqlFunction>();
 
 	private String getColumnString() {
 		Field[] fields = tableClass.getDeclaredFields();
 		String result = "(";
-
-		
 
 		for (int i = 0; i < fields.length; i++) {
 			if (fields[i].isAnnotationPresent(OtherTable.class))
@@ -109,5 +105,9 @@ public class TableMaker {
 	@Override
 	public String toString() {
 		return tableName + getColumnString();
+	}
+
+	public void commitAndReturn() {
+		dao.commitAndReturn();
 	}
 }

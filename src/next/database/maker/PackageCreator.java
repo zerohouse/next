@@ -10,6 +10,7 @@ public class PackageCreator {
 			if (ifExistDrop)
 				tm.dropTable();
 			tm.createTable();
+			tm.commitAndReturn();
 		});
 	}
 	

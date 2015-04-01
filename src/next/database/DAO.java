@@ -42,6 +42,11 @@ public class DAO {
 
 	public DAO() {
 		conn = getConnection();
+		try {
+			conn.setAutoCommit(false);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static PreparedStatement getPSTMT(Connection conn, String sql, Object[] parameters) {
@@ -228,7 +233,18 @@ public class DAO {
 			}
 	}
 
-	public void close() {
+	public void commitAndReturn() {
+		try {
+			conn.commit();
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		
 		if (conn != null)
 			try {
 				conn.close();
