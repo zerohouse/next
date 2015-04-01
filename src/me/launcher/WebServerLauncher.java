@@ -1,4 +1,4 @@
-package uss.launcher;
+package me.launcher;
 
 import java.io.File;
 

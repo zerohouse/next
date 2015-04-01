@@ -2,7 +2,6 @@ package next.database;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Map;
@@ -10,12 +9,6 @@ import java.util.Map;
 import next.database.sql.SqlField;
 
 public class Parser {
-
-	private static final String SET = "set";
-
-	public static String upperString(String prefix, String fieldName) {
-		return prefix + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-	}
 
 	public static <T> T getObject(Class<T> cLass, Map<String, Object> record) {
 		if (record == null)
@@ -43,18 +36,11 @@ public class Parser {
 			if (obj.getClass().equals(Timestamp.class)) {
 				obj = new Date(((Timestamp) obj).getTime());
 			}
+			fields[i].setAccessible(true);
 			try {
-				
-				Method setterMethod = cLass.getMethod(upperString(SET, fields[i].getName()), obj.getClass());
-				if (setterMethod == null)
-					continue;
-				try {
-					setterMethod.invoke(record, obj);
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					return false;
-				}
-			} catch (NoSuchMethodException | SecurityException e) {
-				return false;
+				fields[i].set(record, obj);
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
 			}
 		}
 		return true;

@@ -1,10 +1,7 @@
 package next.database.sql;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-
-import next.database.Parser;
 
 public class NullableParams extends KeyParams {
 
@@ -17,14 +14,15 @@ public class NullableParams extends KeyParams {
 		keyParams = new ArrayList<FieldObject>();
 		for (int i = 0; i < fields.length; i++) {
 			try {
-				Object param = cLass.getMethod(Parser.upperString(GET, fields[i].getName())).invoke(record);
+				fields[i].setAccessible(true);
+				Object param = fields[i].get(record);
 				if (param == null) {
 					params.add(new FieldObject(param, fields[i]));
 					continue;
 				}
 				keyParams.add(new FieldObject(param, fields[i]));
 				continue;
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			} catch (IllegalAccessException | IllegalArgumentException | SecurityException e) {
 				e.printStackTrace();
 			}
 		}

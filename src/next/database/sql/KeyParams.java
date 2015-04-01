@@ -1,13 +1,11 @@
 package next.database.sql;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import next.database.Parser;
 import next.database.annotation.Exclude;
 import next.database.annotation.Key;
 import next.database.annotation.OtherTable;
@@ -124,12 +122,13 @@ public class KeyParams {
 		params = new ArrayList<FieldObject>();
 		keyParams = new ArrayList<FieldObject>();
 		for (int i = 0; i < fields.length; i++) {
-			if(fields[i].isAnnotationPresent(Exclude.class))
+			if (fields[i].isAnnotationPresent(Exclude.class))
 				continue;
-			if(fields[i].isAnnotationPresent(OtherTable.class))
+			if (fields[i].isAnnotationPresent(OtherTable.class))
 				continue;
 			try {
-				Object param = cLass.getMethod(Parser.upperString(GET, fields[i].getName())).invoke(record);
+				fields[i].setAccessible(true);
+				Object param = fields[i].get(record);
 				if (param == null)
 					continue;
 				if (fields[i].isAnnotationPresent(Key.class)) {
@@ -137,7 +136,7 @@ public class KeyParams {
 					continue;
 				}
 				params.add(new FieldObject(param, fields[i]));
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			} catch (IllegalAccessException | IllegalArgumentException | SecurityException e) {
 				e.printStackTrace();
 			}
 		}

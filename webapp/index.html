@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>MeetFit</title>
+</head>
+<body ng-app="meetfit">
+
+<div ng-controller="loginController">
+    <div ng-show="user.id">
+        <div>{{user.stringId}}</div>
+        <div>{{user.stringId}}</div>
+
+    </div>
+    <div ng-show="!user.id">
+        <input ng-model="user.stringId"/>
+        <input ng-model="user.password" type="password"/>
+    </div>
+
+</div>
+
+
+
+
+
+<script src="js/angular.min.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>
