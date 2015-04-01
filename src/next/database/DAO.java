@@ -244,7 +244,7 @@ public class DAO {
 			}
 			e.printStackTrace();
 		}
-		
+
 		if (conn != null)
 			try {
 				conn.close();
@@ -258,8 +258,12 @@ public class DAO {
 		KeyParams sap = new KeyParams(record);
 		if (sap.isEmpty())
 			return false;
-		String sql = String.format(INSERT, sap.getTableName(), sap.getIntegratedFieldNames(comma));
-		return execute(sql, sap.getIntegratedParams().toArray());
+		String fieldsNames = sap.getFieldNames(comma) + ", " + sap.getKeyFieldNames(comma);
+		String sql = String.format(INSERT, sap.getTableName(), fieldsNames);
+		List<Object> params = new ArrayList<Object>();
+		params.addAll(sap.getParams());
+		params.addAll(sap.getKeyParams());
+		return execute(sql, params.toArray());
 	}
 
 	private final static String UPDATE = "UPDATE %s SET %s WHERE %s";
@@ -271,7 +275,10 @@ public class DAO {
 		if (!sap.hasParams())
 			return false;
 		String sql = String.format(UPDATE, sap.getTableName(), sap.getFieldNames(comma), sap.getKeyFieldNames(and));
-		return execute(sql, sap.getIntegratedParams().toArray());
+		List<Object> params = new ArrayList<Object>();
+		params.addAll(sap.getParams());
+		params.addAll(sap.getKeyParams());
+		return execute(sql, params.toArray());
 	}
 
 	private final static String DELETE = "DELETE FROM %s WHERE %s";

@@ -1,4 +1,4 @@
-package me.model;
+package me.model.database;
 
 import next.database.annotation.Column;
 import next.database.annotation.Key;

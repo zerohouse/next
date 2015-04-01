@@ -49,25 +49,6 @@ public class KeyParams {
 		return !hasKeyParams() && !hasParams();
 	}
 
-	public String getIntegratedFieldNames(String deter) {
-		if (isEmpty())
-			return "";
-		String field = getFieldNames(deter);
-		String key = getKeyFieldNames(deter);
-		if (!hasKeyParams())
-			return field;
-		if (!hasParams())
-			return key;
-
-		return key + deter + field;
-	}
-
-	public List<Object> getIntegratedParams() {
-		List<Object> result = new ArrayList<Object>();
-		result.addAll(getParams());
-		result.addAll(getKeyParams());
-		return result;
-	}
 
 	public List<Object> getParams() {
 		List<Object> result = new ArrayList<Object>();

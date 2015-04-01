@@ -6,24 +6,42 @@
 </head>
 <body ng-app="meetfit">
 
-<div ng-controller="loginController">
-    <div ng-show="user.id">
-        <div>{{user.stringId}}</div>
-        <div>{{user.stringId}}</div>
+<div id="login" ng-controller="loginController">
+    <div ng-show="user.email != undefined">
+        <div>{{user.email}}</div>
+        <div>{{user.id}}</div>
 
     </div>
-    <div ng-show="!user.id">
-        <input ng-model="user.stringId"/>
+    <div ng-show="user.email == undefined">
+        <input ng-model="user.id"/>
         <input ng-model="user.password" type="password"/>
-    </div>
 
+        <div ng-click="login()">로그인</div>
+    </div>
 </div>
 
 
-
+<div ng-controller="registerController">
+    <input ng-model="user.id"/>
+    <input ng-model="user.password" type="password"/>
+    <input ng-model="user.email"/>
+    <input type="radio" ng-model="user.gender" value="0">
+    <input type="radio" ng-model="user.gender" value="1">
+    <div>
+        <span ng-show="existId">existId</span>
+        <span ng-show="!check.id()">idCheck</span>
+        <span ng-show="!check.password()">password</span>
+        <span ng-show="!check.email()">email</span>
+        <span ng-show="!check.gender()">gender</span>
+    </div>
+    <div ng-click="register()">회원가입</div>
+</div>
 
 
 <script src="js/angular.min.js"></script>
+<script src="js/util.js"></script>
 <script src="js/index.js"></script>
+<script src="js/loginController.js"></script>
+<script src="js/registerController.js"></script>
 </body>
 </html>
