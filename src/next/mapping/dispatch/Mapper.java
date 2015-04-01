@@ -66,7 +66,7 @@ public class Mapper {
 		}
 
 		if (dao != null)
-			dao.commitAndReturn();
+			dao.close();
 
 		http.render();
 	}

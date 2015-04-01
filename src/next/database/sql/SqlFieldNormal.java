@@ -114,7 +114,7 @@ public class SqlFieldNormal implements SqlField {
 		if (!column.DEFAULT().equals(""))
 			fieldString += "DEFAULT" + SPACE + column.DEFAULT();
 		else
-			fieldString += "DEFAULT" + SPACE + defaultValue;
+			fieldString += defaultValue;
 
 	}
 
