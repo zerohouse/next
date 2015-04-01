@@ -45,6 +45,7 @@ public class TableMaker {
 		if (sql == null)
 			sql = String.format(CREATE_TABLE, tableName, getColumnString(), table_suffix);
 		dao.execute(sql);
+		dao.close();
 	}
 
 	private static final String DROP_TABLE = "DROP TABLE IF EXISTS `%s`";
