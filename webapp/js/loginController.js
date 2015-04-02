@@ -2,8 +2,8 @@
  * Created by park on 15. 4. 1..
  */
 
-app.controller('loginController', ['$scope', '$http', function ($scope, $http) {
-    $scope.user = {};
+app.controller('loginController', ['$scope', '$http', '$user', function ($scope, $http, $user) {
+    $scope.user = $user;
     $scope.login = function () {
         $http(req("POST", "/api/user/login", {user: JSON.stringify($scope.user)})).success(function (response) {
             if (response.error) {

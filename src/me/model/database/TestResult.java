@@ -2,7 +2,7 @@ package me.model.database;
 
 import next.database.annotation.Key;
 
-public class Test {
+public class TestResult {
 
 	@Key
 	private String userId;
@@ -12,6 +12,14 @@ public class Test {
 
 	public String getUserId() {
 		return userId;
+	} 
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
 	}
 
 	public String getName() {

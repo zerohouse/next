@@ -17,13 +17,13 @@ public class KeyParams {
 	protected List<FieldObject> keyParams;
 	protected String tableName;
 
-	public String getFieldNames(String deter) {
+	public String getFieldNames(String suffix, String deter) {
 		String result = new String();
 		if (!hasParams())
 			return result;
 		for (int i = 0; i < params.size(); i++)
-			result += params.get(i).getColumnName() + deter;
-		result = result.substring(0, result.length() - (deter.length() - 2));
+			result += params.get(i).getColumnName() + suffix + deter;
+		result = result.substring(0, result.length() - deter.length());
 		return result;
 	}
 
@@ -31,13 +31,13 @@ public class KeyParams {
 		return params.size() != 0;
 	}
 
-	public String getKeyFieldNames(String deter) {
+	public String getKeyFieldNames(String suffix, String deter) {
 		String result = new String();
 		if (!hasKeyParams())
 			return result;
 		for (int i = 0; i < keyParams.size(); i++)
-			result += keyParams.get(i).getColumnName() + deter;
-		result = result.substring(0, result.length() - (deter.length() - 2));
+			result += keyParams.get(i).getColumnName() + suffix + deter;
+		result = result.substring(0, result.length() - deter.length());
 		return result;
 	}
 
@@ -48,7 +48,6 @@ public class KeyParams {
 	public boolean isEmpty() {
 		return !hasKeyParams() && !hasParams();
 	}
-
 
 	public List<Object> getParams() {
 		List<Object> result = new ArrayList<Object>();

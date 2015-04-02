@@ -2,8 +2,8 @@
  * Created by park on 15. 4. 1..
  */
 
-app.controller('registerController', ['$scope', '$http', function ($scope, $http) {
-    $scope.user = {id: "", password: ""};
+app.controller('registerController', ['$scope', '$http', '$user', function ($scope, $http, $user) {
+    $scope.user = $user;
     $scope.register = function () {
         if (!$scope.check.all())
             return;
@@ -15,7 +15,6 @@ app.controller('registerController', ['$scope', '$http', function ($scope, $http
             $scope.user = response.obj;
         });
     };
-
 
     $scope.$watch(function () {
         return $scope.user.id

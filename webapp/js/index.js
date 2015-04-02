@@ -5,3 +5,8 @@
 
 
 var app = angular.module('meetfit', []);
+
+
+app.factory('$user', function () {
+    return {id: "", password: ""}
+});

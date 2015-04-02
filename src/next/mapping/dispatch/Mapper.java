@@ -124,7 +124,7 @@ public class Mapper {
 		for (int j = 0; j < stringArray.length; j++) {
 			if (stringArray[j].equals(""))
 				continue;
-			methodList.add(methodMap.get(stringArray[j]));
+			methodList.add(methodMap.get(new UriKey(UriKey.METHOD, stringArray[j])));
 		}
 	}
 

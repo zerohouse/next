@@ -7,12 +7,12 @@
 </head>
 <body ng-app="meetfit">
 
-<div id="login" ng-controller="loginController">
+<div ng-controller="loginController">
     <div ng-show="user.email != undefined">
         <div>{{user.email}}</div>
         <div>{{user.id}}</div>
-
     </div>
+
     <div ng-show="user.email == undefined">
         <input ng-model="user.id"/>
         <input ng-model="user.password" type="password"/>
@@ -22,7 +22,7 @@
 </div>
 
 
-<div ng-controller="registerController">
+<div ng-controller="registerController" ng-show="user.email == undefined">
     <input ng-model="user.id"/>
     <input ng-model="user.password" type="password"/>
     <input ng-model="user.email"/>
@@ -39,11 +39,12 @@
     <div ng-class="{opacity:!check.all()}" ng-click="register()">회원가입</div>
 </div>
 
-<div id="abc" ng-controller="mbtiController">
+<div ng-controller="mbtiController">
     <div ng-show="testDone != 47">
         <div>{{testDone}}/47</div>
-        <div ng-repeat="q in mbti" ng-class="{done:q.selectedType!=undefined}">
-            <div>{{q.question}}</div>
+        <input type="checkbox" ng-model="hideDone" ng-init="hideDone=true"> 완료된것 숨기기
+        <div ng-repeat="q in mbti" ng-class="{done:q.selectedType!=undefined, hidden:q.selectedType!=undefined && hideDone}">
+            <div>{{mbti.indexOf(q)+1}}. {{q.question}}</div>
             <ul>
                 <li ng-repeat="a in q.answers">
                     <div ng-click="q.selectedType = a.type" ng-class="{selected:q.selectedType == a.type}">{{a.answer}}

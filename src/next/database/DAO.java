@@ -160,19 +160,20 @@ public class DAO {
 		return result;
 	}
 
-	public static final String and = "=? and ";
-	public static final String comma = "=?, ";
+	public static final String EQ = "=?";
+	public static final String and =" and ";
+	public static final String comma = ", ";
 
 	public boolean fill(Object record) {
 		KeyParams kp = new NullableParams(record);
-		Map<String, Object> recordMap = getRecordMap(String.format("SELECT * FROM %s WHERE %s", kp.getTableName(), kp.getKeyFieldNames(and)), kp
+		Map<String, Object> recordMap = getRecordMap(String.format("SELECT * FROM %s WHERE %s", kp.getTableName(), kp.getKeyFieldNames(EQ, and)), kp
 				.getKeyParams().toArray());
 		return Parser.setObject(record, recordMap);
 	}
 
 	public <T> T getRecordByClass(Class<T> cLass, Object... parameters) {
 		KeyParams sp = KeyParams.getInstance(cLass);
-		Map<String, Object> record = getRecordMap(String.format("SELECT * FROM %s WHERE %s", sp.getTableName(), sp.getKeyFieldNames(and)), parameters);
+		Map<String, Object> record = getRecordMap(String.format("SELECT * FROM %s WHERE %s", sp.getTableName(), sp.getKeyFieldNames(EQ, and)), parameters);
 		T result = Parser.getObject(cLass, record);
 		return result;
 	}
@@ -258,11 +259,33 @@ public class DAO {
 		KeyParams sap = new KeyParams(record);
 		if (sap.isEmpty())
 			return false;
-		String fieldsNames = sap.getFieldNames(comma) + ", " + sap.getKeyFieldNames(comma);
+		String fieldsNames = sap.getFieldNames(EQ, comma) + comma + sap.getKeyFieldNames(EQ, comma);
 		String sql = String.format(INSERT, sap.getTableName(), fieldsNames);
 		List<Object> params = new ArrayList<Object>();
 		params.addAll(sap.getParams());
 		params.addAll(sap.getKeyParams());
+		return execute(sql, params.toArray());
+	}
+
+	private final static String INSERT_IFEXISTS_UPDATE = "INSERT INTO %s (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s";
+
+	public boolean insertIfExistUpdate(Object record) {
+		KeyParams sap = new KeyParams(record);
+		if (sap.isEmpty())
+			return false;
+		String fieldsNames = sap.getFieldNames("", comma) + comma + sap.getKeyFieldNames("", comma);
+		int size = sap.getParams().size() + sap.getKeyParams().size();
+		String questions = "";
+		for (int i = 0; i < size; i++) {
+			questions += "?,";
+		}
+		questions = questions.substring(0, questions.length() - 1);
+
+		String sql = String.format(INSERT_IFEXISTS_UPDATE, sap.getTableName(), fieldsNames, questions, sap.getFieldNames(EQ, comma));
+		List<Object> params = new ArrayList<Object>();
+		params.addAll(sap.getParams());
+		params.addAll(sap.getKeyParams());
+		params.addAll(sap.getParams());
 		return execute(sql, params.toArray());
 	}
 
@@ -274,7 +297,7 @@ public class DAO {
 			return false;
 		if (!sap.hasParams())
 			return false;
-		String sql = String.format(UPDATE, sap.getTableName(), sap.getFieldNames(comma), sap.getKeyFieldNames(and));
+		String sql = String.format(UPDATE, sap.getTableName(), sap.getFieldNames(EQ, comma), sap.getKeyFieldNames(EQ, and));
 		List<Object> params = new ArrayList<Object>();
 		params.addAll(sap.getParams());
 		params.addAll(sap.getKeyParams());
@@ -287,7 +310,7 @@ public class DAO {
 		KeyParams sap = new KeyParams(record);
 		if (!sap.hasKeyParams())
 			return false;
-		return execute(String.format(DELETE, sap.getTableName(), sap.getKeyFieldNames(and)), sap.getKeyParams().toArray());
+		return execute(String.format(DELETE, sap.getTableName(), sap.getKeyFieldNames(EQ, and)), sap.getKeyParams().toArray());
 	}
 
 	private final static String LAST = "SELECT LAST_INSERT_ID();";
