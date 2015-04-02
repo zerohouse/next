@@ -126,4 +126,26 @@ public class KeyParams {
 		return tableName;
 	}
 
+	public String getIntegratedFieldNames(String suffix, String deter) {
+		if (isEmpty())
+			return "";
+		if (keyParams.isEmpty())
+			return getFieldNames(suffix, deter);
+		if (params.isEmpty())
+			return getKeyFieldNames(suffix, deter);
+		return getFieldNames(suffix, deter) + deter + getKeyFieldNames(suffix, deter);
+	}
+
+	public Object[] getIntegratedParams() {
+		if (isEmpty())
+			return null;
+		if (keyParams.isEmpty())
+			return getParams().toArray();
+		if (params.isEmpty())
+			return getKeyParams().toArray();
+		List<Object> result = new ArrayList<Object>();
+		result.addAll(getParams());
+		result.addAll(getKeyParams());
+		return result.toArray();
+	}
 }

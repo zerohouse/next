@@ -23,7 +23,8 @@ app.controller('registerController', ['$scope', '$http', '$user', function ($sco
         clearTimeout(this.ajax);
         this.ajax = setTimeout(function () {
             $http(req("POST", "/api/user/existId", {id: $scope.user.id})).success(function (response) {
-                $scope.existId = response;
+                if ($scope.user.id == response)
+                    $scope.existId = true;
             });
         }, 1000);
     });

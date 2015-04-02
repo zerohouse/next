@@ -14,7 +14,6 @@ import java.util.Map;
 
 import next.database.sql.KeyParams;
 import next.database.sql.NullableParams;
-import next.database.sql.SqlTable;
 import next.setting.Setting;
 
 import org.slf4j.Logger;
@@ -161,7 +160,7 @@ public class DAO {
 	}
 
 	public static final String EQ = "=?";
-	public static final String and =" and ";
+	public static final String and = " and ";
 	public static final String comma = ", ";
 
 	public boolean fill(Object record) {
@@ -173,7 +172,8 @@ public class DAO {
 
 	public <T> T getRecordByClass(Class<T> cLass, Object... parameters) {
 		KeyParams sp = KeyParams.getInstance(cLass);
-		Map<String, Object> record = getRecordMap(String.format("SELECT * FROM %s WHERE %s", sp.getTableName(), sp.getKeyFieldNames(EQ, and)), parameters);
+		Map<String, Object> record = getRecordMap(String.format("SELECT * FROM %s WHERE %s", sp.getTableName(), sp.getKeyFieldNames(EQ, and)),
+				parameters);
 		T result = Parser.getObject(cLass, record);
 		return result;
 	}
@@ -187,9 +187,8 @@ public class DAO {
 		return result;
 	}
 
-	public <T> List<T> getRecordsByClass(Class<T> cLass, String whereClause, Object... parameters) {
-		List<Map<String, Object>> records = getRecordsMap(
-				String.format("SELECT * FROM %s %s", SqlTable.getInstance(cLass).getTableName(), whereClause), parameters);
+	public <T> List<T> getRecordsByClass(Class<T> cLass, String sql, Object... parameters) {
+		List<Map<String, Object>> records = getRecordsMap(sql, parameters);
 		List<T> result = new ArrayList<T>();
 		records.forEach(record -> {
 			result.add(Parser.getObject(cLass, record));
@@ -259,12 +258,9 @@ public class DAO {
 		KeyParams sap = new KeyParams(record);
 		if (sap.isEmpty())
 			return false;
-		String fieldsNames = sap.getFieldNames(EQ, comma) + comma + sap.getKeyFieldNames(EQ, comma);
+		String fieldsNames = sap.getIntegratedFieldNames(EQ, comma);
 		String sql = String.format(INSERT, sap.getTableName(), fieldsNames);
-		List<Object> params = new ArrayList<Object>();
-		params.addAll(sap.getParams());
-		params.addAll(sap.getKeyParams());
-		return execute(sql, params.toArray());
+		return execute(sql, sap.getIntegratedParams());
 	}
 
 	private final static String INSERT_IFEXISTS_UPDATE = "INSERT INTO %s (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s";

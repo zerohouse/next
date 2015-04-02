@@ -28,7 +28,7 @@ public class UserController {
 			http.setView(new Json(false));
 			return;
 		}
-		http.setView(new Json(true));
+		http.setView(new Json(id));
 	}
 
 	@Mapping(value = "/api/user/login", method = "POST")
