@@ -2,7 +2,6 @@ package me.model.database;
 
 import java.util.Date;
 
-import next.database.annotation.Column;
 import next.database.annotation.Key;
 
 public class Matching {
