@@ -58,6 +58,7 @@ public class UserController {
 		if (user == null)
 			throw new JsonAlert("로그인 되지 않았습니다.");
 		user = dao.getRecordByClass(User.class, user.getEmail());
+		user.defineFactors(dao);
 		user.removePassword();
 		http.setSessionAttribute("user", user);
 		http.setView(new Json(new Result(user)));
@@ -82,6 +83,7 @@ public class UserController {
 			throw new JsonAlert("없는 아이디입니다.");
 		if (!user.getPassword().equals(fromDB.getPassword()))
 			throw new JsonAlert("패스워드가 다릅니다.");
+		fromDB.defineFactors(dao);
 		http.setSessionAttribute("user", fromDB);
 		fromDB.removePassword();
 		http.setView(new Json(new Result(fromDB)));

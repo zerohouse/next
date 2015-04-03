@@ -11,4 +11,23 @@ app.controller('userController', ['$scope', '$http', '$user', function ($scope, 
         });
     }
 
+    $scope.refresh = function(){
+        $http(req("GET", "/api/user")).success(function (response) {
+            if (response.error) {
+                $scope.user.logged = false;
+                return;
+            }
+            angular.copy(response.obj, $scope.user);
+            $scope.user.logged = true;
+        });
+    }
+
+    $scope.refresh();
+
+
 }]);
+
+function getValue(){
+
+
+}

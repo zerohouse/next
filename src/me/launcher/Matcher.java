@@ -14,7 +14,7 @@ public class Matcher {
 		List<User> human = dao
 				.getRecordsByClass(
 						User.class,
-						"SELECT * FROM User left join TestResult ON User.User_email = TestResult.TestResult_userEmail WHERE User.User_authEmail = 1 and User.User_gender !=0 and User.User_age != 0");
+						"SELECT * FROM User left join TestResult ON User.User_email = TestResult.TestResult_userEmail WHERE User.User_authEmail = 1 and User.User_gender !=0");
 		List<User> men = new ArrayList<User>();
 		List<User> women = new ArrayList<User>();
 		human.forEach(each -> {

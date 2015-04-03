@@ -99,8 +99,8 @@ public class User {
 	public void defineFactors(DAO dao) {
 		factors = new HashMap<String, Factor>();
 		List<Map<String, Object>> map = dao.getRecordsMap("SELECT * FROM TestResult WHERE TestResult_userEmail=?", email);
-		if (age != null && age != 0)
-			factors.put("AGE", Factor.get("AGE", age));
+		if (map == null)
+			return;
 		map.forEach(each -> {
 			factors.put(each.get("TestResult_name").toString(), Factor.get(each.get("TestResult_name").toString(), each.get("TestResult_result")));
 		});

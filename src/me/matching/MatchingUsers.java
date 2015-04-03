@@ -31,9 +31,12 @@ public class MatchingUsers {
 			woman.defineFactors(dao);
 		});
 		dao.commitAndReturn();
-		
+
 		men.forEach(man -> {
 			Integer point = man.getFactors().size() * 20;
+			if (man.getAge() != null && man.getAge() != 0) {
+				point += 10;
+			}
 			for (int i = 0; i < women.size(); i++) {
 				point += getPoint(man, women.get(i));
 			}
@@ -57,6 +60,10 @@ public class MatchingUsers {
 			User matched = null;
 			for (int i = 0; i < women.size(); i++) {
 				newPoint = getPoint(man, women.get(i));
+				if (man.getAge() != null && man.getAge() != 0 && women.get(i).getAge() != null && women.get(i).getAge() != 0) {
+					point += 10;
+					point -= Math.abs(man.getAge() - women.get(i).getAge());
+				}
 				if (point < newPoint) {
 					point = newPoint;
 					matched = women.get(i);

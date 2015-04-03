@@ -5,15 +5,6 @@
 app.controller('loginController', ['$scope', '$http', '$user', function ($scope, $http, $user) {
     $scope.user = $user;
 
-    $http(req("GET", "/api/user")).success(function (response) {
-        if (response.error) {
-            $scope.user.logged = false;
-            return;
-        }
-        angular.copy(response.obj, $scope.user);
-        $scope.user.logged = true;
-    });
-
     $scope.$watch(function () {
         return $scope.user.email;
     }, function () {

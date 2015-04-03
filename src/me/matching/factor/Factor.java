@@ -8,8 +8,6 @@ public interface Factor {
 		switch (test) {
 		case "MBTI":
 			return new Mbti(result.toString());
-		case "AGE":
-			return new Age((Integer) result);
 		}
 		return null;
 	};

@@ -61,12 +61,12 @@ public class Mbti implements Factor {
 	public static final String ENFP = "ENFP";
 	public static final String ISTP = "ISTP";
 
-	private String type;
+	private String result;
 	private String goodMatch;
 
 	public Mbti(String type) {
-		this.type = type;
-		switch (this.type) {
+		this.result = type;
+		switch (this.result) {
 		case ENFJ:
 			goodMatch = ISTJ;
 			break;
@@ -123,17 +123,17 @@ public class Mbti implements Factor {
 	@Override
 	public int getPoint(Factor factor) {
 		Mbti mbti = (Mbti) factor;
-		if (this.type == null)
+		if (this.result == null)
 			return -10;
 		if (this.goodMatch.equals(mbti.getType()))
 			return 20;
-		if (this.type.equals(mbti.getType()))
+		if (this.result.equals(mbti.getType()))
 			return 10;
 		return 0;
 	}
 
-	public String getType() {
-		return type;
+	private String getType() {
+		return result;
 	}
 
 }
