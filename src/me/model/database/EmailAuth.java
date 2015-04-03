@@ -1,9 +1,10 @@
 package me.model.database;
 
 import next.database.annotation.Key;
+import next.setting.Setting;
 
 public class EmailAuth {
-	
+
 	@Key
 	private String email;
 	private String key;
@@ -22,5 +23,9 @@ public class EmailAuth {
 
 	public void setKey(String key) {
 		this.key = key;
+	}
+
+	public String getLink() {
+		return String.format("http://%s/api/getAuth/%s/%s", Setting.get("url"), email, key);
 	}
 }

@@ -56,6 +56,10 @@ public class User {
 		this.password = password;
 	}
 
+	public void setAuthEmail(Integer authEmail) {
+		this.authEmail = authEmail;
+	}
+
 	public Integer getGender() {
 		return gender;
 	}

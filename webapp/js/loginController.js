@@ -11,9 +11,11 @@ app.controller('loginController', ['$scope', '$http', '$user', function ($scope,
         if (!$scope.check.email())
             return;
         $scope.registeredEmail = false;
+        $scope.checking = true;
         clearTimeout(this.ajax);
         this.ajax = setTimeout(function () {
-            $http(req("POST", "/api/user/existId", {id: $scope.user.id})).success(function (response) {
+            $http(req("POST", "/api/user/registeredEmail", {id: $scope.user.email})).success(function (response) {
+                $scope.checking = false;
                 if ($scope.user.email == response)
                     $scope.registeredEmail = true;
             });

@@ -1,4 +1,5 @@
 {
+	"url":"localhost:8080",
 	"controllerPath" : "me.controllers",
 	"jspPath" : "/WEB-INF/jsp/",
 	"database" : {
