@@ -26,6 +26,7 @@
         <span class="green" ng-show="user.authEmail">인증됨</span>
         <span class="red" ng-show="!user.authEmail">인증필요</span></div>
     <div><span ng-show="user.gender==0" class="red">성별 없음</span><span ng-show="user.gender==1">남성</span><span ng-show="user.gender==2">여성</span></div>
+    <div><span ng-show="user.age==0" class="red">나이 없음</span><span ng-show="user.age!=0">{{user.age}}</span></div>
     <div>
         <div class="factor" ng-repeat="(name, factor) in user.factors"><span>{{name}} : {{factor.result}}</span></div>
     </div>
