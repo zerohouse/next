@@ -4,9 +4,9 @@
 
 
 
-var app = angular.module('meetfit', []);
+var app = angular.module('meetfit', ['ngAnimate']);
 
 
 app.factory('$user', function () {
-    return {id: "", password: ""}
+    return {email: "", password: ""}
 });

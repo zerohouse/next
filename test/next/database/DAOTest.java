@@ -9,7 +9,7 @@ public class DAOTest {
 	@Test
 	public void test() {
 			TestResult t = new TestResult();
-			t.setUserId("zerohouse");
+			t.setUserEmail("zerohouse");
 			t.setName("MBTI");
 			t.setResult("ISTP");
 			DAO dao = new DAO();

@@ -1,7 +1,9 @@
 package me.controllers;
 
+import me.auth.AuthKeyMaker;
 import me.exception.JsonAlert;
 import me.model.Result;
+import me.model.database.EmailAuth;
 import me.model.database.User;
 import next.database.DAO;
 import next.mapping.annotation.HttpMethod;
@@ -15,6 +17,9 @@ public class UserController {
 	public void register(Http http, DAO dao) throws JsonAlert {
 		User user = http.getJsonObject(User.class, "user");
 		if (!dao.insert(user))
+			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
+		EmailAuth auth = AuthKeyMaker.getAuth(user.getEmail());
+		if(!dao.insert(auth))
 			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
 		http.setSessionAttribute("user", user);
 		http.setView(new Json(new Result(user)));
@@ -34,7 +39,7 @@ public class UserController {
 	@Mapping(value = "/api/user/login", method = "POST")
 	public void login(Http http, DAO dao) throws JsonAlert {
 		User user = http.getJsonObject(User.class, "user");
-		User fromDB = dao.getRecordByClass(User.class, user.getId());
+		User fromDB = dao.getRecordByClass(User.class, user.getEmail());
 		if (fromDB == null)
 			throw new JsonAlert("없는 아이디입니다.");
 		if (!user.getPassword().equals(fromDB.getPassword()))

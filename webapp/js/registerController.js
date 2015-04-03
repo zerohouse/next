@@ -4,17 +4,7 @@
 
 app.controller('registerController', ['$scope', '$http', '$user', function ($scope, $http, $user) {
     $scope.user = $user;
-    $scope.register = function () {
-        if (!$scope.check.all())
-            return;
-        $http(req("POST", "/api/user", {user: JSON.stringify($scope.user)})).success(function (response) {
-            if (response.error) {
-                error(response.errorMessage);
-                return;
-            }
-            $scope.user = response.obj;
-        });
-    };
+
 
     $scope.$watch(function () {
         return $scope.user.id
