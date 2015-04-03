@@ -20,8 +20,8 @@ public class MatchedUsers {
 
 	public Matching getMatching() {
 		Matching m = new Matching();
-		m.setMan(man.getId());
-		m.setWoman(woman.getId());
+		m.setMan(man.getEmail());
+		m.setWoman(woman.getEmail());
 		return m;
 	}
 }

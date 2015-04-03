@@ -12,7 +12,7 @@ public class Matcher {
 	public static void main(String[] args) throws Exception {
 		DAO dao = new DAO();
 		List<User> human = dao
-				.getRecordsByClass(User.class, "SELECT * FROM User left join TestResult ON User.User_id = TestResult.TestResult_userId");
+				.getRecordsByClass(User.class, "SELECT * FROM User left join TestResult ON User.User_email = TestResult.TestResult_userEmail");
 		List<User> men = new ArrayList<User>();
 		List<User> women = new ArrayList<User>();
 		human.forEach(each -> {

@@ -9,35 +9,35 @@ import next.database.maker.PackageCreator;
 public class DBLauncher {
 	public static void main(String[] args) throws Exception {
 		PackageCreator.createTable(true, "me.model.database");
-		insertTestData();
+		//insertTestData();
 	}
 
-	private static void insertTestData() {
+	static void insertTestData() {
 		DAO dao = new DAO();
 		for (int i = 0; i < 50; i++) {
 			User user = new User();
 			Double a = (Math.random() * 10) + 20;
 			user.setAge(a.intValue());
 			user.setGender(0);
-			user.setId("man" + i);
+			user.setEmail(String.format("man%d@uss.com", i));
 			TestResult result = new TestResult();
 			result.setName("MBTI");
 			result.setResult(Mbti.getRandMbti());
-			result.setUserId(user.getId());
+			result.setUserEmail(user.getEmail());
 			dao.insert(result);
 			dao.insert(user);
 		}
 		for (int i = 0; i < 48; i++) {
 			User user = new User();
 			user.setMbti(Mbti.getRandMbti());
-			user.setId("woman" + i);
+			user.setEmail(String.format("woman%d@uss.com", i));
 			Double a = (Math.random() * 10) + 20;
 			user.setAge(a.intValue());
 			user.setGender(1);
 			TestResult result = new TestResult();
 			result.setName("MBTI");
 			result.setResult(Mbti.getRandMbti());
-			result.setUserId(user.getId());
+			result.setUserEmail(user.getEmail());
 			dao.insert(result);
 			dao.insert(user);
 		}
