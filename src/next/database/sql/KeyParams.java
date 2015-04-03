@@ -83,6 +83,10 @@ public class KeyParams {
 		params = new ArrayList<FieldObject>();
 		keyParams = new ArrayList<FieldObject>();
 		for (int i = 0; i < fields.length; i++) {
+			if(fields[i].isAnnotationPresent(Exclude.class))
+				continue;
+			if(fields[i].isAnnotationPresent(OtherTable.class))
+				continue;
 			if (fields[i].isAnnotationPresent(Key.class)) {
 				keyParams.add(new FieldObject(null, fields[i]));
 				continue;

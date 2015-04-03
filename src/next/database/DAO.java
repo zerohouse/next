@@ -189,6 +189,8 @@ public class DAO {
 
 	public <T> List<T> getRecordsByClass(Class<T> cLass, String sql, Object... parameters) {
 		List<Map<String, Object>> records = getRecordsMap(sql, parameters);
+		if (records.size() == 0)
+			return null;
 		List<T> result = new ArrayList<T>();
 		records.forEach(record -> {
 			result.add(Parser.getObject(cLass, record));

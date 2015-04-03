@@ -5,8 +5,17 @@
 app.controller('loginController', ['$scope', '$http', '$user', function ($scope, $http, $user) {
     $scope.user = $user;
 
+    $http(req("GET", "/api/user")).success(function (response) {
+        if (response.error) {
+            $scope.user.logged = false;
+            return;
+        }
+        angular.copy(response.obj, $scope.user);
+        $scope.user.logged = true;
+    });
+
     $scope.$watch(function () {
-        return $scope.user.email
+        return $scope.user.email;
     }, function () {
         if (!$scope.check.email())
             return;
@@ -14,14 +23,14 @@ app.controller('loginController', ['$scope', '$http', '$user', function ($scope,
         $scope.checking = true;
         clearTimeout(this.ajax);
         this.ajax = setTimeout(function () {
-            $http(req("POST", "/api/user/registeredEmail", {id: $scope.user.email})).success(function (response) {
+            $http(req("POST", "/api/user/registeredEmail", {email: $scope.user.email})).success(function (response) {
                 $scope.checking = false;
                 if ($scope.user.email == response)
                     $scope.registeredEmail = true;
-            });
-        }, 300);
-    });
 
+            });
+        }, 500);
+    });
 
     $scope.check = {
         email: function () {
@@ -43,24 +52,30 @@ app.controller('loginController', ['$scope', '$http', '$user', function ($scope,
     $scope.register = function () {
         if (!$scope.check.all())
             return;
+        $scope.user.logged = true;
         $http(req("POST", "/api/user", {user: JSON.stringify($scope.user)})).success(function (response) {
             if (response.error) {
                 error(response.errorMessage);
+                $scope.user.logged = false;
                 return;
             }
-            $scope.user = response.obj;
+            angular.copy(response.obj, $scope.user);
+            $scope.user.logged = true;
         });
     };
 
     $scope.login = function () {
         if (!$scope.check.all())
             return;
+        $scope.user.logged = true;
         $http(req("POST", "/api/user/login", {user: JSON.stringify($scope.user)})).success(function (response) {
             if (response.error) {
                 error(response.errorMessage);
+                $scope.user.logged = false;
                 return;
             }
-            $scope.user = response.obj;
+            angular.copy(response.obj, $scope.user);
+            $scope.user.logged = true;
         });
     }
 }]);

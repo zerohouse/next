@@ -20,6 +20,12 @@
 				"hasDefaultValue" : "true",
 				"DEFAULT" : "0"
 			},
+			"Boolean" : {
+				"DATATYPE" : "TINYINT(1)",
+				"NOT NULL" : "true",
+				"hasDefaultValue" : "true",
+				"DEFAULT" : "0"
+			},
 			"Date" : {
 				"DATATYPE" : "DATETIME",
 				"NOT NULL" : "true",

@@ -1,4 +1,4 @@
-package me.logic.matching;
+package me.matching;
 
 import me.model.database.Matching;
 import me.model.database.User;

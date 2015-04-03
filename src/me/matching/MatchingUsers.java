@@ -1,10 +1,13 @@
-package me.logic.matching;
+package me.matching;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
+import next.database.DAO;
+import me.matching.factor.Factor;
 import me.model.database.User;
 
 public class MatchingUsers {
@@ -19,8 +22,18 @@ public class MatchingUsers {
 	}
 
 	public List<MatchedUsers> matchedUsers() {
+		DAO dao = new DAO();
 		men.forEach(man -> {
-			Integer point = 0;
+			man.defineFactors(dao);
+		});
+
+		women.forEach(woman -> {
+			woman.defineFactors(dao);
+		});
+		dao.commitAndReturn();
+		
+		men.forEach(man -> {
+			Integer point = man.getFactors().size() * 20;
 			for (int i = 0; i < women.size(); i++) {
 				point += getPoint(man, women.get(i));
 			}
@@ -60,9 +73,13 @@ public class MatchingUsers {
 	}
 
 	private int getPoint(User man, User woman) {
-		Mbti mbti = new Mbti(man);
-		Age age = new Age(man.getAge());
-		return mbti.getPoint(woman) * 5 + age.getPoint(woman.getAge());
+		int point = 0;
+		for (Map.Entry<String, Factor> elem : man.getFactors().entrySet()) {
+			Factor f = woman.getFactors().get(elem.getKey());
+			if (f == null)
+				continue;
+			point += elem.getValue().getPoint(f);
+		}
+		return point;
 	}
-
 }

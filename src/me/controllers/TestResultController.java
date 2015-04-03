@@ -14,9 +14,9 @@ public class TestResultController {
 	@Mapping(value = "/api/test", method = "POST", before = "loginCheck")
 	public void insertTest(Http http, DAO dao) throws JsonAlert {
 		TestResult test = http.getJsonObject(TestResult.class, "test");
-		test.setUserEmail(http.getSessionAttribute(User.class, "user").getEmail());
-		if(dao.insertIfExistUpdate(test))
-		//if (!dao.execute("INSERT INTO Test values(?,?,?) ON DUPLICATE KEY UPDATE Test_result=?", test.getUserId(), test.getName(), test.getResult(),	test.getResult()))
+		User user = http.getSessionAttribute(User.class, "user");
+		test.setUserEmail(user.getEmail());
+		if(!dao.insertIfExistUpdate(test))
 			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
 		http.setView(new Json(new Result(test)));
 	}

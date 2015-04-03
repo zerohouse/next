@@ -8,31 +8,24 @@
 </head>
 <body ng-app="meetfit">
 
-<div id="login" ng-controller="loginController">
+<div id="login" ng-controller="loginController" ng-show="!user.logged">
     <input ng-model="user.email" placeholder="Email"/>
+
     <div ng-show="user.email!='' && !check.email()">이메일 형식이 맞지 않습니다.</div>
     <input maxlength="12" ng-model="user.password" type="password" placeholder="Password"/>
+
     <div ng-show="user.password!='' && !check.password()">패스워드는 4~12자입니다.</div>
-    <div ng-show="user.email!='' && cheking && check.email() && registeredEmail" class="button" ng-click="login()">로그인</div>
-    <div ng-show="user.email!='' && cheking && check.email() && !registeredEmail" class="button" ng-click="register()">입력한 Email/Password로 가입하기</div>
+    <div ng-show="user.email!='' && !checking && check.email()">
+        <div ng-show="registeredEmail" class="button" ng-click="login()">로그인</div>
+        <div ng-show="!registeredEmail" class="button" ng-click="register()">입력한 Email/Password로 가입하기</div>
+    </div>
 </div>
 
-
-<div ng-controller="registerController" ng-show="user.email == undefined">
-    <input ng-model="user.id"/>
-    <input ng-model="user.password" type="password"/>
-    <input ng-model="user.email"/>
-    <input type="radio" ng-model="user.gender" value="0">
-    <input type="radio" ng-model="user.gender" value="1">
-
-    <div>
-        <span ng-show="existId">existId</span>
-        <span ng-show="!check.id()">idCheck</span>
-        <span ng-show="!check.password()">password</span>
-        <span ng-show="!check.email()">email</span>
-        <span ng-show="!check.gender()">gender</span>
-    </div>
-    <div ng-class="{opacity:!check.all()}" ng-click="register()">회원가입</div>
+<div id="user" ng-controller="userController" ng-show="user.logged">
+    {{user.email}}
+    {{user.authEmail}}
+    {{user.gender}}
+    <div class="button" ng-click="logout()">로그아웃</div>
 </div>
 
 
@@ -68,7 +61,7 @@
 <script src="js/util.js"></script>
 <script src="js/index.js"></script>
 <script src="js/loginController.js"></script>
-<script src="js/registerController.js"></script>
+<script src="js/userController.js"></script>
 <script src="js/mbtiController.js"></script>
 </body>
 </html>

@@ -1,8 +1,7 @@
-package me.logic.matching;
+package me.matching.factor;
 
-import me.model.database.User;
 
-public class Mbti {
+public class Mbti implements Factor {
 
 	public static String getRandMbti() {
 		Double ran = Math.random() * 16;
@@ -65,8 +64,8 @@ public class Mbti {
 	private String type;
 	private String goodMatch;
 
-	public Mbti(User user) {
-		this.type = user.getMbti();
+	public Mbti(String type) {
+		this.type = type;
 		switch (this.type) {
 		case ENFJ:
 			goodMatch = ISTJ;
@@ -121,16 +120,20 @@ public class Mbti {
 
 	}
 
-	public int getPoint(User user) {
+	@Override
+	public int getPoint(Factor factor) {
+		Mbti mbti = (Mbti) factor;
 		if (this.type == null)
-			return -1;
-		if (type == null)
-			return 0;
-		if (this.goodMatch.equals(user.getMbti()))
-			return 2;
-		if (this.type.equals(user.getMbti()))
-			return 1;
+			return -10;
+		if (this.goodMatch.equals(mbti.getType()))
+			return 20;
+		if (this.type.equals(mbti.getType()))
+			return 10;
 		return 0;
+	}
+
+	public String getType() {
+		return type;
 	}
 
 }

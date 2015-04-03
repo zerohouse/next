@@ -1,9 +1,14 @@
 package me.model.database;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import me.matching.factor.Factor;
+import next.database.DAO;
 import next.database.annotation.Column;
 import next.database.annotation.Exclude;
 import next.database.annotation.Key;
-import next.database.annotation.OtherTable;
 import next.database.annotation.RequiredRegex;
 
 public class User {
@@ -14,8 +19,7 @@ public class User {
 	@RequiredRegex(EMAIL_PATTERN)
 	@Key
 	private String email;
-	@Column(DATA_TYPE = "TINYINT(1)")
-	private Integer authEmail;
+	private Boolean authEmail;
 	private String password;
 	@Column(DATA_TYPE = "TINYINT")
 	private Integer gender;
@@ -23,13 +27,13 @@ public class User {
 	private Integer age;
 	private String profileUrl;
 
-	@OtherTable(COLUMN_NAME = "TestResult_result")
-	private String mbti;
+	@Exclude
+	private Map<String, Factor> factors;
 	@Exclude
 	private Integer point;
 
-	public Integer getAuthEmail() {
-		return authEmail;
+	public Map<String, Factor> getFactors() {
+		return factors;
 	}
 
 	public Integer getPoint() {
@@ -52,12 +56,16 @@ public class User {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public Boolean getAuthEmail() {
+		return authEmail;
 	}
 
-	public void setAuthEmail(Integer authEmail) {
+	public void setAuthEmail(Boolean authEmail) {
 		this.authEmail = authEmail;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public Integer getGender() {
@@ -84,12 +92,18 @@ public class User {
 		this.profileUrl = profileUrl;
 	}
 
-	public String getMbti() {
-		return mbti;
+	public void removePassword() {
+		password = null;
 	}
 
-	public void setMbti(String mbti) {
-		this.mbti = mbti;
+	public void defineFactors(DAO dao) {
+		factors = new HashMap<String, Factor>();
+		List<Map<String, Object>> map = dao.getRecordsMap("SELECT * FROM TestResult WHERE TestResult_userEmail=?", email);
+		if (age != null && age != 0)
+			factors.put("AGE", Factor.get("AGE", age));
+		map.forEach(each -> {
+			factors.put(each.get("TestResult_name").toString(), Factor.get(each.get("TestResult_name").toString(), each.get("TestResult_result")));
+		});
 	}
 
 }

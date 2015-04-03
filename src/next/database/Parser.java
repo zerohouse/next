@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Map;
 
+import next.database.annotation.Exclude;
 import next.database.sql.SqlField;
 
 public class Parser {
@@ -30,6 +31,8 @@ public class Parser {
 		Class<?> cLass = record.getClass();
 		Field[] fields = cLass.getDeclaredFields();
 		for (int i = 0; i < fields.length; i++) {
+			if (fields[i].isAnnotationPresent(Exclude.class))
+				continue;
 			Object obj = recordMap.get(SqlField.getInstance(fields[i]).getColumnName());
 			if (obj == null)
 				continue;

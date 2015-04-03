@@ -8,5 +8,6 @@ var app = angular.module('meetfit', ['ngAnimate']);
 
 
 app.factory('$user', function () {
-    return {email: "", password: ""}
+    $user = {email: "", password: ""}
+    return $user;
 });

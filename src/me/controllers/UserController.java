@@ -30,8 +30,8 @@ public class UserController {
 		}
 		User user = new User();
 		user.setEmail(auth.getEmail());
-		user.setAuthEmail(1);
-		if (dao.update(user)) {
+		user.setAuthEmail(true);
+		if (!dao.update(user)) {
 			jsp.put("result", "이메일 인증이 실패하였습니다.");
 			return;
 		}
@@ -47,6 +47,18 @@ public class UserController {
 		AuthSender.sendMail(user.getEmail(), auth.getLink());
 		if (!dao.insert(auth))
 			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
+		http.setSessionAttribute("user", user);
+		user.removePassword();
+		http.setView(new Json(new Result(user)));
+	}
+
+	@Mapping(value = "/api/user", method = "GET")
+	public void user(Http http, DAO dao) throws JsonAlert {
+		User user = http.getSessionAttribute(User.class, "user");
+		if (user == null)
+			throw new JsonAlert("로그인 되지 않았습니다.");
+		user = dao.getRecordByClass(User.class, user.getEmail());
+		user.removePassword();
 		http.setSessionAttribute("user", user);
 		http.setView(new Json(new Result(user)));
 	}
@@ -71,7 +83,14 @@ public class UserController {
 		if (!user.getPassword().equals(fromDB.getPassword()))
 			throw new JsonAlert("패스워드가 다릅니다.");
 		http.setSessionAttribute("user", fromDB);
+		fromDB.removePassword();
 		http.setView(new Json(new Result(fromDB)));
+	}
+	
+	@Mapping(value = "/api/user/logout", method = "GET")
+	public void logout(Http http) throws JsonAlert {
+		http.removeSessionAttribute("user");
+		http.setView(new Json(new Result(true)));
 	}
 
 	@HttpMethod

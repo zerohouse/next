@@ -5,7 +5,6 @@
 app.controller('registerController', ['$scope', '$http', '$user', function ($scope, $http, $user) {
     $scope.user = $user;
 
-
     $scope.$watch(function () {
         return $scope.user.id
     }, function () {

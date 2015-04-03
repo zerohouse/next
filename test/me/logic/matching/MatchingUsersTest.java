@@ -3,6 +3,7 @@ package me.logic.matching;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.matching.MatchingUsers;
 import me.model.database.User;
 
 import org.junit.Test;
@@ -14,7 +15,6 @@ public class MatchingUsersTest {
 		List<User> men = new ArrayList<User>();
 		for(int i=0;i<50;i++){
 			User user = new User();
-			user.setMbti(Mbti.getRandMbti());
 			Double a = (Math.random()*10) + 20;
 			user.setAge(a.intValue());
 			user.setGender(0);
@@ -23,7 +23,6 @@ public class MatchingUsersTest {
 		List<User> women = new ArrayList<User>();
 		for(int i=0;i<48;i++){
 			User user = new User();
-			user.setMbti(Mbti.getRandMbti());
 			Double a = (Math.random()*10) + 20;
 			user.setAge(a.intValue());
 			user.setGender(1);

@@ -50,6 +50,8 @@ public class SqlFieldNormal implements SqlField {
 			setSettings("Float");
 		} else if (t.equals(float.class) || t.equals(Float.class)) {
 			setSettings("Long");
+		} else if (t.equals(boolean.class) || t.equals(Boolean.class)) {
+			setSettings("Boolean");
 		}
 	}
 

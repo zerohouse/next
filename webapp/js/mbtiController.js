@@ -48,7 +48,7 @@ app.controller('mbtiController', ['$http', '$scope', function ($http, $scope) {
         var test = {};
         test.name = "MBTI";
         test.result = $scope.userType;
-        $http(req("POST", "/api/user/login", {user: JSON.stringify(test)})).success(function (response) {
+        $http(req("POST", "/api/test", {test: JSON.stringify(test)})).success(function (response) {
             if (response.error) {
                 error(response.errorMessage);
                 return;

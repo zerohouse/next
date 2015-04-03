@@ -3,8 +3,8 @@ package me.launcher;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.logic.matching.MatchedUsers;
-import me.logic.matching.MatchingUsers;
+import me.matching.MatchedUsers;
+import me.matching.MatchingUsers;
 import me.model.database.User;
 import next.database.DAO;
 
@@ -12,19 +12,22 @@ public class Matcher {
 	public static void main(String[] args) throws Exception {
 		DAO dao = new DAO();
 		List<User> human = dao
-				.getRecordsByClass(User.class, "SELECT * FROM User left join TestResult ON User.User_email = TestResult.TestResult_userEmail");
+				.getRecordsByClass(
+						User.class,
+						"SELECT * FROM User left join TestResult ON User.User_email = TestResult.TestResult_userEmail WHERE User.User_authEmail = 1 and User.User_gender !=0 and User.User_age != 0");
 		List<User> men = new ArrayList<User>();
 		List<User> women = new ArrayList<User>();
 		human.forEach(each -> {
-			if (each.getGender() == 0) {
+			if (each.getGender() == 1) {
 				men.add(each);
 				return;
 			}
-			women.add(each);
+			if (each.getGender() == 2)
+				women.add(each);
 		});
 
-		MatchingUsers user = new MatchingUsers(men, women);
-		List<MatchedUsers> matched = user.matchedUsers();
+		MatchingUsers mu = new MatchingUsers(men, women);
+		List<MatchedUsers> matched = mu.matchedUsers();
 		matched.forEach(match -> {
 			dao.insert(match.getMatching());
 		});
