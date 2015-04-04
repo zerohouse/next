@@ -53,8 +53,9 @@ div#login input {
 }
 
 .factor {
+    margin: 3px;
     background-color: #eee;
     border-radius: 5px;
     padding: 5px 10px;
-    display:inline-block;
+    display: inline-block;
 }

@@ -8,6 +8,8 @@ public interface Factor {
 		switch (test) {
 		case "MBTI":
 			return new Mbti(result.toString());
+		case "ENNEA":
+			return new Enneagram(result.toString());
 		}
 		return null;
 	};
