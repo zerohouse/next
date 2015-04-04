@@ -17,7 +17,6 @@ public class MatchingUsers {
 	private List<User> women;
 
 	public MatchingUsers(List<User> men, List<User> women) {
-		super();
 		this.men = men;
 		this.women = women;
 	}
@@ -31,12 +30,15 @@ public class MatchingUsers {
 		women.forEach(woman -> {
 			woman.defineFactors(dao);
 		});
-		dao.commit();
 
+		dao.commit();
 		men.forEach(man -> {
 			Integer point = man.getFactors().size() * 20;
 			if (man.getAge() != null && man.getAge() != 0) {
 				point += 10;
+			}
+			if (man.getAuthEmail()) {
+				point += 500;
 			}
 			for (int i = 0; i < women.size(); i++) {
 				point += getPoint(man, women.get(i));
@@ -56,7 +58,6 @@ public class MatchingUsers {
 		List<MatchedUsers> result = new ArrayList<MatchedUsers>();
 
 		List<Matching> already = dao.getRecordsByClass(Matching.class, "SELECT Matching_man, Matching_woman FROM Matching");
-		dao.close();
 		men.forEach(man -> {
 			Integer point = -1000;
 			Integer newPoint;
@@ -67,7 +68,7 @@ public class MatchingUsers {
 					point += 10;
 					point -= Math.abs(man.getAge() - women.get(i).getAge());
 				}
-				if(already.contains(new Matching(man.getEmail(), women.get(i).getEmail(), null)))
+				if (already != null && already.contains(new Matching(man.getEmail(), women.get(i).getEmail(), null)))
 					continue;
 				if (point < newPoint) {
 					point = newPoint;

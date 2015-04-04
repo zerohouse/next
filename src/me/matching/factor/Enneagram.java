@@ -21,4 +21,9 @@ public class Enneagram implements Factor {
 		return result;
 	}
 
+	public static String getRand() {
+		Double a = Math.random() * 9 + 1;
+		return "" + a.intValue();
+	}
+
 }

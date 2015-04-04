@@ -55,6 +55,7 @@ app.controller('mbtiController', ['$http', '$scope', function ($http, $scope) {
                 return;
             }
             $scope.test = response.obj;
+            app.findController('userController').refresh();
         });
     }
 

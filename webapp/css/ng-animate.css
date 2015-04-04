@@ -1,14 +1,14 @@
 
 /* when hiding the thing */
 .ng-hide-add         {
-    -webkit-animation:0.5s flipOutX ease;
-    animation:0.5s flipOutX ease;
+    -webkit-animation:0.5s lightSpeedOut ease;
+    animation:0.5s lightSpeedOut ease;
 }
 
 /* when showing the thing */
 .ng-hide-remove      {
-    -webkit-animation:0.5s flipInX ease;
-    animation:0.5s flipInX ease;
+    -webkit-animation:0.5s lightSpeedIn ease;
+    animation:0.5s lightSpeedIn ease;
 }
 
 /* ANIMATIONS (FROM ANIMATE.CSS) */
@@ -176,6 +176,32 @@
     }
 
     100% {
+        -webkit-transform: translate3d(100%, 0, 0) skewX(30deg);
+        -ms-transform: translate3d(100%, 0, 0) skewX(30deg);
+        transform: translate3d(100%, 0, 0) skewX(30deg);
+        opacity: 0;
+    }
+}
+
+/* light speed out */
+@-webkit-keyframes lightSpeedIn {
+    100% {
+        opacity: 1;
+    }
+
+    0% {
+        -webkit-transform: translate3d(100%, 0, 0) skewX(30deg);
+        transform: translate3d(100%, 0, 0) skewX(30deg);
+        opacity: 0;
+    }
+}
+
+@keyframes lightSpeedIn {
+    100% {
+        opacity: 1;
+    }
+
+    0% {
         -webkit-transform: translate3d(100%, 0, 0) skewX(30deg);
         -ms-transform: translate3d(100%, 0, 0) skewX(30deg);
         transform: translate3d(100%, 0, 0) skewX(30deg);

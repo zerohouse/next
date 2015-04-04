@@ -3,7 +3,7 @@ package me.matching.factor;
 
 public class Mbti implements Factor {
 
-	public static String getRandMbti() {
+	public static String getRand() {
 		Double ran = Math.random() * 16;
 		int val = ran.intValue();
 		switch (val) {

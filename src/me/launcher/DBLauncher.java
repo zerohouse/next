@@ -1,5 +1,6 @@
 package me.launcher;
 
+import me.matching.factor.Enneagram;
 import me.matching.factor.Mbti;
 import me.model.database.TestResult;
 import me.model.database.User;
@@ -23,9 +24,14 @@ public class DBLauncher {
 			user.setEmail(String.format("man%d@uss.com", i));
 			TestResult result = new TestResult();
 			result.setName("MBTI");
-			result.setResult(Mbti.getRandMbti());
+			result.setResult(Mbti.getRand());
 			result.setUserEmail(user.getEmail());
 			dao.insert(result);
+			TestResult result2 = new TestResult();
+			result2.setName("ENNEA");
+			result2.setResult(Enneagram.getRand());
+			result2.setUserEmail(user.getEmail());
+			dao.insert(result2);
 			dao.insert(user);
 		}
 		for (int i = 0; i < 48; i++) {
@@ -37,9 +43,14 @@ public class DBLauncher {
 			user.setGender(2);
 			TestResult result = new TestResult();
 			result.setName("MBTI");
-			result.setResult(Mbti.getRandMbti());
+			result.setResult(Mbti.getRand());
 			result.setUserEmail(user.getEmail());
 			dao.insert(result);
+			TestResult result2 = new TestResult();
+			result2.setName("ENNEA");
+			result2.setResult(Enneagram.getRand());
+			result2.setUserEmail(user.getEmail());
+			dao.insert(result2);
 			dao.insert(user);
 		}
 		dao.commitAndClose();

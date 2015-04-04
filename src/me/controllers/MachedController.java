@@ -30,6 +30,8 @@ public class MachedController {
 		}
 		List<Matching> matchings = dao.getRecordsByClass(Matching.class, String.format("SELECT * FROM Matching WHERE %s=?", column), user.getEmail());
 		List<User> matchedUsers = new ArrayList<User>();
+		if (matchings == null)
+			return;
 		for (int i = 0; i < matchings.size(); i++) {
 			User partner = null;
 			switch (user.getGender()) {
