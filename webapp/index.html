@@ -25,12 +25,29 @@
     <div>{{user.email}}
         <span class="green" ng-show="user.authEmail">인증됨</span>
         <span class="red" ng-show="!user.authEmail">인증필요</span></div>
-    <div><span ng-show="user.gender==0" class="red">성별 없음</span><span ng-show="user.gender==1">남성</span><span ng-show="user.gender==2">여성</span></div>
-    <div><span ng-show="user.age==0" class="red">나이 없음</span><span ng-show="user.age!=0">{{user.age}}</span></div>
+    <div>
+        <div ng-click="toggleTrigger('gender')"><span ng-show="user.gender==0" class="red">성별 없음</span><span
+                ng-show="user.gender==1">남성</span><span
+                ng-show="user.gender==2">여성</span>
+        </div>
+        <div ng-show="toggle.gender" ng-click="toggleTrigger('gender')"><span ng-click="user.gender=1">남성</span><span
+                ng-click="user.gender=2">여성</span></div>
+    </div>
+
+    <div>
+        <div ng-click="toggleTrigger('age')"><span ng-show="user.age==0" class="red">나이 없음</span><span
+                ng-show="user.age!=0">{{user.age}}</span></div>
+        <div ng-show="toggle.age">나이<input ng-model="user.age" maxlength="3" type="number"> <div ng-click="toggleTrigger('age')">확인</div></div>
+    </div>
     <div>
         <div class="factor" ng-repeat="(name, factor) in user.factors"><span>{{name}} : {{factor.result}}</span></div>
     </div>
     <div class="button" ng-click="logout()">로그아웃</div>
+</div>
+
+
+<div id="matchedUsers" ng-controller="matchedController" ng-show="user.logged">
+
 </div>
 
 
@@ -67,6 +84,7 @@
 <script src="js/index.js"></script>
 <script src="js/loginController.js"></script>
 <script src="js/userController.js"></script>
+<script src="js/matchedController.js"></script>
 <script src="js/mbtiController.js"></script>
 </body>
 </html>

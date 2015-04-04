@@ -108,6 +108,6 @@ public class TableMaker {
 	}
 
 	public void commitAndReturn() {
-		dao.commitAndReturn();
+		dao.commitAndClose();
 	}
 }

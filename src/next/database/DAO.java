@@ -199,7 +199,7 @@ public class DAO {
 	}
 
 	public <T> List<T> getRecordsByClass(Class<T> cLass) {
-		return getRecordsByClass(cLass, "");
+		return getRecordsByClass(cLass, String.format("SELECT * FROM %s", KeyParams.getInstance(cLass).getTableName()));
 	}
 
 	public Boolean execute(String sql, Object... parameters) {
@@ -235,7 +235,20 @@ public class DAO {
 			}
 	}
 
-	public void commitAndReturn() {
+	public void commitAndClose() {
+		commit();
+		close();
+	}
+
+	public void close() {
+		if (conn != null)
+			try {
+				conn.close();
+			} catch (SQLException sqle) {
+			}
+	}
+
+	public void commit() {
 		try {
 			conn.commit();
 		} catch (SQLException e) {
@@ -246,12 +259,6 @@ public class DAO {
 			}
 			e.printStackTrace();
 		}
-
-		if (conn != null)
-			try {
-				conn.close();
-			} catch (SQLException sqle) {
-			}
 	}
 
 	private final static String INSERT = "INSERT %s SET %s";

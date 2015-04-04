@@ -31,7 +31,7 @@ public class Matcher {
 		matched.forEach(match -> {
 			dao.insert(match.getMatching());
 		});
-		dao.commitAndReturn();
+		dao.commitAndClose();
 	}
 
 }

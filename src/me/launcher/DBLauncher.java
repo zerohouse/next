@@ -42,6 +42,6 @@ public class DBLauncher {
 			dao.insert(result);
 			dao.insert(user);
 		}
-		dao.commitAndReturn();
+		dao.commitAndClose();
 	}
 }

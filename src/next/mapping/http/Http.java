@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 
 import next.mapping.view.View;
 
-
 public interface Http {
 
 	String getParameter(String name);

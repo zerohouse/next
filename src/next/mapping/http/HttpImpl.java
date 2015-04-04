@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import next.mapping.view.View;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 public class HttpImpl implements Http {
 
@@ -28,13 +29,21 @@ public class HttpImpl implements Http {
 	@Override
 	public <T> T getJsonObject(Class<T> cLass, String name) {
 		Gson gson = DateBuilder.getGsonBuilder(cLass);
-		return gson.fromJson(req.getParameter(name), cLass);
+		try {
+			return gson.fromJson(req.getParameter(name), cLass);
+		} catch (JsonSyntaxException e) {
+			return null;
+		}
 	}
 
 	@Override
 	public <T> T getJsonObject(Class<T> cLass) {
 		Gson gson = DateBuilder.getGsonBuilder(cLass);
-		return gson.fromJson(gson.toJson(req.getParameterMap()), cLass);
+		try {
+			return gson.fromJson(gson.toJson(req.getParameterMap()), cLass);
+		} catch (JsonSyntaxException e) {
+			return null;
+		}
 	}
 
 	public HttpImpl(HttpServletRequest req, HttpServletResponse resp) {

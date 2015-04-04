@@ -14,7 +14,7 @@ public class DAOTest {
 			t.setResult("ISTP");
 			DAO dao = new DAO();
 			dao.insertIfExistUpdate(t);
-			dao.commitAndReturn();
+			dao.commitAndClose();
 	}
 
 }

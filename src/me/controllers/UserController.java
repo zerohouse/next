@@ -41,6 +41,8 @@ public class UserController {
 	@Mapping(value = "/api/user", method = "POST")
 	public void register(Http http, DAO dao) throws JsonAlert {
 		User user = http.getJsonObject(User.class, "user");
+		if (user == null)
+			return;
 		if (!dao.insert(user))
 			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
 		EmailAuth auth = AuthKeyMaker.getAuth(user.getEmail());
@@ -52,11 +54,23 @@ public class UserController {
 		http.setView(new Json(new Result(user)));
 	}
 
-	@Mapping(value = "/api/user", method = "GET")
+	@Mapping(value = "/api/user/update", method = "POST", before = "loginCheck")
+	public void update(Http http, DAO dao) throws JsonAlert {
+		User user = http.getJsonObject(User.class, "user");
+		if (user == null)
+			return;
+		if (!user.getEmail().equals(http.getSessionAttribute(User.class, "user").getEmail()))
+			return;
+		if (!dao.update(user))
+			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
+		http.setSessionAttribute("user", user);
+		user.removePassword();
+		http.setView(new Json(new Result(user)));
+	}
+
+	@Mapping(value = "/api/user", method = "GET", before = "loginCheck")
 	public void user(Http http, DAO dao) throws JsonAlert {
 		User user = http.getSessionAttribute(User.class, "user");
-		if (user == null)
-			throw new JsonAlert("로그인 되지 않았습니다.");
 		user = dao.getRecordByClass(User.class, user.getEmail());
 		user.defineFactors(dao);
 		user.removePassword();
@@ -88,7 +102,7 @@ public class UserController {
 		fromDB.removePassword();
 		http.setView(new Json(new Result(fromDB)));
 	}
-	
+
 	@Mapping(value = "/api/user/logout", method = "GET")
 	public void logout(Http http) throws JsonAlert {
 		http.removeSessionAttribute("user");

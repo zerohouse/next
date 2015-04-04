@@ -6,9 +6,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import next.database.DAO;
 import me.matching.factor.Factor;
+import me.model.database.Matching;
 import me.model.database.User;
+import next.database.DAO;
 
 public class MatchingUsers {
 
@@ -30,7 +31,7 @@ public class MatchingUsers {
 		women.forEach(woman -> {
 			woman.defineFactors(dao);
 		});
-		dao.commitAndReturn();
+		dao.commit();
 
 		men.forEach(man -> {
 			Integer point = man.getFactors().size() * 20;
@@ -54,6 +55,8 @@ public class MatchingUsers {
 
 		List<MatchedUsers> result = new ArrayList<MatchedUsers>();
 
+		List<Matching> already = dao.getRecordsByClass(Matching.class, "SELECT Matching_man, Matching_woman FROM Matching");
+		dao.close();
 		men.forEach(man -> {
 			Integer point = -1000;
 			Integer newPoint;
@@ -64,6 +67,8 @@ public class MatchingUsers {
 					point += 10;
 					point -= Math.abs(man.getAge() - women.get(i).getAge());
 				}
+				if(already.contains(new Matching(man.getEmail(), women.get(i).getEmail(), null)))
+					continue;
 				if (point < newPoint) {
 					point = newPoint;
 					matched = women.get(i);
