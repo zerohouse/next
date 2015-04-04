@@ -1,7 +1,8 @@
 /**
  * Created by park on 15. 4. 3..
  */
-app.controller('userController', ['$scope', '$http', '$user', function ($scope, $http, $user) {
+app.controller('userController', ['$scope', '$http', '$user', '$toggle', function ($scope, $http, $user, $toggle) {
+    $scope.toggle = $toggle;
     $scope.user = $user;
 
     $scope.logout = function () {
@@ -20,20 +21,13 @@ app.controller('userController', ['$scope', '$http', '$user', function ($scope, 
             }
             angular.copy(response.obj, $scope.user);
             $scope.user.logged = true;
+            app.findController('matchedController').refresh();
         });
     }
 
     $scope.refresh();
 
 
-    $scope.toggle = {};
-    $scope.toggleTrigger = function (selector) {
-        if ($scope.toggle[selector]) {
-            $scope.toggle[selector] = false;
-            return;
-        }
-        $scope.toggle[selector] = true;
-    }
 
     $scope.$watch(function () {
         return $scope.user.gender;
@@ -74,8 +68,3 @@ app.controller('userController', ['$scope', '$http', '$user', function ($scope, 
         }, 500);
     });
 }]);
-
-function getValue() {
-
-
-}

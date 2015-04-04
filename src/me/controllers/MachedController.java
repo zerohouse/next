@@ -40,6 +40,8 @@ public class MachedController {
 				partner = dao.getRecordByClass(User.class, matchings.get(i).getMan());
 				break;
 			}
+			partner.removePassword();
+			partner.defineFactors(dao);
 			matchedUsers.add(partner);
 		}
 		http.setView(new Json(new Result(matchedUsers)));
