@@ -66,6 +66,7 @@ app.controller('loginController', ['$scope', '$http', '$user', function ($scope,
                 return;
             }
             angular.copy(response.obj, $scope.user);
+            app.findController('matchedController').refresh();
             $scope.user.logged = true;
         });
     }

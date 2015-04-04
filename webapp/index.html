@@ -7,107 +7,110 @@
     <title>MeetFit</title>
 </head>
 <body ng-app="meetfit">
+<div ng-controller="wrapController">
+    <div id="login" ng-controller="loginController" ng-show="!user.logged">
+        <input ng-model="user.email" placeholder="Email"/>
 
-<div id="login" ng-controller="loginController" ng-show="!user.logged">
-    <input ng-model="user.email" placeholder="Email"/>
+        <div ng-show="user.email!='' && !check.email()">이메일 형식이 맞지 않습니다.</div>
+        <input maxlength="12" ng-model="user.password" type="password" placeholder="Password"/>
 
-    <div ng-show="user.email!='' && !check.email()">이메일 형식이 맞지 않습니다.</div>
-    <input maxlength="12" ng-model="user.password" type="password" placeholder="Password"/>
-
-    <div ng-show="user.password!='' && !check.password()">패스워드는 4~12자입니다.</div>
-    <div ng-show="user.email!='' && !checking && check.email()">
-        <div ng-show="registeredEmail" class="button" ng-click="login()">로그인</div>
-        <div ng-show="!registeredEmail" class="button" ng-click="register()">입력한 Email/Password로 가입하기</div>
-    </div>
-</div>
-
-<div id="user" ng-controller="userController" ng-show="user.logged">
-    <div>{{user.email}}
-        <span class="green" ng-show="user.authEmail">인증됨</span>
-        <span class="red" ng-show="!user.authEmail">인증필요</span></div>
-    <div>
-        <div ng-click="toggle.toggle('gender')"><span ng-show="user.gender==0" class="red">성별 없음</span><span
-                ng-show="user.gender==1">남성</span><span
-                ng-show="user.gender==2">여성</span>
-        </div>
-        <div ng-show="toggle.gender" ng-click="toggle.toggle('gender')"><span ng-click="user.gender=1">남성</span><span
-                ng-click="user.gender=2">여성</span></div>
-    </div>
-
-    <div>
-        <div ng-click="toggle.toggle('age')"><span ng-show="user.age==0" class="red">나이 없음</span><span
-                ng-show="user.age!=0">{{user.age}}</span></div>
-        <div ng-show="toggle.age">나이<input ng-model="user.age" maxlength="3" type="number">
-
-            <div ng-click="toggle.toggle('age')">확인</div>
+        <div ng-show="user.password!='' && !check.password()">패스워드는 4~12자입니다.</div>
+        <div ng-show="user.email!='' && !checking && check.email()">
+            <div ng-show="registeredEmail" class="button" ng-click="login()">로그인</div>
+            <div ng-show="!registeredEmail" class="button" ng-click="register()">입력한 Email/Password로 가입하기</div>
         </div>
     </div>
-    <div>
-        <div class="factor" ng-repeat="(name, factor) in user.factors"><span>{{name}} : {{factor.result}}</span></div>
-    </div>
-    <div class="button" ng-click="logout()">로그아웃</div>
-</div>
 
-
-<div id="matchedUsers" ng-controller="matchedController" ng-show="user.logged">
-    <div ng-repeat="user in matchedUsers">
+    <div id="user" ng-controller="userController" ng-show="user.logged">
         <div>{{user.email}}
             <span class="green" ng-show="user.authEmail">인증됨</span>
             <span class="red" ng-show="!user.authEmail">인증필요</span></div>
         <div>
-            <span ng-show="user.gender==0" class="red">성별 없음</span><span
-                ng-show="user.gender==1">남성</span><span
-                ng-show="user.gender==2">여성</span>
+            <div ng-click="toggle.toggle('gender')"><span ng-show="user.gender==0" class="red">성별 없음</span><span
+                    ng-show="user.gender==1">남성</span><span
+                    ng-show="user.gender==2">여성</span>
+            </div>
+            <div ng-show="toggle.gender" ng-click="toggle.toggle('gender')"><span
+                    ng-click="user.gender=1">남성</span><span
+                    ng-click="user.gender=2">여성</span></div>
         </div>
 
         <div>
-            <span ng-show="user.age==0" class="red">나이 없음</span><span
-                ng-show="user.age!=0">{{user.age}}</span>
-        </div>
+            <div ng-click="toggle.toggle('age')"><span ng-show="user.age==0" class="red">나이 없음</span><span
+                    ng-show="user.age!=0">{{user.age}}</span></div>
+            <div ng-show="toggle.age">나이<input ng-model="user.age" maxlength="3" type="number">
 
+                <div ng-click="toggle.toggle('age')">확인</div>
+            </div>
+        </div>
         <div>
             <div class="factor" ng-repeat="(name, factor) in user.factors"><span>{{name}} : {{factor.result}}</span>
             </div>
         </div>
+        <div class="button" ng-click="logout()">로그아웃</div>
     </div>
-</div>
 
 
-<div ng-controller="mbtiController">
-    <h1 ng-click="toggle.toggle('mbti')">MBTI 테스트 하기</h1>
+    <div id="matchedUsers" ng-controller="matchedController" ng-show="user.logged">
+        <div ng-repeat="user in matchedUsers">
+            <div>{{user.email}}
+                <span class="green" ng-show="user.authEmail">인증됨</span>
+                <span class="red" ng-show="!user.authEmail">인증필요</span></div>
+            <div>
+                <span ng-show="user.gender==0" class="red">성별 없음</span><span
+                    ng-show="user.gender==1">남성</span><span
+                    ng-show="user.gender==2">여성</span>
+            </div>
 
-    <div ng-show="toggle.mbti">
-        <div ng-show="testDone != 47">
-            <div>{{testDone}}/47</div>
-            <input type="checkbox" ng-model="hideDone" ng-init="hideDone=true"> 완료된것 숨기기
-            <div ng-repeat="q in mbti"
-                 ng-class="{done:q.selectedType!=undefined, hidden:q.selectedType!=undefined && hideDone}">
-                <div>{{mbti.indexOf(q)+1}}. {{q.question}}</div>
-                <ul>
-                    <li ng-repeat="a in q.answers">
-                        <div ng-click="q.selectedType = a.type" ng-class="{selected:q.selectedType == a.type}">
-                            {{a.answer}}
-                        </div>
-                    </li>
-                </ul>
+            <div>
+                <span ng-show="user.age==0" class="red">나이 없음</span><span
+                    ng-show="user.age!=0">{{user.age}}</span>
+            </div>
+
+            <div>
+                <div class="factor" ng-repeat="(name, factor) in user.factors"><span>{{name}} : {{factor.result}}</span>
+                </div>
             </div>
         </div>
+    </div>
 
-        <div ng-show="testDone == 47">
-            <div>{{userType}} {{results[userType].title}} {{results[userType].subTitle}}</div>
-            <div>{{results[userType].description}}</div>
-            <div>{{results[userType].love}}</div>
-            <div>{{results[userType].celebrity}}</div>
-            <div ng-repeat="(key, v) in types">{{v}} {{value[key]}}</div>
+
+    <div ng-controller="mbtiController" ng-show="user.logged">
+        <h1 ng-click="toggle.toggle('mbti')">MBTI 테스트 하기</h1>
+
+        <div ng-show="toggle.mbti">
+            <div ng-show="testDone != 47">
+                <div>{{testDone}}/47</div>
+                <input type="checkbox" ng-model="hideDone" ng-init="hideDone=true"> 완료된것 숨기기
+                <div ng-repeat="q in mbti"
+                     ng-class="{done:q.selectedType!=undefined, hidden:q.selectedType!=undefined && hideDone}">
+                    <div>{{mbti.indexOf(q)+1}}. {{q.question}}</div>
+                    <ul>
+                        <li ng-repeat="a in q.answers">
+                            <div ng-click="q.selectedType = a.type" ng-class="{selected:q.selectedType == a.type}">
+                                {{a.answer}}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div ng-show="testDone == 47">
+                <div>{{userType}} {{results[userType].title}} {{results[userType].subTitle}}</div>
+                <div>{{results[userType].description}}</div>
+                <div>{{results[userType].love}}</div>
+                <div>{{results[userType].celebrity}}</div>
+                <div ng-repeat="(key, v) in types">{{v}} {{value[key]}}</div>
+            </div>
         </div>
     </div>
 </div>
-
 
 <script src="js/angular.min.js"></script>
 <script src="js/angular-animate.min.js"></script>
 <script src="js/util.js"></script>
 <script src="js/index.js"></script>
+<script src="js/wrapController.js"></script>
 <script src="js/loginController.js"></script>
 <script src="js/userController.js"></script>
 <script src="js/matchedController.js"></script>
