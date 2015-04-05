@@ -83,7 +83,7 @@
     </div>
 
     <div ng-click="toggle.toggle('test')" ng-show="user.logged">테스트하기</div>
-    <div ng-show="toggle.test">
+    <div ng-show="toggle.test && user.logged">
         <div ng-controller="mbtiController">
             <h1 ng-click="toggle.toggle('mbti')">MBTI</h1>
             <h5> 매칭분석근거 : http://www.massmatch.com/MBTI-2.php</h5>
