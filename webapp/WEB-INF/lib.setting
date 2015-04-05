@@ -1,5 +1,5 @@
 {
-	"url":"localhost:8080",
+	"url":"mytoday.me",
 	"controllerPath" : "me.controllers",
 	"jspPath" : "/WEB-INF/jsp/",
 	"database" : {
