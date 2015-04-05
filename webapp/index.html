@@ -25,7 +25,7 @@
     <div id="user" ng-controller="userController" ng-show="user.logged">
         <div>{{user.email}}
             <span class="green" ng-show="user.authEmail">인증됨</span>
-            <span class="red" ng-show="!user.authEmail">인증필요</span></div>
+            <span class="red" ng-show="!user.authEmail">인증필요 <span ng-click="reMail()">메일 재요청</span></span></div>
         <div>
             <div ng-click="toggle.toggle('gender')"><span ng-show="user.gender==0" class="red">성별 없음</span><span
                     ng-show="user.gender==1">남성</span><span

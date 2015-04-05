@@ -36,6 +36,20 @@ public class UserController {
 		http.setView(new Json(new Result(user)));
 	}
 
+	@Mapping(value = "/api/user/mailRequest", method = "POST")
+	public void remail(Http http, DAO dao) throws JsonAlert {
+		EmailAuth auth = new EmailAuth();
+		auth.setEmail(http.getParameter("email"));
+		auth.setKey(AuthKeyMaker.getKey(15));
+		if (!dao.insert(auth))
+			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
+		AuthSender.sendMail(
+				http.getParameter("email"),
+				new Mail("Uss 가입 인증 메일입니다.", String.format(
+						"<h1>Uss에 가입하신 것을 환영합니다.</h1><p><h3><a href='%s'>email 인증하기</a></h3>링크를 누르면 회원님의 메일이 인증됩니다.</p>", auth.getLink())));
+		http.setView(new Json());
+	}
+
 	@Mapping(value = "/api/user/update", method = "POST", before = "loginCheck")
 	public void update(Http http, DAO dao) throws JsonAlert {
 		User user = http.getJsonObject(User.class, "user");

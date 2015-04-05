@@ -10,7 +10,17 @@ app.controller('userController', ['$scope', '$http', '$user', function ($scope, 
         angular.copy(user, $scope.user);
         $http(req("GET", "/api/user/logout")).success(function (response) {
         });
-    }
+    };
+
+    $scope.reMail = function () {
+        $http(req("POST", "/api/user/mailRequest", {email: $user.email})).success(function (response) {
+            if (response.error) {
+                error(response.errorMessage);
+                return;
+            }
+            error("인증 메일을 재전송 하였습니다.");
+        });
+    };
 
     $scope.refresh = function () {
         $http(req("GET", "/api/user")).success(function (response) {
@@ -22,10 +32,9 @@ app.controller('userController', ['$scope', '$http', '$user', function ($scope, 
             $scope.user.logged = true;
             app.findController('matchedController').refresh();
         });
-    }
+    };
 
     $scope.refresh();
-
 
 
     $scope.$watch(function () {
