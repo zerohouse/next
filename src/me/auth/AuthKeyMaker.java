@@ -1,7 +1,5 @@
 package me.auth;
 
-import me.model.database.EmailAuth;
-
 public class AuthKeyMaker {
 
 	public static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKNMLOPQRSTUVWXYZ";
@@ -17,13 +15,5 @@ public class AuthKeyMaker {
 		}
 		return result;
 	}
-
-	public static EmailAuth getAuth(String email) {
-		EmailAuth auth = new EmailAuth();
-		auth.setEmail(email);
-		auth.setKey(getKey(15));
-		return auth;
-	}
-	
 
 }

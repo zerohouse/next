@@ -1,19 +1,4 @@
-<meta charset="UTF-8"><h1>Uss에 가입하신 것을 환영합니다.</h1><p><h3><a href="">email 인증하기</a></h3>링크를 누르면 회원님의 메일이 인증됩니다.</p>
-
-
-<div ng-controller="registerController" ng-show="user.email == undefined">
-    <input ng-model="user.id"/>
-    <input ng-model="user.password" type="password"/>
-    <input ng-model="user.email"/>
-    <input type="radio" ng-model="user.gender" value="0">
-    <input type="radio" ng-model="user.gender" value="1">
-
-    <div>
-        <span ng-show="existId">existId</span>
-        <span ng-show="!check.id()">idCheck</span>
-        <span ng-show="!check.password()">password</span>
-        <span ng-show="!check.email()">email</span>
-        <span ng-show="!check.gender()">gender</span>
-    </div>
-    <div ng-class="{opacity:!check.all()}" ng-click="register()">회원가입</div>
-</div>
+<form action="action.html" method="post">
+    변경할 패스워드 : <input maxlength="12" minlength="4" name="password" type="password" required>
+    <button type="submit">변경</button>
+</form>

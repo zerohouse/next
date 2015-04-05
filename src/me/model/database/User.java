@@ -20,6 +20,7 @@ public class User {
 	@Key
 	private String email;
 	private Boolean authEmail;
+	@RequiredRegex("^[\\w\\W]{4,12}$")
 	private String password;
 	@Column(DATA_TYPE = "TINYINT")
 	private Integer gender;

@@ -11,6 +11,9 @@ public class Result {
 	public String toString() {
 		return "Result [error=" + error + ", errorMessage=" + errorMessage + ", obj=" + obj + "]";
 	}
+	
+	public Result() {
+	}
 
 	public Result(Object obj) {
 		this.obj = obj;

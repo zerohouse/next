@@ -1,4 +1,4 @@
-package next.setting.Jobject;
+package next.setting.jobject;
 
 import java.io.IOException;
 import java.io.StringReader;

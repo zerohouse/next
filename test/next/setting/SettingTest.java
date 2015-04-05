@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import next.setting.Setting;
-import next.setting.Jobject.JMap;
+import next.setting.jobject.JMap;
 
 import org.junit.Test;
 

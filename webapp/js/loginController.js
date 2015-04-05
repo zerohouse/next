@@ -18,7 +18,6 @@ app.controller('loginController', ['$scope', '$http', '$user', function ($scope,
                 $scope.checking = false;
                 if ($scope.user.email == response)
                     $scope.registeredEmail = true;
-
             });
         }, 500);
     });
@@ -70,4 +69,15 @@ app.controller('loginController', ['$scope', '$http', '$user', function ($scope,
             $scope.user.logged = true;
         });
     }
+
+    $scope.passwordRedefine = function(){
+        $http(req("GET", "/api/passwordRedefine?email="+$scope.user.email)).success(function (response) {
+            if (response.error) {
+                error(response.errorMessage);
+                return;
+            }
+            alert("이메일을 확인해주세요.");
+        });
+    }
+
 }]);

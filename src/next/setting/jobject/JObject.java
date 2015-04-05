@@ -1,4 +1,4 @@
-package next.setting.Jobject;
+package next.setting.jobject;
 
 public interface JObject {
 

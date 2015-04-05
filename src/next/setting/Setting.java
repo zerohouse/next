@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import next.setting.Jobject.JMap;
+import next.setting.jobject.JMap;
 
 import com.google.gson.stream.JsonReader;
 

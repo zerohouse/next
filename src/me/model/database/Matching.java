@@ -28,7 +28,6 @@ public class Matching {
 	}
 
 	public Matching(String man, String woman, Date matchDay) {
-		super();
 		this.man = man;
 		this.woman = woman;
 		this.matchDay = matchDay;
