@@ -44,7 +44,13 @@
             </div>
         </div>
         <div>
-            <div class="factor" ng-repeat="(name, factor) in user.factors"><span>{{name}} : {{factor.result}}</span>
+            <div class="factor" ng-repeat="(name, factor) in user.factors">
+                <span ng-click="toggle.toggle(name)">{{name}} : {{factor.type}}</span>
+                <div ng-show="toggle[name]" ng-if="name=='MBTI' || name=='ENNEA'">
+                    <div>{{name}}과 잘 맞는 타입(<span class="red">Best</span> <span class="green">Good</span>)</div>
+                    <span ng-repeat="type in factor.bestTypes" class="red"> {{type}} </span>
+                    <span ng-repeat="type in factor.goodTypes" class="green"> {{type}} </span>
+                </div>
             </div>
         </div>
         <div class="button" ng-click="logout()">로그아웃</div>
@@ -52,32 +58,34 @@
 
 
     <div id="matchedUsers" ng-controller="matchedController" ng-show="user.logged">
-        <div ng-repeat="user in matchedUsers">
-            <div>{{user.email}}
-                <span class="green" ng-show="user.authEmail">인증됨</span>
-                <span class="red" ng-show="!user.authEmail">인증필요</span></div>
+        <div ng-repeat="matchedUser in matchedUsers">
+            <div>{{matchedUser.email}}
+                <span class="green" ng-show="matchedUser.authEmail">인증됨</span>
+                <span class="red" ng-show="!matchedUser.authEmail">인증필요</span></div>
             <div>
-                <span ng-show="user.gender==0" class="red">성별 없음</span><span
-                    ng-show="user.gender==1">남성</span><span
-                    ng-show="user.gender==2">여성</span>
+                <span ng-show="matchedUser.gender==0" class="red">성별 없음</span><span
+                    ng-show="matchedUser.gender==1">남성</span><span
+                    ng-show="matchedUser.gender==2">여성</span>
             </div>
 
             <div>
-                <span ng-show="user.age==0" class="red">나이 없음</span><span
-                    ng-show="user.age!=0">{{user.age}}</span>
+                <span ng-show="matchedUser.age==0" class="red">나이 없음</span><span
+                    ng-show="matchedUser.age!=0">{{matchedUser.age}}</span>
             </div>
 
             <div>
-                <div class="factor" ng-repeat="(name, factor) in user.factors"><span>{{name}} : {{factor.result}}</span>
+                <div class="factor" ng-repeat="(name, factor) in matchedUser.factors">
+                    <span>{{name}} : <span ng-class="{red:user.factors[name].bestTypes.contains(factor.type),green:user.factors[name].goodTypes.contains(factor.type)}">{{factor.type}}</span></span>
                 </div>
             </div>
         </div>
     </div>
 
-    <div ng-click="toggle.toggle('test')"  ng-show="user.logged">테스트하기</div>
+    <div ng-click="toggle.toggle('test')" ng-show="user.logged">테스트하기</div>
     <div ng-show="toggle.test">
         <div ng-controller="mbtiController">
             <h1 ng-click="toggle.toggle('mbti')">MBTI</h1>
+            <h5> 매칭분석근거 : http://www.massmatch.com/MBTI-2.php</h5>
 
             <div ng-show="toggle.mbti">
                 <div ng-show="testDone != 47">
@@ -108,8 +116,11 @@
 
         <div ng-controller="ennController">
             <h1 ng-click="toggle.toggle('enneagram')">Enneagram</h1>
+            <h5> 매칭분석근거 : http://www.9types.com/writeup/enneagram_relationships.php</h5>
 
-            <div ng-show="toggle.enneagram" ng-show="result()==0">
+            <div ng-show="user.gender==0">이 테스트는 결과 분석을 위해 성별이 필요합니다.</div>
+
+            <div ng-show="user.gender!=0 && toggle.enneagram" ng-show="result()==0">
                 <input type="checkbox" ng-model="toggle.hideDone" ng-init="toggle.hideDone=true"> 완료된것 숨기기
                 <ul>
                     <li ng-class="{done:q.answer!=undefined, hidden:q.answer!=undefined && toggle.hideDone}"

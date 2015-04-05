@@ -176,13 +176,19 @@ app.controller('ennController', ['$http', '$scope', function ($http, $scope) {
         this.sended = true;
         var test = {};
         test.name = "ENNEA";
-        test.result = result;
+
+        var gender = app.findController('userController').user.gender;
+        if (gender == 1) {
+            gender = 'M'
+        } else if (gender == 2) {
+            gender = 'F'
+        }
+        test.result = gender + result;
         $http(req("POST", "/api/test", {test: JSON.stringify(test)})).success(function (response) {
             if (response.error) {
                 error(response.errorMessage);
                 return;
             }
-            $scope.test = response.obj;
             app.findController('userController').refresh();
         });
         return result;

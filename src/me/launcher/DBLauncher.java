@@ -29,7 +29,7 @@ public class DBLauncher {
 			dao.insert(result);
 			TestResult result2 = new TestResult();
 			result2.setName("ENNEA");
-			result2.setResult(Enneagram.getRand());
+			result2.setResult("M" + Enneagram.getRand());
 			result2.setUserEmail(user.getEmail());
 			dao.insert(result2);
 			dao.insert(user);
@@ -48,7 +48,7 @@ public class DBLauncher {
 			dao.insert(result);
 			TestResult result2 = new TestResult();
 			result2.setName("ENNEA");
-			result2.setResult(Enneagram.getRand());
+			result2.setResult("F" + Enneagram.getRand());
 			result2.setUserEmail(user.getEmail());
 			dao.insert(result2);
 			dao.insert(user);
