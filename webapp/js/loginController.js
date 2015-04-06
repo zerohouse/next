@@ -65,13 +65,15 @@ app.controller('loginController', ['$scope', '$http', '$user', function ($scope,
                 return;
             }
             angular.copy(response.obj, $scope.user);
-            app.findController('matchedController').refresh();
+            setTimeout(function () {
+                app.findController('matchedController').refresh();
+            }, 300);
             $scope.user.logged = true;
         });
     }
 
-    $scope.passwordRedefine = function(){
-        $http(req("GET", "/api/passwordRedefine?email="+$scope.user.email)).success(function (response) {
+    $scope.passwordRedefine = function () {
+        $http(req("GET", "/api/passwordRedefine?email=" + $scope.user.email)).success(function (response) {
             if (response.error) {
                 error(response.errorMessage);
                 return;
