@@ -15,6 +15,14 @@ public class MatchingUsers {
 
 	private List<User> men;
 	private List<User> women;
+	private static Comparator<User> userComparator = new Comparator<User>() {
+		@Override
+		public int compare(User o1, User o2) {
+			Integer i1 = o1.getPoint();
+			Integer i2 = o2.getPoint();
+			return (i1 > i2 ? -1 : (i1 == i2 ? 0 : 1));
+		}
+	};
 
 	public MatchingUsers(List<User> men, List<User> women) {
 		this.men = men;
@@ -46,14 +54,7 @@ public class MatchingUsers {
 			man.setPoint(point);
 		});
 
-		Collections.sort(men, new Comparator<User>() {
-			@Override
-			public int compare(User o1, User o2) {
-				Integer i1 = o1.getPoint();
-				Integer i2 = o2.getPoint();
-				return (i1 > i2 ? -1 : (i1 == i2 ? 0 : 1));
-			}
-		});
+		Collections.sort(men, userComparator);
 
 		List<MatchedUsers> result = new ArrayList<MatchedUsers>();
 

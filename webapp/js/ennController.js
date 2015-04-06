@@ -175,7 +175,7 @@ app.controller('ennController', ['$http', '$scope', function ($http, $scope) {
             return result;
         this.sended = true;
         var test = {};
-        test.name = "ENNEA";
+        test.name = "EnneaGram";
 
         var gender = app.findController('userController').user.gender;
         if (gender == 1) {

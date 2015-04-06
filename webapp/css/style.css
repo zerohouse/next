@@ -1,6 +1,6 @@
 .selected {
     font-weight: 900;
-    color: green;
+    color: green!important;
 }
 
 .done {

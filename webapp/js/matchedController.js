@@ -15,7 +15,5 @@ app.controller('matchedController', ['$scope', '$http', '$user', function ($scop
         });
     }
 
-    $scope.refresh();
-
 
 }]);

@@ -25,7 +25,8 @@
     <div id="user" ng-controller="userController" ng-show="user.logged">
         <div>{{user.email}}
             <span class="green" ng-show="user.authEmail">인증됨</span>
-            <span class="red" ng-show="!user.authEmail">인증필요 <span ng-click="reMail()" class="green">메일재요청</span></span></div>
+            <span class="red" ng-show="!user.authEmail">인증필요 <span ng-click="reMail()" class="green">메일재요청</span></span>
+        </div>
         <div>
             <div ng-click="toggle.toggle('gender')"><span ng-show="user.gender==0" class="red">성별 없음</span><span
                     ng-show="user.gender==1">남성</span><span
@@ -47,7 +48,8 @@
         <div>
             <div class="factor" ng-repeat="(name, factor) in user.factors">
                 <span ng-click="toggle.toggle(name)">{{name}} : {{factor.type}}</span>
-                <div ng-show="toggle[name]" ng-if="name=='MBTI' || name=='ENNEA'">
+
+                <div ng-show="toggle[name]" ng-if="name=='MBTI' || name=='EnneaGram'">
                     <div>{{name}}과 잘 맞는 타입(<span class="red">Best</span> <span class="green">Good</span>)</div>
                     <span ng-repeat="type in factor.bestTypes" class="red"> {{type}} </span>
                     <span ng-repeat="type in factor.goodTypes" class="green"> {{type}} </span>
@@ -76,7 +78,8 @@
 
             <div>
                 <div class="factor" ng-repeat="(name, factor) in matchedUser.factors">
-                    <span>{{name}} : <span ng-class="{red:user.factors[name].bestTypes.contains(factor.type),green:user.factors[name].goodTypes.contains(factor.type)}">{{factor.type}}</span></span>
+                    <span>{{name}} : <span
+                            ng-class="{red:user.factors[name].bestTypes.contains(factor.type),green:user.factors[name].goodTypes.contains(factor.type)}">{{factor.type}}</span></span>
                 </div>
             </div>
         </div>
@@ -166,19 +169,52 @@
                 <h1><a href="http://enneagram-app.appspot.com/type{{result()}}" target="_blank">결과 : Type
                     {{result()}}</a></h1>
             </div>
+
+
+            <div ng-controller="loveTypeController">
+                <h1 ng-click="toggle.toggle('loveTest')">Love Type Test (Designed By Dr.Lasswell & Dr.Hotkoff)</h1>
+                <h5> 분석근거 :
+                    http://www.bennadel.com/blog/1958-for-better-the-love-scale-quiz-designed-by-dr-hatkoff.htm</h5>
+
+
+                <div ng-show="toggle.loveTest">
+                    <input type="checkbox" ng-model="toggle.hideDone" ng-init="toggle.hideDone=true"> 완료된것 숨기기
+                    <ul>
+                        <li ng-class="{done:q.answer!=undefined, hidden:q.answer!=undefined && toggle.hideDone}"
+                            ng-repeat="q in test"><h1>{{q.question}}</h1>
+
+                            <div class="button" ng-click="q.answer = 'y'" ng-class="{selected:q.answer == 'y'}">맞다</div>
+                            <div class="button" ng-click="q.answer = 'n'" ng-class="{selected:q.answer == 'n'}">아니다
+                            </div>
+                        </li>
+                    </ul>
+                    <div ng-show="done">
+                        <h1>결과</h1>
+
+                        <div ng-repeat="(k, r) in result">
+                            <div ng-click="toggle.toggle(k)" ng-class="{red:r.highlight}">{{r.head}}
+                                {{r.percent}}%
+                            </div>
+                            <div ng-show="toggle[k]">{{r.body}}</div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
-</div>
 
-<script src="js/angular.min.js"></script>
-<script src="js/angular-animate.min.js"></script>
-<script src="js/util.js"></script>
-<script src="js/index.js"></script>
-<script src="js/wrapController.js"></script>
-<script src="js/loginController.js"></script>
-<script src="js/userController.js"></script>
-<script src="js/matchedController.js"></script>
-<script src="js/mbtiController.js"></script>
-<script src="js/ennController.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-animate.min.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/wrapController.js"></script>
+    <script src="js/loginController.js"></script>
+    <script src="js/userController.js"></script>
+    <script src="js/matchedController.js"></script>
+    <script src="js/mbtiController.js"></script>
+    <script src="js/ennController.js"></script>
+    <script src="js/loveTypeController.js"></script>
 </body>
 </html>

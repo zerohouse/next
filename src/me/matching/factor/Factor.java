@@ -19,13 +19,15 @@ public interface Factor {
 				mbtiMap.put(result.toString(), mbti);
 			}
 			return mbti;
-		case "ENNEA":
+		case "EnneaGram":
 			Enneagram en = enMap.get(result);
 			if (en == null) {
 				en = new Enneagram(result.toString());
 				enMap.put(result.toString(), en);
 			}
 			return en;
+		case "LoveType":
+			return new LoveType(result.toString());
 		}
 		return null;
 	}

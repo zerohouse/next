@@ -42,7 +42,8 @@ app.controller('userController', ['$scope', '$http', '$user', function ($scope, 
     }, function () {
         if ($scope.user.email == "")
             return;
-
+        if(!app.findController('userController').toggle.gender)
+            return;
         clearTimeout(this.ajax);
         this.ajax = setTimeout(function () {
             var obj = {};
@@ -61,6 +62,8 @@ app.controller('userController', ['$scope', '$http', '$user', function ($scope, 
         return $scope.user.age;
     }, function () {
         if ($scope.user.email == "")
+            return;
+        if(!app.findController('userController').toggle.age)
             return;
         clearTimeout(this.ajax);
         this.ajax = setTimeout(function () {
