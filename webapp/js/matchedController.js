@@ -14,6 +14,4 @@ app.controller('matchedController', ['$scope', '$http', '$user', function ($scop
             $scope.matchedUsers = response.obj;
         });
     }
-
-
 }]);

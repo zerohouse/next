@@ -21,7 +21,7 @@ public class LoveType implements Factor {
 
 	public LoveType(String result) {
 		String[] split = result.split(",");
-		for (int i = 0; i < split.length - 1; i++) {
+		for (int i = 0; i < split.length; i++) {
 			types.add(new TypePercent(split[i]));
 		}
 		List<TypePercent> forSort = new ArrayList<LoveType.TypePercent>();

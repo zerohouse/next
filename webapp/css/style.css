@@ -1,6 +1,6 @@
 .selected {
     font-weight: 900;
-    color: green!important;
+    color: green !important;
 }
 
 .done {
@@ -57,5 +57,18 @@ div#login input {
     background-color: #eee;
     border-radius: 5px;
     padding: 5px 10px;
-    display: inline-block;
+    float: left;
+}
+
+canvas {
+    display: block;
+}
+
+.clearBoth {
+    clear: both;
+}
+
+.marginWrap {
+    overflow: auto;
+    margin: 40px 0;
 }
