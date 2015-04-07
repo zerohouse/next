@@ -49,7 +49,7 @@ app.controller('resultController', ['$scope', '$user', '$timeout', function ($sc
             }
             $scope.result = app.findController('loveTypeController').result[type];
             var ctx = document.querySelector('#canvasResult').getContext("2d");
-            setTimeout(function () {
+            $timeout(function () {
                 if (user == $user) {
                     drawChart(ctx, $user);
                     return;
@@ -65,6 +65,8 @@ app.controller('resultController', ['$scope', '$user', '$timeout', function ($sc
 
     };
 
+
+    $scope.friend = false;
 
     function drawChart(ctx, user) {
         var data = {
@@ -98,6 +100,7 @@ app.controller('resultController', ['$scope', '$user', '$timeout', function ($sc
             scaleStartValue: 0
         };
         if (user.length != 2) {
+            $scope.friend = false;
             data.datasets[0].label = user.email;
             var loveData = user.factors.LoveType.types;
             loveData.forEach(function (loveDatum) {
@@ -107,7 +110,7 @@ app.controller('resultController', ['$scope', '$user', '$timeout', function ($sc
             var chart = new Chart(ctx).Radar(data, options);
             return;
         }
-
+        $scope.friend = true;
         data.datasets[0].label = user[0].email;
         var loveData = user[0].factors.LoveType.types;
         loveData.forEach(function (loveDatum) {

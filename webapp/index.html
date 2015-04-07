@@ -257,6 +257,10 @@
 
                 <p>{{result.description}}</p>
                 <canvas ng-show="factor.types!=undefined" width="400" height="400" id="canvasResult"></canvas>
+                <div class="ppwrap" ng-show="factor.types!=undefined">
+                    <div ng-show="friend"><span class="nemo fcolor" ></span><span>친구</span></div>
+                    <div><span class="nemo mcolor"></span><span>나</span></div>
+                </div>
 
                 <div ng-show="factor.types==undefined">
                     <div>{{factor.type}}과 잘 맞는 타입(<span class="red">Best</span> <span class="green">Good</span>)
