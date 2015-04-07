@@ -40,6 +40,7 @@ public class MatchingUsers {
 		});
 
 		dao.commit();
+
 		men.forEach(man -> {
 			Integer point = man.getFactors().size() * 20;
 			if (man.getAge() != null && man.getAge() != 0) {
@@ -57,8 +58,8 @@ public class MatchingUsers {
 		Collections.sort(men, userComparator);
 
 		List<MatchedUsers> result = new ArrayList<MatchedUsers>();
-
 		List<Matching> already = dao.getRecordsByClass(Matching.class, "SELECT Matching_man, Matching_woman FROM Matching");
+
 		men.forEach(man -> {
 			Integer point = -1000;
 			Integer newPoint;

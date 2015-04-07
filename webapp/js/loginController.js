@@ -42,7 +42,6 @@ app.controller('loginController', ['$scope', '$http', '$user', function ($scope,
     $scope.register = function () {
         if (!$scope.check.all())
             return;
-        $scope.user.logged = true;
         $http(req("POST", "/api/user", {user: JSON.stringify($scope.user)})).success(function (response) {
             if (response.error) {
                 error(response.errorMessage);
@@ -57,7 +56,6 @@ app.controller('loginController', ['$scope', '$http', '$user', function ($scope,
     $scope.login = function () {
         if (!$scope.check.all())
             return;
-        $scope.user.logged = true;
         $http(req("POST", "/api/user/login", {user: JSON.stringify($scope.user)})).success(function (response) {
             if (response.error) {
                 error(response.errorMessage);

@@ -36,13 +36,16 @@ app.controller('userController', ['$scope', '$http', '$user', function ($scope, 
 
     $scope.refresh();
 
+    $scope.setResult = function (type, result) {
+        app.findController('resultController').setResult(type, result);
+    };
 
     $scope.$watch(function () {
         return $scope.user.gender;
     }, function () {
         if ($scope.user.email == "")
             return;
-        if(!app.findController('userController').toggle.gender)
+        if (!app.findController('userController').toggle.gender)
             return;
         clearTimeout(this.ajax);
         this.ajax = setTimeout(function () {
@@ -63,8 +66,8 @@ app.controller('userController', ['$scope', '$http', '$user', function ($scope, 
     }, function () {
         if ($scope.user.email == "")
             return;
-        if(!app.findController('userController').toggle.age);
-            return;
+        if (!app.findController('userController').toggle.age);
+        return;
         clearTimeout(this.ajax);
         this.ajax = setTimeout(function () {
             var obj = {};

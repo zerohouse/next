@@ -29,22 +29,22 @@ public class LoveType implements Factor {
 		Collections.sort(forSort, tComparator);
 		switch (forSort.get(0).type) {
 		case 'R':
-			type = "정열적인 사랑(Passionate Love)";
+			type = "Passionate";
 			break;
 		case 'B':
-			type = "친구같은 사랑(Friendship Love)";
+			type = "Friendship";
 			break;
 		case 'F':
-			type = "소유적 사랑(Possessive Love)";
+			type = "Possessive";
 			break;
 		case 'A':
-			type = "헌신적 사랑(Selfless Love)";
+			type = "Selfless";
 			break;
 		case 'L':
-			type = "논리적 사랑(Logical Love)";
+			type = "Logical";
 			break;
 		case 'P':
-			type = "유희적 사랑(Game-Playing Love)";
+			type = "Game-Playing";
 			break;
 		}
 	}

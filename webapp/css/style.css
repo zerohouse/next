@@ -21,12 +21,13 @@ div#login {
 }
 
 div#login input {
+    box-shadow: 1px 1px 1px silver;
     width: 96%;
     margin: 10px 0;
-    border-radius: 20px;
+    border-radius: 5px;
     border: 1px solid #eee;
-    font-size: 30px;
-    padding: 5px 2%;
+    font-size: 20px;
+    padding: 10px 2%;
     outline: none;
     text-align: center;
 }
@@ -41,7 +42,6 @@ div#login input {
 
 .button:hover {
     color: #000;
-    font-weight: 900;
 }
 
 .red {
