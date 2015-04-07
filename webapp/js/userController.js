@@ -1,16 +1,9 @@
 /**
  * Created by park on 15. 4. 3..
  */
-app.controller('userController', ['$scope', '$http', '$user', function ($scope, $http, $user) {
+app.controller('userController', ['$scope', '$http', '$user','$toggle', function ($scope, $http, $user, $toggle) {
     $scope.user = $user;
 
-    $scope.logout = function () {
-        var user = {email: "", password: "", logged: false};
-        $scope.user.email = "";
-        angular.copy(user, $scope.user);
-        $http(req("GET", "/api/user/logout")).success(function (response) {
-        });
-    };
 
     $scope.reMail = function () {
         $http(req("POST", "/api/user/mailRequest", {email: $user.email})).success(function (response) {
@@ -30,14 +23,17 @@ app.controller('userController', ['$scope', '$http', '$user', function ($scope, 
             }
             angular.copy(response.obj, $scope.user);
             $scope.user.logged = true;
+            if(Object.keys($scope.user.factors).length > 2)
+                $toggle.test = false;
+
             app.findController('matchedController').refresh();
         });
     };
 
     $scope.refresh();
 
-    $scope.setResult = function (type, result) {
-        app.findController('resultController').setResult(type, result);
+    $scope.setResult = function (type, result, user) {
+        app.findController('resultController').setResult(type, result, user);
     };
 
     $scope.$watch(function () {

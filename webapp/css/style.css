@@ -1,3 +1,28 @@
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+* {
+    font-family: 'Nanum Gothic', serif;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #F1F4F9;
+}
+
+h3 {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+header {
+    background-color: #2F98CD;
+    color: white;
+    overflow: auto;
+    width: 95%;
+    padding: 0 2.5%;
+}
+
 .selected {
     font-weight: 900;
     color: green !important;
@@ -12,21 +37,23 @@
 }
 
 div#login {
-    width: 400px;
-    margin: auto;
-    margin-top: 20%;
-    text-align: center;
     -webkit-transition: all linear 0.5s;
     transition: all linear 0.5s;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.container {
+    width: 95%;
+    margin: auto;
+    margin-top: 30px;
 }
 
 div#login input {
-    box-shadow: 1px 1px 1px silver;
-    width: 96%;
-    margin: 10px 0;
-    border-radius: 5px;
-    border: 1px solid #eee;
-    font-size: 20px;
+    width: 92%;
+    margin: 10px 2%;
+    border: none;
+    font-size: 25px;
     padding: 10px 2%;
     outline: none;
     text-align: center;
@@ -71,4 +98,106 @@ canvas {
 .marginWrap {
     overflow: auto;
     margin: 40px 0;
+}
+
+.box {
+    background-color: #fff;
+    display: inline-block;
+    overflow: auto;
+    margin: 10px;
+    padding: 20px 25px;
+}
+
+.description {
+    position: fixed;
+    background: #fff;
+    max-width: 450px;
+    text-align: justify;
+    padding-top: 5px;
+    right: 0;
+    top: 20px;
+}
+
+.description p {
+    font-size: 0.9em;
+}
+
+.close {
+    position: absolute;
+    background: url('image/close.png');
+    display: block;
+    right: 25px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    top: 20px;
+    width: 15px;
+    height: 15px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.icon {
+    float: left;
+    margin: 20px;
+    margin-bottom: 10px;
+    background-size: 100%;
+    width: 60px;
+    background-position: center;
+    height: 60px;
+    background-repeat: no-repeat;
+}
+
+.test-icon {
+    background-image: url('image/testicon.png');
+}
+
+.test-icon:hover {
+    background-image: url('image/testiconhover.png');
+}
+
+.logout-icon {
+    background-image: url('image/logout.png');
+}
+
+.logout-icon:hover {
+    background-image: url('image/logouthover.png');
+}
+
+.manicon {
+    background-image: url('image/man.png');
+}
+
+.manicon:hover {
+    background-image: url('image/manhover.png');
+}
+
+.womanicon {
+    background-image: url('image/woman.png');
+}
+
+.womanicon:hover {
+    background-image: url('image/womanhover.png');
+}
+
+.marginTop {
+    margin-top: 7px;
+}
+
+ul, li {
+    list-style: none;
+}
+
+.logo {
+    font-size: 50px;
+    float: left;
+    font-weight: 900;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+
+.inlinblock{
+    display: inline-block;
 }

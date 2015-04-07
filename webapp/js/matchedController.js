@@ -16,8 +16,8 @@ app.controller('matchedController', ['$scope', '$http', '$user', function ($scop
         });
     }
 
-    $scope.setResult = function(type, result){
-      app.findController('resultController').setResult(type,result);
+    $scope.setResult = function (type, result, user) {
+        app.findController('resultController').setResult(type, result, user);
     };
 
     var computePoint = function () {
