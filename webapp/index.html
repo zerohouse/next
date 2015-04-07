@@ -12,13 +12,13 @@
     <header>
         <div class="inlinblock"><span class="logo">Soulmate</span></div>
 
-        <div class="inlinblock">
+        <div class="inlinblock" ng-show="user.logged">
             <span class="icon test-icon pointer" ng-click="toggle.toggle('test')"></span>
         <span class="icon pointer" ng-class="{manicon:user.gender==1, womanicon:user.gender!=1}"
               ng-click="toggle.toggle('user')"></span>
         <span class="icon pointer" ng-class="{manicon:user.gender!=1, womanicon:user.gender==1}"
               ng-click="toggle.toggle('partner')"></span>
-            <span class="icon logout-icon pointer" ng-show="user.logged" ng-click="logout()"></span>
+            <span class="icon logout-icon pointer" ng-click="logout()"></span>
         </div>
     </header>
 
