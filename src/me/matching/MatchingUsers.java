@@ -60,31 +60,40 @@ public class MatchingUsers {
 		List<MatchedUsers> result = new ArrayList<MatchedUsers>();
 		List<Matching> already = dao.getRecordsByClass(Matching.class, "SELECT Matching_man, Matching_woman FROM Matching");
 
+		List<User> women2 = new ArrayList<User>();
+		women2.addAll(women);
 		men.forEach(man -> {
-			Integer point = -1000;
-			Integer newPoint;
-			User matched = null;
-			for (int i = 0; i < women.size(); i++) {
-				newPoint = getPoint(man, women.get(i));
-				if (man.getAge() != null && man.getAge() != 0 && women.get(i).getAge() != null && women.get(i).getAge() != 0) {
-					point += 10;
-					point -= Math.abs(man.getAge() - women.get(i).getAge());
-				}
-				if (already != null && already.contains(new Matching(man.getEmail(), women.get(i).getEmail(), null)))
-					continue;
-				if (point < newPoint) {
-					point = newPoint;
-					matched = women.get(i);
-				}
-			}
-			if (matched == null)
-				return;
+			User matched = getMatchedWoman(already, women2, man);
 			MatchedUsers matchedUsers = new MatchedUsers(man, matched);
-			women.remove(matched);
+			women2.remove(matched);
 			result.add(matchedUsers);
 		});
 
 		return result;
+	}
+
+	private User getMatchedWoman(List<Matching> already, List<User> women2, User man) {
+		Integer point = -1000;
+		Integer newPoint;
+		User matched = null;
+		for (int i = 0; i < women2.size(); i++) {
+			newPoint = getPoint(man, women2.get(i));
+			if (man.getAge() != null && man.getAge() != 0 && women2.get(i).getAge() != null && women2.get(i).getAge() != 0) {
+				point += 10;
+				point -= Math.abs(man.getAge() - women2.get(i).getAge());
+			}
+			if (already != null && already.contains(new Matching(man.getEmail(), women2.get(i).getEmail(), null)))
+				continue;
+			if (point < newPoint) {
+				point = newPoint;
+				matched = women2.get(i);
+			}
+		}
+		if (matched == null) {
+			women2.addAll(women);
+			matched = getMatchedWoman(already, women2, man);
+		}
+		return matched;
 	}
 
 	private int getPoint(User man, User woman) {

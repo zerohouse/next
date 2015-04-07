@@ -113,7 +113,9 @@ canvas {
     background: #fff;
     max-width: 450px;
     text-align: justify;
-    padding-top: 5px;
+    padding-top: 15px;
+    box-shadow: 1px 1px 1px silver;
+    border: 1px solid #EEE;
     right: 0;
     top: 20px;
 }

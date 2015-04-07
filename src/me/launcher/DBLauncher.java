@@ -41,7 +41,7 @@ public class DBLauncher {
 			dao.insert(result3);
 			dao.insert(user);
 		}
-		for (int i = 0; i < 48; i++) {
+		for (int i = 0; i < 20; i++) {
 			User user = new User();
 			user.setAuthEmail(true);
 			user.setPassword("12345");
