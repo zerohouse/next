@@ -21,5 +21,5 @@ var req = function (method, url, data) {
 };
 
 function error(message){
-    alert(message);
+    app.findController('alertController').alert(message);
 }

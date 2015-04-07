@@ -71,12 +71,13 @@ app.controller('loginController', ['$scope', '$http', '$user', function ($scope,
     }
 
     $scope.passwordRedefine = function () {
+        error("이메일을 보내는 중입니다.");
         $http(req("GET", "/api/passwordRedefine?email=" + $scope.user.email)).success(function (response) {
             if (response.error) {
                 error(response.errorMessage);
                 return;
             }
-            alert("이메일을 확인해주세요.");
+            error("이메일을 확인해주세요.");
         });
     }
 

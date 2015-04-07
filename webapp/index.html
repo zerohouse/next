@@ -27,12 +27,12 @@
             <input ng-model="user.email" ng-class="{danger:user.email!='' && !check.email(), success:check.email()}"
                    placeholder="Email"/>
 
-            <div ng-show="user.email!='' && !check.email()">이메일 형식이 맞지 않습니다.</div>
+            <div class='red' ng-show="user.email!='' && !check.email()">이메일 형식이 맞지 않습니다.</div>
 
             <input ng-class="{danger:user.password!='' && !check.password(), success:check.password()}" maxlength="12"
                    ng-model="user.password" type="password" placeholder="Password"/>
 
-            <div ng-show="user.password!='' && !check.password()">패스워드는 4~12자입니다.</div>
+            <div class='red' ng-show="user.password!='' && !check.password()">패스워드는 4~12자입니다.</div>
 
             <div ng-show="user.email!='' && !checking && check.email()">
                 <div ng-show="registeredEmail" class="button" ng-click="login()">로그인</div>
@@ -270,15 +270,20 @@
         </div>
     </div>
 </div>
+
+<div class="alert-body" ng-click="close()" ng-controller="alertController" ng-show="show">
+    <span class="alert-text">{{errorMessage}}</span>
+</div>
 <script src="library/Chart.min.js"></script>
 <script src="library/angular/angular.min.js"></script>
 <script src="library/angular/angular-animate.min.js"></script>
 <script src="js/util.js"></script>
 <script src="js/angular-setting.js"></script>
-<script src="js/wrapController.js"></script>
-<script src="js/loginController.js"></script>
-<script src="js/userController.js"></script>
-<script src="js/matchedController.js"></script>
+<script src="js/controllers/wrapController.js"></script>
+<script src="js/controllers/loginController.js"></script>
+<script src="js/controllers/userController.js"></script>
+<script src="js/controllers/matchedController.js"></script>
+<script src="js/controllers/alertController.js"></script>
 <script src="js/test/resultController.js"></script>
 <script src="js/test/mbtiController.js"></script>
 <script src="js/test/ennController.js"></script>
