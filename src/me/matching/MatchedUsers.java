@@ -1,13 +1,23 @@
 package me.matching;
 
+import java.util.List;
+
 import me.model.database.Matching;
 import me.model.database.User;
 
 public class MatchedUsers {
 
 	public MatchedUsers(User man, User woman) {
-		this.man = man;
-		this.woman = woman;
+		if (man == null)
+			return;
+		if (man.getGender() == 1) {
+			this.man = man;
+			this.woman = woman;
+		}
+		if (man.getGender() == 2) {
+			this.man = woman;
+			this.woman = man;
+		}
 	}
 
 	private User man;
@@ -15,7 +25,7 @@ public class MatchedUsers {
 
 	@Override
 	public String toString() {
-		return "MatchedUsers [man=" + man + ", woman=" + woman + "]";
+		return "MatchedUsers [man=" + man + ", woman=" + woman + "]\n";
 	}
 
 	public Matching getMatching() {
@@ -23,6 +33,14 @@ public class MatchedUsers {
 		m.setMan(man.getEmail());
 		m.setWoman(woman.getEmail());
 		return m;
+	}
+
+	public User getMan() {
+		return man;
+	}
+
+	public User getWoman() {
+		return woman;
 	}
 
 	@Override
@@ -54,6 +72,24 @@ public class MatchedUsers {
 		} else if (!woman.equals(other.woman))
 			return false;
 		return true;
+	}
+
+	public int isExist(List<MatchedUsers> result) {
+		boolean m = false, f = false;
+		for (int i = 0; i < result.size(); i++) {
+			if (this.man.equals(result.get(i).getMan()))
+				m = true;
+			if (this.woman.equals(result.get(i).getWoman()))
+				f = true;
+		}
+		if (m && f)
+			return 3;
+		if (m)
+			return 1;
+		if (f)
+			return 2;
+		return 0;
+
 	}
 
 }

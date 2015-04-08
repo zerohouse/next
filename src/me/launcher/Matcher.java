@@ -23,10 +23,10 @@ public class Matcher {
 				women.add(each);
 		});
 
-		MatchingUsers mu = new MatchingUsers(men, women);
-		List<MatchedUsers> matched = mu.matchedUsers();
-		matched.forEach(match -> {
-			dao.insert(match.getMatching());
+		MatchingUsers mu = new MatchingUsers(men, women, dao);
+		List<MatchedUsers> m = mu.getMatcheds();
+		m.forEach(mm->{
+			dao.insert(mm.getMatching());
 		});
 		dao.commitAndClose();
 	}

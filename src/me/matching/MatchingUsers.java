@@ -1,8 +1,6 @@
 package me.matching;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -15,95 +13,73 @@ public class MatchingUsers {
 
 	private List<User> men;
 	private List<User> women;
-	private static Comparator<User> userComparator = new Comparator<User>() {
-		@Override
-		public int compare(User o1, User o2) {
-			Integer i1 = o1.getPoint();
-			Integer i2 = o2.getPoint();
-			return (i1 > i2 ? -1 : (i1 == i2 ? 0 : 1));
-		}
-	};
+	List<Matching> alreadyMatched;
 
-	public MatchingUsers(List<User> men, List<User> women) {
+	public MatchingUsers(List<User> men, List<User> women, List<Matching> alreadyMatched) {
 		this.men = men;
 		this.women = women;
+		this.alreadyMatched = alreadyMatched;
 	}
 
-	public List<MatchedUsers> matchedUsers() {
-		DAO dao = new DAO();
+	public MatchingUsers(List<User> men, List<User> women, DAO dao) {
+		this.men = men;
+		this.women = women;
+
 		men.forEach(man -> {
 			man.defineFactors(dao);
 		});
-
 		women.forEach(woman -> {
 			woman.defineFactors(dao);
 		});
-
-		dao.commit();
-
-		men.forEach(man -> {
-			Integer point = man.getFactors().size() * 20;
-			if (man.getAge() != null && man.getAge() != 0) {
-				point += 10;
-			}
-			if (man.getAuthEmail()) {
-				point += 500;
-			}
-			for (int i = 0; i < women.size(); i++) {
-				point += getPoint(man, women.get(i));
-			}
-			man.setPoint(point);
-		});
-
-		Collections.sort(men, userComparator);
-
-		List<MatchedUsers> result = new ArrayList<MatchedUsers>();
-		List<Matching> already = dao.getRecordsByClass(Matching.class, "SELECT Matching_man, Matching_woman FROM Matching");
-
-		List<User> women2 = new ArrayList<User>();
-		women2.addAll(women);
-		men.forEach(man -> {
-			User matched = getMatchedWoman(already, women2, man);
-			MatchedUsers matchedUsers = new MatchedUsers(man, matched);
-			women2.remove(matched);
-			result.add(matchedUsers);
-		});
-
-		return result;
+		alreadyMatched = dao.getRecordsByClass(Matching.class, "SELECT Matching_man, Matching_woman FROM Matching");
 	}
 
-	private User getMatchedWoman(List<Matching> already, List<User> women2, User man) {
-		Integer point = -1000;
-		Integer newPoint;
-		User matched = null;
-		for (int i = 0; i < women2.size(); i++) {
-			newPoint = getPoint(man, women2.get(i));
-			if (man.getAge() != null && man.getAge() != 0 && women2.get(i).getAge() != null && women2.get(i).getAge() != 0) {
-				point += 10;
-				point -= Math.abs(man.getAge() - women2.get(i).getAge());
-			}
-			if (already != null && already.contains(new Matching(man.getEmail(), women2.get(i).getEmail(), null)))
-				continue;
-			if (point < newPoint) {
-				point = newPoint;
-				matched = women2.get(i);
-			}
-		}
-		if (matched == null) {
-			women2.addAll(women);
-			matched = getMatchedWoman(already, women2, man);
-		}
-		return matched;
-	}
-
-	private int getPoint(User man, User woman) {
+	private int getPoint(User key, User person) {
 		int point = 0;
-		for (Map.Entry<String, Factor> elem : man.getFactors().entrySet()) {
-			Factor f = woman.getFactors().get(elem.getKey());
+		for (Map.Entry<String, Factor> elem : key.getFactors().entrySet()) {
+			Factor f = person.getFactors().get(elem.getKey());
 			if (f == null)
 				continue;
 			point += elem.getValue().getPoint(f);
 		}
 		return point;
+	}
+
+	private User getHighest(User user) {
+		List<User> men;
+		if (user.getGender() == 1) {
+			men = women;
+		} else {
+			men = this.men;
+		}
+		User result = null;
+		int point = -5000;
+		for (int i = 0; i < men.size(); i++) {
+			int newPoint = getPoint(men.get(i), user);
+			if (point > newPoint)
+				continue;
+			point = newPoint;
+			result = men.get(i);
+		}
+		return result;
+	}
+
+	public List<MatchedUsers> getMatcheds() {
+		List<MatchedUsers> result = new ArrayList<MatchedUsers>();
+		List<User> men = this.men.size() > women.size() ? this.men : women;
+		List<User> other = this.men.size() <= women.size() ? this.men : women;
+		List<User> otherBackup = new ArrayList<User>();
+		otherBackup.addAll(other);
+		while (!men.isEmpty()) {
+			Double d = Math.random() * men.size() * 0.99;
+			User user = men.get(d.intValue());
+			User selected = getHighest(user);
+			result.add(new MatchedUsers(user, selected));
+			men.remove(user);
+			other.remove(selected);
+			if(other.isEmpty())
+				other.addAll(otherBackup);
+		}
+		return result;
 	}
 }

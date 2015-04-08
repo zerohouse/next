@@ -27,10 +27,28 @@ public class Matching {
 
 	}
 
+	@Override
+	public String toString() {
+		return "Matching [man=" + man + ", woman=" + woman + "]\n";
+	}
+
 	public Matching(String man, String woman, Date matchDay) {
 		this.man = man;
 		this.woman = woman;
 		this.matchDay = matchDay;
+	}
+
+	public Matching(User user1, User user2) {
+		if (user1.getGender() == 1) {
+			this.man = user1.getEmail();
+		} else if (user1.getGender() == 2) {
+			this.woman = user1.getEmail();
+		}
+		if (user2.getGender() == 1) {
+			this.man = user2.getEmail();
+		} else if (user2.getGender() == 2) {
+			this.woman = user2.getEmail();
+		}
 	}
 
 	@Override
@@ -38,7 +56,6 @@ public class Matching {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((man == null) ? 0 : man.hashCode());
-		result = prime * result + ((matchDay == null) ? 0 : matchDay.hashCode());
 		result = prime * result + ((woman == null) ? 0 : woman.hashCode());
 		return result;
 	}
@@ -56,11 +73,6 @@ public class Matching {
 			if (other.man != null)
 				return false;
 		} else if (!man.equals(other.man))
-			return false;
-		if (matchDay == null) {
-			if (other.matchDay != null)
-				return false;
-		} else if (!matchDay.equals(other.matchDay))
 			return false;
 		if (woman == null) {
 			if (other.woman != null)

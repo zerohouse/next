@@ -1,14 +1,14 @@
 
 /* when hiding the thing */
 .ng-hide-add         {
-    -webkit-animation:0.5s lightSpeedOut ease;
-    animation:0.5s lightSpeedOut ease;
+    -webkit-animation:0.5s flipOutX ease;
+    animation:0.5s flipOutX ease;
 }
 
 /* when showing the thing */
 .ng-hide-remove      {
-    -webkit-animation:0.5s lightSpeedIn ease;
-    animation:0.5s lightSpeedIn ease;
+    -webkit-animation:0.5s flipInX ease;
+    animation:0.5s flipInX ease;
 }
 
 /* ANIMATIONS (FROM ANIMATE.CSS) */

@@ -65,9 +65,11 @@ public class DAO {
 
 	public List<Object> getRecord(String sql, int resultSize, Object... parameters) {
 		List<Object> record = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try {
-			PreparedStatement pstmt = getPSTMT(conn, sql, parameters);
-			ResultSet rs = pstmt.executeQuery();
+			pstmt = getPSTMT(conn, sql, parameters);
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				if (record == null)
 					record = new ArrayList<Object>();
@@ -75,19 +77,22 @@ public class DAO {
 					record.add(rs.getObject(i + 1));
 				}
 			}
-			close(pstmt);
-			close(rs);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
 		}
 		return record;
 	}
 
 	public Map<String, Object> getRecordMap(String sql, Object... parameters) {
 		Map<String, Object> record = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try {
-			PreparedStatement pstmt = getPSTMT(conn, sql, parameters);
-			ResultSet rs = pstmt.executeQuery();
+			pstmt = getPSTMT(conn, sql, parameters);
+			rs = pstmt.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			int columnCount = metaData.getColumnCount();
 			while (rs.next()) {
@@ -97,10 +102,12 @@ public class DAO {
 					record.put(metaData.getColumnLabel(i), rs.getObject(i));
 				}
 			}
-			close(pstmt);
-			close(rs);
+
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
 		}
 		return record;
 	}
@@ -108,9 +115,11 @@ public class DAO {
 	public List<List<Object>> getRecords(String sql, int resultSize, Object... parameters) {
 		List<Object> record;
 		List<List<Object>> result = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try {
-			PreparedStatement pstmt = getPSTMT(conn, sql, parameters);
-			ResultSet rs = pstmt.executeQuery();
+			pstmt = getPSTMT(conn, sql, parameters);
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				if (result == null)
 					result = new ArrayList<List<Object>>();
@@ -120,10 +129,11 @@ public class DAO {
 				}
 				result.add(record);
 			}
-			close(pstmt);
-			close(rs);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
 		}
 
 		return result;
@@ -131,9 +141,11 @@ public class DAO {
 
 	public List<Map<String, Object>> getRecordsMap(String sql, Object... parameters) {
 		List<Map<String, Object>> result = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try {
-			PreparedStatement pstmt = getPSTMT(conn, sql, parameters);
-			ResultSet rs = pstmt.executeQuery();
+			pstmt = getPSTMT(conn, sql, parameters);
+			rs = pstmt.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			int columnCount = metaData.getColumnCount();
 			while (rs.next()) {
@@ -145,10 +157,12 @@ public class DAO {
 				}
 				result.add(columns);
 			}
-			close(pstmt);
-			close(rs);
+
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rs);
 		}
 		return result;
 	}
@@ -203,7 +217,7 @@ public class DAO {
 	}
 
 	public Boolean execute(String sql, Object... parameters) {
-		PreparedStatement pstmt;
+		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
 			for (int j = 0; j < parameters.length; j++) {
@@ -211,11 +225,12 @@ public class DAO {
 			}
 			logger.debug(pstmt.toString());
 			pstmt.execute();
-			close(pstmt);
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
+		} finally {
+			close(pstmt);
 		}
 	}
 

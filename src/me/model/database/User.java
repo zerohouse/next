@@ -57,6 +57,10 @@ public class User {
 		return password;
 	}
 
+	public void setFactors(Map<String, Factor> factors) {
+		this.factors = factors;
+	}
+
 	public Boolean getAuthEmail() {
 		return authEmail;
 	}
@@ -97,6 +101,31 @@ public class User {
 		password = null;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		return true;
+	}
+
 	public void defineFactors(DAO dao) {
 		factors = new HashMap<String, Factor>();
 		List<Map<String, Object>> map = dao.getRecordsMap("SELECT * FROM TestResult WHERE TestResult_userEmail=?", email);
@@ -105,6 +134,17 @@ public class User {
 		map.forEach(each -> {
 			factors.put(each.get("TestResult_name").toString(), Factor.get(each.get("TestResult_name").toString(), each.get("TestResult_result")));
 		});
+	}
+
+	@Override
+	public String toString() {
+		return email + "|" + point + "\n";
+	}
+
+	public void putFactor(String key, Factor factor) {
+		if (factors == null)
+			factors = new HashMap<String, Factor>();
+		factors.put(key, factor);
 	}
 
 }
