@@ -26,6 +26,22 @@
 
     <div class="container">
         <div id="login" ng-controller="loginController" ng-show="!user.logged">
+
+
+            <h1>당신과 맞는 사람을 만나세요.</h1>
+
+            <p>세 가지 테스트를 통해 당신과 가장 어울리는 당신의 소울 메이트를 찾아드립니다.</p>
+
+            <h3>MBTI(마이어-브릭스 유형 지표)</h3>
+
+            <h3>에니어그램(Enneagram)</h3>
+
+            <h3>Lasswell, Hotkoff LoveType Test</h3>
+
+
+            <p>간단한 가입으로 사용할 수 있습니다. 개인정보는 받지 않습니다.</p>
+
+
             <input ng-model="user.email" ng-class="{danger:user.email!='' && !check.email(), success:check.email()}"
                    placeholder="사용할 이메일을 입력하세요."/>
 
@@ -42,6 +58,10 @@
                 <div ng-show="registeredEmail" class="button" ng-click="passwordRedefine()">패스워드 찾기</div>
                 <div ng-show="!registeredEmail" class="button" ng-click="register()">입력한 Email/Password로 가입하기</div>
             </div>
+
+            <p>CopyLeft, All Right for Everyone open source WebService</p>
+            <a href="http://github.com/zerohouse/next.git">http://github.com/zerohouse/next.git<a/>
+                <p>parksungho86@gmail.com</p>
         </div>
 
         <div ng-show="user.logged">
