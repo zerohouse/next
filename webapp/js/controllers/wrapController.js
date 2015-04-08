@@ -26,6 +26,7 @@ app.controller('wrapController', ['$scope', '$user', '$toggle', '$http', '$timeo
     $scope.mailTo = function () {
         location.href = "mailto:parksungho86@gmail.com=문의";
     };
+
     $scope.nextError = function () {
         app.findController('alertController').nextError();
     };
