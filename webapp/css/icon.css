@@ -4,9 +4,9 @@
     margin: 20px;
     margin-bottom: 10px;
     background-size: 100%;
-    width: 60px;
+    width: 40px;
     background-position: center;
-    height: 60px;
+    height: 40px;
     background-repeat: no-repeat;
 }
 
@@ -16,6 +16,18 @@
 
 .test-icon:hover {
     background-image: url('image/icon/testiconhover.png');
+}
+
+.q-icon {
+    float:right;
+    background-image: url('image/icon/q.png');
+    margin-top: 59px;
+    width: 30px;
+    height: 30px;
+}
+
+.q-icon:hover {
+    background-image: url('image/icon/qhover.png');
 }
 
 .logout-icon {

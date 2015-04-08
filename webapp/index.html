@@ -8,7 +8,7 @@
     <title>MeetFit</title>
 </head>
 <body ng-app="meetfit">
-<div ng-controller="wrapController">
+<div style="display:none" ng-style="{'display':'block'}" ng-controller="wrapController">
 
     <header>
         <div class="inlinblock"><span class="logo">Soulmate</span></div>
@@ -21,6 +21,7 @@
               ng-click="toggle.toggle('essay')"></span>
             <span class="icon logout-icon pointer" ng-click="logout()"></span>
         </div>
+        <span class="icon q-icon pointer" ng-click="mailTo()"></span>
     </header>
 
     <div class="container">
@@ -53,7 +54,10 @@
 
                         <h1 class="essay-head">{{essay.head||"제목 없음"}}</h1>
 
-                        <p>{{essay.body||"내용 없음"}}</p>
+                        <pre>{{essay.body||"내용 없음"}}</pre>
+
+
+                        <span class="writer">written by {{user.email}}</span>
 
                     </div>
 
@@ -65,6 +69,8 @@
                             <h1 class="essay-head">{{essay.head||"제목 없음"}}</h1>
 
                             <pre>{{essay.body||"내용 없음"}}</pre>
+
+                            <span class="writer">written by {{user.email}}</span>
                         </div>
 
                         <div ng-show="toggle['essayMod'+essay.id]">
@@ -78,8 +84,8 @@
 
                 </div>
 
-                <span class="add-essay more-essay" ng-click="getEssays(user)"> > </span>
-                <span class="add-essay" ng-click="addEssay()">+</span>
+                <span class="add-essay more-essay .flip" ng-click="nextError()"> > </span>
+                <span class="add-essay .flip" ng-click="addEssay()">+</span>
 
             </div>
 
@@ -227,10 +233,11 @@
 
 
             <div id="user" ng-show="toggle.user" class="box" ng-controller="userController">
-                <h3><span class="profile" ng-style="{backgroundImage:user.profileUrl}"
-                          ng-class="{manicon:user.gender==1, womanicon:user.gender!=1}"></span>
+                <h3><span class="profile" ng-style="{'background-image':url(user.profileUrl)}"
+                          ng-class="{mancon:user.gender==1, womancon:user.gender!=1}"></span>
                     <span ng-click="toggle.toggle('nickName')"
                           ng-show="!toggle.nickName">{{user.nickName||"내 프로필"}}</span>
+                    <span class="getEssay pointer" ng-click="getEssays(matchedUser)"></span>
                     <input type="text" style="width:inherit" placeholder="닉네임을 정해주세요." ng-model="user.nickName"
                            ng-show="toggle.nickName">
                     <span ng-click="toggle.toggle('nickName')" ng-show="toggle.nickName">OK</span></h3>
@@ -325,7 +332,7 @@
 </div>
 
 <div class="alert-body" ng-click="close()" ng-controller="alertController" ng-show="show">
-    <span class="alert-text">{{errorMessage}}</span>
+    <span class="alert-text"><pre>{{errorMessage}}</pre></span>
 </div>
 <script src="library/Chart.min.js"></script>
 <script src="library/angular/angular.min.js"></script>

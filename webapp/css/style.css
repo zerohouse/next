@@ -235,11 +235,11 @@ ul, li {
 }
 
 .essay {
-    min-width: 200px;
+    min-width: 300px;
     max-width: 600px;
 }
 
-.getEssay{
+.getEssay {
     background: url('image/icon/essay.png');
     background-size: 100%;
     display: inline-block;
@@ -249,7 +249,7 @@ ul, li {
     margin-left: 10px;
 }
 
-.profile{
+.profile {
     display: inline-block;
     width: 50px;
     height: 50px;
@@ -261,4 +261,13 @@ ul, li {
     margin: 10px;
     margin-bottom: -8px;
     margin-right: 5px;
+}
+
+.writer {
+    font-size: 12px;
+    color: #777;
+    text-shadow: 1px 1px 1px #eee;
+    position: absolute;
+    right: 17px;
+    bottom: 15px;
 }

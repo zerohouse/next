@@ -30,30 +30,7 @@ app.controller('essayController', ['$scope', '$http', '$timeout', '$user', '$tog
     };
 
     $scope.refresh = function () {
-        var reqEssay = {};
-        reqEssay.key = $user.email;
-        if ($user.page == undefined)
-            $user.page = 0;
-        reqEssay.start = $user.page * 5;
-        reqEssay.size = 5;
-
-        $http(req("GET", "/api/essay?" + getGetUrlParsed(reqEssay))).success(function (response) {
-            if (response.error) {
-                error(response.errorMessage);
-                return;
-            }
-            if (response.obj == undefined) {
-                return;
-            }
-            if (response.obj.forEach == undefined)
-                return;
-
-            $user.page++;
-
-            response.obj.forEach(function (essay) {
-                $scope.push(essay);
-            });
-        });
+        $scope.getEssays($user);
     };
 
     $scope.push = function (essay) {
@@ -106,7 +83,7 @@ app.controller('essayController', ['$scope', '$http', '$timeout', '$user', '$tog
                 return;
             }
             if (response.obj == undefined) {
-                error("글이 없네요");
+                error(User.email + "님의 글이 없네요");
                 return;
             }
             if (response.obj.forEach == undefined)
@@ -116,7 +93,12 @@ app.controller('essayController', ['$scope', '$http', '$timeout', '$user', '$tog
 
             response.obj.forEach(function (essay) {
                 $scope.push(essay);
+                app.findController('alertController').error.push(essay.body);
+
             });
+            if (User.email == $user.email)
+                return;
+            app.findController('alertController').nextError();
         });
     };
 

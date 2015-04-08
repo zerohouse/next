@@ -11,6 +11,18 @@
 }
 
 /* when hiding the thing */
+.flip.ng-hide-add {
+    -webkit-animation: 0.5s flipOutX ease;
+    animation: 0.5s flipOutX ease;
+}
+
+/* when showing the thing */
+.flip.ng-hide-remove {
+    -webkit-animation: 0.5s flipInX ease;
+    animation: 0.5s flipInX ease;
+}
+
+/* when hiding the thing */
 .light.ng-hide-add, .light .ng-hide-add {
     -webkit-animation: 0.5s lightSpeedOut ease;
     animation: 0.5s lightSpeedOut ease;
