@@ -1,0 +1,49 @@
+{
+	"url":"mytoday.me",
+	"controllerPath" : "me.controllers",
+	"jspPath" : "/WEB-INF/jsp/",
+	"database" : {
+		"url" : "",
+		"id" : "",
+		"password" : "",
+		"default" : {
+			"table_suffix" : "ENGINE = InnoDB DEFAULT CHARACTER SET utf8",
+			"String" : {
+				"DATATYPE" : "VARCHAR(255)",
+				"NOT NULL" : "true",
+				"hasDefaultValue" : "true",
+				"DEFAULT" : ""
+			},
+			"Integer" : {
+				"DATATYPE" : "INTEGER",
+				"NOT NULL" : "true",
+				"hasDefaultValue" : "true",
+				"DEFAULT" : "0"
+			},
+			"Boolean" : {
+				"DATATYPE" : "TINYINT(1)",
+				"NOT NULL" : "true",
+				"hasDefaultValue" : "true",
+				"DEFAULT" : "0"
+			},
+			"Date" : {
+				"DATATYPE" : "DATETIME",
+				"NOT NULL" : "true",
+				"hasDefaultValue" : "true",
+				"DEFAULT" : "CURRENT_TIMESTAMP"
+			},
+			"Float" : {
+				"DATATYPE" : "FLOAT",
+				"NOT NULL" : "true",
+				"hasDefaultValue" : "true",
+				"DEFAULT" : "0"
+			},
+			"Long" : {
+				"DATATYPE" : "BIGINT",
+				"NOT NULL" : "true",
+				"hasDefaultValue" : "true",
+				"DEFAULT" : "0"
+			}
+		}
+	}
+}
