@@ -271,3 +271,10 @@ ul, li {
     right: 17px;
     bottom: 15px;
 }
+
+.input {
+    font-size: 25px;
+    width: 100px;
+    outline: none;
+    text-align: center;
+}

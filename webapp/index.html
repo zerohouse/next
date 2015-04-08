@@ -265,11 +265,11 @@
                 <div>{{user.email}}
                     <span ng-click="toggle.toggle('age')"><span ng-show="user.age==0" class="red">나이 없음</span><span
                             ng-show="user.age!=0">{{user.age||"나이없음"}}세</span></span>
-                <span ng-show="toggle.age">나이<input ng-model="user.age" maxlength="3" type="number">
+                <span ng-show="toggle.age">나이<input class='input' ng-model="user.age" maxlength="3" type="number">
                     <span ng-click="toggle.toggle('age')">확인</span>
                 </span>
                     (<span ng-click="toggle.toggle('gender')">
-                            <span ng-show="user.gender!=1||user.gender!=2" class="red">성별 없음</span>
+                            <span ng-show="user.gender!=1 && user.gender!=2" class="red">성별 없음</span>
                             <span ng-show="user.gender==1">남</span><span ng-show="user.gender==2">여</span></span>
                         <span ng-show="toggle.gender"
                               ng-click="toggle.toggle('gender')">
@@ -301,7 +301,7 @@
                         <span class="getEssay pointer" ng-click="getEssays(matchedUser)"></span></h3>
 
                     <div>{{matchedUser.email}}
-                        <span ng-show="matchedUser.age==0" class="red">나이 없음</span><span
+                        <span ng-show="matchedUser.age!=2 && matchedUser.age!=1" class="red">나이 없음</span><span
                                 ng-show="matchedUser.age!=0">{{matchedUser.age}}세</span>
 
                         (<span ng-show="matchedUser.gender==0" class="red">성별 없음</span><span
