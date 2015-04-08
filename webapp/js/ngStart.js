@@ -3,18 +3,12 @@
  */
 
 
-Array.prototype.contains = function (obj) {
-    for (var i = 0; i < this.length; i++) {
-        if (this[i] == obj)
-            return true;
-    }
-    return false;
-}
+
 
 var app = angular.module('meetfit', ['ngAnimate']);
 
 app.factory('$user', function () {
-    var $user = {email: "", password: ""};
+    var $user = {email: "", password: "", nickName:""};
     return $user;
 });
 
@@ -34,4 +28,3 @@ app.service('$toggle', function () {
 app.findController = function (controller) {
     return angular.element(document.querySelector("[ng-controller='" + controller + "']")).scope();
 };
-

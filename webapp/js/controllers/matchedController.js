@@ -12,9 +12,12 @@ app.controller('matchedController', ['$scope', '$http', '$user', function ($scop
                 return;
             }
             $scope.matchedUsers = response.obj;
+            if ($scope.matchedUsers == undefined)
+                return;
             computePoint();
         });
-    }
+    };
+
 
     $scope.setResult = function (type, result, user) {
         app.findController('resultController').setResult(type, result, user);
@@ -89,5 +92,9 @@ app.controller('matchedController', ['$scope', '$http', '$user', function ($scop
         });
     }
 
+
+    $scope.getEssays = function (User) {
+        app.findController('essayController').getEssays(User);
+    };
 
 }]);

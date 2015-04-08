@@ -3,7 +3,8 @@
 <head lang="en">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="library/angular/ng-animate.css">
+    <link rel="stylesheet" href="css/icon.css">
+    <link rel="stylesheet" href="css/ng-animate.css">
     <title>MeetFit</title>
 </head>
 <body ng-app="meetfit">
@@ -15,9 +16,9 @@
         <div class="inlinblock" ng-show="user.logged">
             <span class="icon test-icon pointer" ng-click="toggle.toggle('test')"></span>
         <span class="icon pointer" ng-class="{manicon:user.gender==1, womanicon:user.gender!=1}"
-              ng-click="toggle.toggle('user')"></span>
-        <span class="icon pointer" ng-class="{manicon:user.gender!=1, womanicon:user.gender==1}"
-              ng-click="toggle.toggle('partner')"></span>
+              ng-click="toggle.toggle('user');toggle.toggle('partner')"></span>
+        <span class="icon pointer noteicon"
+              ng-click="toggle.toggle('essay')"></span>
             <span class="icon logout-icon pointer" ng-click="logout()"></span>
         </div>
     </header>
@@ -25,12 +26,13 @@
     <div class="container">
         <div id="login" ng-controller="loginController" ng-show="!user.logged">
             <input ng-model="user.email" ng-class="{danger:user.email!='' && !check.email(), success:check.email()}"
-                   placeholder="Email"/>
+                   placeholder="사용할 이메일을 입력하세요."/>
 
             <div class='red' ng-show="user.email!='' && !check.email()">이메일 형식이 맞지 않습니다.</div>
 
             <input ng-class="{danger:user.password!='' && !check.password(), success:check.password()}" maxlength="12"
-                   ng-model="user.password" type="password" placeholder="Password"/>
+                   ng-show="user.email!='' && check.email()" ng-model="user.password" type="password"
+                   placeholder="Password"/>
 
             <div class='red' ng-show="user.password!='' && !check.password()">패스워드는 4~12자입니다.</div>
 
@@ -43,8 +45,45 @@
 
         <div ng-show="user.logged">
 
+            <div ng-show="toggle.essay" ng-init="toggle.essay=true;" class="light" ng-controller="essayController">
+                <div class='box essay none' ng-repeat="essay in essays">
 
-            <div ng-show="toggle.test && user.logged">
+
+                    <div ng-if="essay.email!=user.email">
+
+                        <h1 class="essay-head">{{essay.head||"제목 없음"}}</h1>
+
+                        <p>{{essay.body||"내용 없음"}}</p>
+
+                    </div>
+
+
+                    <div ng-if="essay.email==user.email">
+                        <div ng-show="!toggle['essayMod'+essay.id]">
+                            <div ng-click="toggle.toggle('essayMod'+essay.id)" class="sm-icon pointer pen"></div>
+                            <div ng-click="delete(essay)" class="sm-icon pointer close"></div>
+                            <h1 class="essay-head">{{essay.head||"제목 없음"}}</h1>
+
+                            <pre>{{essay.body||"내용 없음"}}</pre>
+                        </div>
+
+                        <div ng-show="toggle['essayMod'+essay.id]">
+                            <div class="sm-icon pointer check"
+                                 ng-click="update(essay);toggle.toggle('essayMod'+essay.id)"></div>
+                            <input ng-model="essay.head" placeholder="제목없음">
+                            <textarea placeholder="내용없음" ng-model="essay.body">{{essay.body}}</textarea>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <span class="add-essay more-essay" ng-click="getEssays(user)"> > </span>
+                <span class="add-essay" ng-click="addEssay()">+</span>
+
+            </div>
+
+            <div ng-show="toggle.test && user.logged" class="light">
 
                 <div ng-controller="loveTypeController" class="box">
                     <h1 ng-click="toggle.toggle('loveTest')">Love Type Test (Designed By Dr.Lasswell & Dr.Hotkoff)</h1>
@@ -188,7 +227,13 @@
 
 
             <div id="user" ng-show="toggle.user" class="box" ng-controller="userController">
-                <h3>내 프로필</h3>
+                <h3><span class="profile" ng-style="{backgroundImage:user.profileUrl}"
+                          ng-class="{manicon:user.gender==1, womanicon:user.gender!=1}"></span>
+                    <span ng-click="toggle.toggle('nickName')"
+                          ng-show="!toggle.nickName">{{user.nickName||"내 프로필"}}</span>
+                    <input type="text" style="width:inherit" placeholder="닉네임을 정해주세요." ng-model="user.nickName"
+                           ng-show="toggle.nickName">
+                    <span ng-click="toggle.toggle('nickName')" ng-show="toggle.nickName">OK</span></h3>
 
                 <div>{{user.email}}
                     <span ng-click="toggle.toggle('age')"><span ng-show="user.age==0" class="red">나이 없음</span><span
@@ -196,13 +241,13 @@
                 <span ng-show="toggle.age">나이<input ng-model="user.age" maxlength="3" type="number">
                     <span ng-click="toggle.toggle('age')">확인</span>
                 </span>
-                    (<span ng-click="toggle.toggle('gender')"><span ng-show="user.gender==0"
-                                                                    class="red">성별 없음</span><span
-                            ng-show="user.gender==1">남</span><span
-                            ng-show="user.gender==2">여</span></span><span ng-show="toggle.gender"
-                                                                          ng-click="toggle.toggle('gender')"><span
-                            ng-click="user.gender=1">남</span><span
-                            ng-click="user.gender=2">여</span></span>)
+                    (<span ng-click="toggle.toggle('gender')">
+                            <span ng-show="user.gender==0" class="red">성별 없음</span>
+                            <span ng-show="user.gender==1">남</span><span ng-show="user.gender==2">여</span></span>
+                        <span ng-show="toggle.gender"
+                              ng-click="toggle.toggle('gender')">
+                            <span ng-click="user.gender=1">남</span>
+                            <span ng-click="user.gender=2">여</span></span>)
                     <span class="green" ng-show="user.authEmail">메일인증</span>
                 <span class="red" ng-show="!user.authEmail">메일인증필요 <span ng-click="reMail()"
                                                                          class="green">메일재요청</span></span>
@@ -223,7 +268,10 @@
 
             <div id="matchedUsers" ng-show="toggle.partner" ng-controller="matchedController">
                 <div class='box' ng-repeat="matchedUser in matchedUsers">
-                    <h3>친구 프로필</h3>
+                    <h3><span class="profile" ng-style="{backgroundImage:matchedUser.profileUrl}"
+                              ng-class="{mancon:matchedUser.gender==1, womancon:matchedUser.gender!=1}"></span>
+                        {{matchedUser.nickName||"나의 인연"}}
+                        <span class="getEssay pointer" ng-click="getEssays(matchedUser)"></span></h3>
 
                     <div>{{matchedUser.email}}
                         <span ng-show="matchedUser.age==0" class="red">나이 없음</span><span
@@ -251,14 +299,15 @@
                 </div>
             </div>
 
-            <div class="box description" ng-show="show" ng-controller="resultController">
-                <div ng-click="show=false" class="close pointer"></div>
-                <h3>{{result.title}}</h3>
+
+            <div class="light box description" ng-show="show" ng-controller="resultController">
+                <div ng-click="show=false" class="close-icon pointer"></div>
+                <h2>{{result.title}}</h2>
 
                 <p>{{result.description}}</p>
                 <canvas ng-show="factor.types!=undefined" width="400" height="400" id="canvasResult"></canvas>
                 <div class="ppwrap" ng-show="factor.types!=undefined">
-                    <div ng-show="friend"><span class="nemo fcolor" ></span><span>친구</span></div>
+                    <div ng-show="friend"><span class="nemo fcolor"></span><span>친구</span></div>
                     <div><span class="nemo mcolor"></span><span>나</span></div>
                 </div>
 
@@ -282,8 +331,9 @@
 <script src="library/angular/angular.min.js"></script>
 <script src="library/angular/angular-animate.min.js"></script>
 <script src="js/util.js"></script>
-<script src="js/angular-setting.js"></script>
+<script src="js/ngStart.js"></script>
 <script src="js/controllers/wrapController.js"></script>
+<script src="js/controllers/essayController.js"></script>
 <script src="js/controllers/loginController.js"></script>
 <script src="js/controllers/userController.js"></script>
 <script src="js/controllers/matchedController.js"></script>

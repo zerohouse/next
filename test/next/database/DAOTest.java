@@ -1,6 +1,6 @@
 package next.database;
 
-import me.model.database.TestResult;
+import me.model.database.Essay;
 
 import org.junit.Test;
 
@@ -8,12 +8,14 @@ public class DAOTest {
 
 	@Test
 	public void test() {
-			TestResult t = new TestResult();
-			t.setUserEmail("zerohouse");
-			t.setName("MBTI");
-			t.setResult("ISTP");
+			Essay e = new Essay();
+			e.setEmail("man4@uss.com");
+			e.setHead("a");
+			e.setBody("B");
+			e.setId(1);
+			
 			DAO dao = new DAO();
-			dao.insertIfExistUpdate(t);
+			dao.update(e);
 			dao.commitAndClose();
 	}
 

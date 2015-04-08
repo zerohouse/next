@@ -1,7 +1,7 @@
 /**
  * Created by park on 15. 4. 3..
  */
-app.controller('userController', ['$scope', '$http', '$user','$toggle', function ($scope, $http, $user, $toggle) {
+app.controller('userController', ['$scope', '$http', '$user', '$toggle', '$timeout', function ($scope, $http, $user, $toggle, $timeout) {
     $scope.user = $user;
 
 
@@ -23,10 +23,12 @@ app.controller('userController', ['$scope', '$http', '$user','$toggle', function
             }
             angular.copy(response.obj, $scope.user);
             $scope.user.logged = true;
-            if(Object.keys($scope.user.factors).length > 2)
-                $toggle.test = false;
 
+
+            if (Object.keys($scope.user.factors).length > 2)
+                $toggle.test = false;
             app.findController('matchedController').refresh();
+            app.findController('essayController').refresh();
         });
     };
 
@@ -41,13 +43,34 @@ app.controller('userController', ['$scope', '$http', '$user','$toggle', function
     }, function () {
         if ($scope.user.email == "")
             return;
-        if (!app.findController('userController').toggle.gender)
+        if (!$scope.toggle.gender)
             return;
         clearTimeout(this.ajax);
         this.ajax = setTimeout(function () {
             var obj = {};
             obj.email = $scope.user.email;
             obj.gender = $scope.user.gender;
+            $http(req("POST", "/api/user/update", {user: JSON.stringify(obj)})).success(function (response) {
+                if (response.error) {
+                    error(reponse.errorMessage);
+                    return;
+                }
+            });
+        }, 500);
+    });
+
+    $scope.$watch(function () {
+        return $scope.user.nickName;
+    }, function () {
+        if ($scope.user.email == "")
+            return;
+        if (!app.findController('userController').toggle.gender)
+            return;
+        clearTimeout(this.ajax);
+        this.ajax = setTimeout(function () {
+            var obj = {};
+            obj.email = $scope.user.email;
+            obj.nickName = $scope.user.nickName;
             $http(req("POST", "/api/user/update", {user: JSON.stringify(obj)})).success(function (response) {
                 if (response.error) {
                     error(reponse.errorMessage);

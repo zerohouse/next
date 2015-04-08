@@ -1,15 +1,39 @@
-
 /* when hiding the thing */
-.ng-hide-add         {
-    -webkit-animation:0.5s flipOutX ease;
-    animation:0.5s flipOutX ease;
+.ng-hide-add {
+    -webkit-animation: 0.5s flipOutX ease;
+    animation: 0.5s flipOutX ease;
 }
 
 /* when showing the thing */
-.ng-hide-remove      {
-    -webkit-animation:0.5s flipInX ease;
-    animation:0.5s flipInX ease;
+.ng-hide-remove {
+    -webkit-animation: 0.5s flipInX ease;
+    animation: 0.5s flipInX ease;
 }
+
+/* when hiding the thing */
+.light.ng-hide-add, .light .ng-hide-add {
+    -webkit-animation: 0.5s lightSpeedOut ease;
+    animation: 0.5s lightSpeedOut ease;
+}
+
+/* when showing the thing */
+.light.ng-hide-remove, .light .ng-hide-remove {
+    -webkit-animation: 0.5s lightSpeedIn ease;
+    animation: 0.5s lightSpeedIn ease;
+}
+
+/* when hiding the thing */
+.none .ng-hide-add {
+    -webkit-animation:none;
+    animation:none;
+}
+
+/* when showing the thing */
+.none .ng-hide-remove {
+    -webkit-animation:none;
+    animation:none;
+}
+
 
 /* ANIMATIONS (FROM ANIMATE.CSS) */
 

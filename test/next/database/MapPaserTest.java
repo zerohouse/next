@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import next.database.Parser;
-
 import org.junit.Test;
+
+import com.google.gson.Gson;
 
 public class MapPaserTest {
 
@@ -20,6 +20,16 @@ public class MapPaserTest {
 		System.out.println(map);
 		System.out.println(m);
 	}
+	
+	@Test
+	public void tesst(){
+		Date c = new Date();
+		//String a = "Apr 8, 2015 5:34:28 PM";
+		Gson gson = new Gson();
+		System.out.println(gson.toJson(c));
+	}
+	
+	
 	
 	@Test
 	public void test2() throws NoSuchMethodException, SecurityException{

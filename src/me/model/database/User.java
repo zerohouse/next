@@ -26,6 +26,7 @@ public class User {
 	private Integer gender;
 	@Column(DATA_TYPE = "TINYINT")
 	private Integer age;
+	private String nickName;
 	private String profileUrl;
 
 	@Exclude
@@ -35,6 +36,18 @@ public class User {
 
 	public Map<String, Factor> getFactors() {
 		return factors;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
+	public static String getEmailPattern() {
+		return EMAIL_PATTERN;
 	}
 
 	public Integer getPoint() {

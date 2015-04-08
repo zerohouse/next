@@ -68,8 +68,14 @@ public class MatchingUsers {
 		List<MatchedUsers> result = new ArrayList<MatchedUsers>();
 		List<User> men = this.men.size() > women.size() ? this.men : women;
 		List<User> other = this.men.size() <= women.size() ? this.men : women;
-		List<User> otherBackup = new ArrayList<User>();
-		otherBackup.addAll(other);
+		int max = other.size();
+		int i = 0;
+		while (men.size() != other.size()) {
+			if (i == max)
+				i = 0;
+			other.add(other.get(i));
+			i++;
+		}
 		while (!men.isEmpty()) {
 			Double d = Math.random() * men.size() * 0.99;
 			User user = men.get(d.intValue());
@@ -77,8 +83,6 @@ public class MatchingUsers {
 			result.add(new MatchedUsers(user, selected));
 			men.remove(user);
 			other.remove(selected);
-			if(other.isEmpty())
-				other.addAll(otherBackup);
 		}
 		return result;
 	}

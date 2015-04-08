@@ -2,7 +2,7 @@
  * Created by park on 15. 4. 1..
  */
 
-app.controller('loginController', ['$scope', '$http', '$user', function ($scope, $http, $user) {
+app.controller('loginController', ['$scope', '$http', '$user', '$timeout', function ($scope, $http, $user, $timeout) {
     $scope.user = $user;
 
     $scope.$watch(function () {
@@ -63,8 +63,8 @@ app.controller('loginController', ['$scope', '$http', '$user', function ($scope,
                 return;
             }
             angular.copy(response.obj, $scope.user);
-            setTimeout(function () {
-                app.findController('matchedController').refresh();
+            $timeout(function () {
+                app.findController('userController').refresh();
             }, 300);
             $scope.user.logged = true;
         });

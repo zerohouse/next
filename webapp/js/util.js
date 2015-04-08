@@ -20,6 +20,28 @@ var req = function (method, url, data) {
     }
 };
 
-function error(message){
+function getGetUrlParsed(obj){
+    var str = "";
+    for (var key in obj) {
+        if (str != "") {
+            str += "&";
+        }
+        str += key + "=" + encodeURIComponent(obj[key]);
+    }
+    return str;
+}
+function error(message) {
     app.findController('alertController').alert(message);
 }
+
+Date.prototype.toJSON = function () {
+    return this.getFullYear() + "." + this.getMonth() + "." + this.getDate() + "." + this.getHours() + "." + this.getMinutes();
+};
+
+Array.prototype.contains = function (obj) {
+    for (var i = 0; i < this.length; i++) {
+        if (this[i] == obj)
+            return true;
+    }
+    return false;
+};
