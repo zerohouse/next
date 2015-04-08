@@ -83,7 +83,8 @@ app.controller('essayController', ['$scope', '$http', '$timeout', '$user', '$tog
                 return;
             }
             if (response.obj == undefined) {
-                error(User.email + "님의 글이 없네요");
+                if (User.email != $user.email)
+                    error(User.email + "님의 글이 없네요");
                 return;
             }
             if (response.obj.forEach == undefined)
