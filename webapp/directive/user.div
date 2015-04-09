@@ -21,8 +21,8 @@
                               ng-click="toggle.toggle('gender')">
                             <span ng-click="user.gender=1">남</span>
                             <span ng-click="user.gender=2">여</span></span>)
-        <span class="green" ng-show="user.authEmail">메일인증</span>
-        <span class="red" ng-click="reMail()" ng-show="!user.authEmail">메일인증필요</span>
+        <span class="green" ng-show="user.authEmail">인증</span>
+        <span class="red" ng-click="reMail()" ng-show="!user.authEmail">인증필요</span>
 
     </div>
 

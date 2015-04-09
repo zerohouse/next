@@ -12,8 +12,8 @@
             (<span ng-show="matchedUser.gender==0" class="red">성별 없음</span><span
                     ng-show="matchedUser.gender==1">남</span><span
                     ng-show="matchedUser.gender==2">여</span>)
-            <span class="green" ng-show="matchedUser.authEmail">메일인증</span>
-            <span class="red" ng-show="!matchedUser.authEmail">메일인증필요</span>
+            <span class="green" ng-show="matchedUser.authEmail">인증</span>
+            <span class="red" ng-show="!matchedUser.authEmail">인증필요</span>
 
             ( Matching : {{matchedUser.point}}% )
         </div>

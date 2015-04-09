@@ -63,7 +63,7 @@ app.controller('controllers.login', ['$scope', '$http', '$user', '$timeout', fun
         if ($scope.send)
             error("처리중입니다. 삐리삐리.");
         $scope.send = true;
-        $http(req("POST", "/api/user", {user: JSON.stringify($scope.user)})).success(function (response) {
+        $http(req("POST", "/api/user/fblogin", {user: JSON.stringify($scope.user)})).success(function (response) {
             $scope.send = false;
             if (response.error) {
                 error(response.errorMessage);

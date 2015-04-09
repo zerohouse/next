@@ -99,6 +99,21 @@ public class UserController {
 		http.setView(new Json(new Result(fromDB)));
 	}
 
+	@Mapping(value = "/api/user/fblogin", method = "POST")
+	public void fblogin(Http http, DAO dao) throws JsonAlert {
+		User user = http.getJsonObject(User.class, "user");
+		if (user == null)
+			return;
+		User fromDB = dao.getRecordByClass(User.class, user.getEmail());
+		if (fromDB == null)
+			dao.insert(user);
+		else
+			fromDB.defineFactors(dao);
+		http.setSessionAttribute("user", fromDB);
+		fromDB.removePassword();
+		http.setView(new Json(new Result(fromDB)));
+	}
+
 	@Mapping(value = "/api/user/logout", method = "GET")
 	public void logout(Http http) throws JsonAlert {
 		http.removeSessionAttribute("user");
