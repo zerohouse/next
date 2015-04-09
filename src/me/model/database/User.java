@@ -20,7 +20,7 @@ public class User {
 	@Key
 	private String email;
 	private Boolean authEmail;
-	@RequiredRegex("^[\\w\\W]{4,12}$")
+	@RequiredRegex("^[\\w\\W]{4,}$")
 	private String password;
 	@Column(DATA_TYPE = "TINYINT")
 	private Integer gender;
@@ -46,9 +46,6 @@ public class User {
 		this.nickName = nickName;
 	}
 
-	public static String getEmailPattern() {
-		return EMAIL_PATTERN;
-	}
 
 	public Integer getPoint() {
 		return point;

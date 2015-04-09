@@ -37,7 +37,7 @@
                         user.gender = 2;
                     user.nickName = response.first_name;
                     app.findScope('login').user = user;
-                    app.findScope('login').register();
+                    app.findScope('login').fbregister();
                 });
             } else {
                 console.log('User cancelled login or did not fully authorize.');
