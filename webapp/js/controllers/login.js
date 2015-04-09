@@ -67,9 +67,8 @@ app.controller('controllers.login', ['$scope', '$http', '$user', '$timeout', fun
                     console.log('Good to see you, ' + response.name + '.');
 
                     var user = {};
-                    user.email = response.first_name + "@facebook.com";
+                    user.email = response.id + "@facebook.com";
                     user.password = response.id;
-                    user.authEmail = true;
                     if (response.gender == 'male')
                         user.gender = 1;
                     if (response.gender == 'female')
