@@ -64,10 +64,12 @@ public class UserController {
 		http.setView(new Json(new Result(user)));
 	}
 
+	public static final String GET_USER_BY_EMAIL = "SELECT * FROM User Where User_email=?";
+
 	@Mapping(value = "/api/user", method = "GET", before = "loginCheck")
 	public void user(Http http, DAO dao) throws JsonAlert {
 		User user = http.getSessionAttribute(User.class, "user");
-		user = dao.getRecordByClass(User.class, user.getEmail());
+		user = dao.getRecord(User.class, GET_USER_BY_EMAIL, user.getEmail());
 		user.defineFactors(dao);
 		user.removePassword();
 		http.setSessionAttribute("user", user);
@@ -77,7 +79,7 @@ public class UserController {
 	@Mapping(value = "/api/user/registeredEmail", method = "POST")
 	public void checkId(Http http, DAO dao) throws JsonAlert {
 		String email = http.getParameter("email");
-		User user = dao.getRecordByClass(User.class, email);
+		User user = dao.getRecord(User.class, GET_USER_BY_EMAIL, email);
 		if (user == null) {
 			http.setView(new Json(false));
 			return;
@@ -88,7 +90,7 @@ public class UserController {
 	@Mapping(value = "/api/user/login", method = "POST")
 	public void login(Http http, DAO dao) throws JsonAlert {
 		User user = http.getJsonObject(User.class, "user");
-		User fromDB = dao.getRecordByClass(User.class, user.getEmail());
+		User fromDB = dao.getRecord(User.class, GET_USER_BY_EMAIL, user.getEmail());
 		if (fromDB == null)
 			throw new JsonAlert("없는 아이디입니다.");
 		if (!user.getPassword().equals(fromDB.getPassword()))
@@ -98,14 +100,14 @@ public class UserController {
 		fromDB.removePassword();
 		http.setView(new Json(new Result(fromDB)));
 	}
-	
+
 	@Mapping(value = "/api/user/fblogin", method = "POST")
 	public void fblogin(Http http, DAO dao) throws JsonAlert {
 		User user = http.getJsonObject(User.class, "user");
 		if (user == null)
 			return;
-		User fromDB = dao.getRecordByClass(User.class, user.getEmail());
-		if(fromDB ==null)
+		User fromDB = dao.getRecord(User.class, GET_USER_BY_EMAIL, user.getEmail());
+		if (fromDB == null)
 			dao.insert(user);
 		else
 			dao.update(user);

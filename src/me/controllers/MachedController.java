@@ -36,10 +36,10 @@ public class MachedController {
 			User partner = null;
 			switch (user.getGender()) {
 			case 1:
-				partner = dao.getRecordByClass(User.class, matchings.get(i).getWoman());
+				partner = dao.getRecord(User.class, UserController.GET_USER_BY_EMAIL, matchings.get(i).getWoman());
 				break;
 			case 2:
-				partner = dao.getRecordByClass(User.class, matchings.get(i).getMan());
+				partner = dao.getRecord(User.class, UserController.GET_USER_BY_EMAIL, matchings.get(i).getMan());
 				break;
 			}
 			partner.removePassword();
