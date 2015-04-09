@@ -20,7 +20,6 @@ public class User {
 	private Integer id;
 	@RequiredRegex(EMAIL_PATTERN)
 	@Column(function = "UNIQUE", hasDefaultValue = false)
-	@Key
 	private String email;
 	private Boolean authEmail;
 	@RequiredRegex("^[\\w\\W]{4,}$")
