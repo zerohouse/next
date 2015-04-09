@@ -39,10 +39,16 @@ app.controller('controllers.login', ['$scope', '$http', '$user', '$timeout', fun
         }
     }
 
+    $scope.send = false;
+
     $scope.register = function () {
+        if ($scope.send)
+            error("처리중입니다. 삐리삐리.");
+        $scope.send = true;
         if (!$scope.check.all())
             return;
         $http(req("POST", "/api/user", {user: JSON.stringify($scope.user)})).success(function (response) {
+            $scope.send = false;
             if (response.error) {
                 error(response.errorMessage);
                 $scope.user.logged = false;
@@ -53,10 +59,15 @@ app.controller('controllers.login', ['$scope', '$http', '$user', '$timeout', fun
         });
     };
 
+
     $scope.login = function () {
+        if ($scope.send)
+            error("처리중입니다. 삐리삐리.");
+        $scope.send = true;
         if (!$scope.check.all())
             return;
         $http(req("POST", "/api/user/login", {user: JSON.stringify($scope.user)})).success(function (response) {
+            $scope.send = false;
             if (response.error) {
                 error(response.errorMessage);
                 $scope.user.logged = false;
