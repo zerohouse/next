@@ -98,14 +98,18 @@ public class UserController {
 		fromDB.removePassword();
 		http.setView(new Json(new Result(fromDB)));
 	}
-
+	
 	@Mapping(value = "/api/user/fblogin", method = "POST")
 	public void fblogin(Http http, DAO dao) throws JsonAlert {
 		User user = http.getJsonObject(User.class, "user");
 		if (user == null)
 			return;
-		if (dao.insertIfExistUpdate(user))
-			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
+		User fromDB = dao.getRecordByClass(User.class, user.getEmail());
+		if(fromDB ==null)
+			dao.insert(user);
+		else
+			dao.update(user);
+		user.defineFactors(dao);
 		http.setSessionAttribute("user", user);
 		http.setView(new Json(new Result(user)));
 	}
