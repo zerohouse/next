@@ -98,11 +98,11 @@ app.controller('controllers.matched', ['$scope', '$http', '$user', function ($sc
         else if (user.profileUrl == "")
             return;
         else
-            return 'background-image:url(' + user.profileUrl + ')'
+            return 'background-image:url(' + user.profileUrl + ');  background-size: 100%;   background-position: center;';
     };
 
 
-    $scope.writeLetter = function(user){
+    $scope.writeLetter = function (user) {
         app.findScope('letter').writeLetter(user);
     }
 }]);

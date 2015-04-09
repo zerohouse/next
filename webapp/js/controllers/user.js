@@ -87,7 +87,7 @@ app.controller('controllers.user', ['$scope', '$http', '$user', '$toggle', '$tim
         else if (user.profileUrl == "")
             return;
         else
-            return 'background-image:url(' + user.profileUrl + ')'
+            return 'background-image:url(' + user.profileUrl + ');  background-size: 100%;   background-position: center;';
     };
 
     $scope.$watch(function () {
