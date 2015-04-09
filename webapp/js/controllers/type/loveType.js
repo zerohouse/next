@@ -147,7 +147,7 @@ app.controller('controllers.userTest.loveType', ['$http', '$scope', '$user', fun
         resultObj.types.push(new tp($scope.result.P.percent, "P"));
         resultObj.type = $scope.result[$scope.resultType].title;
 
-        function tp(type, percent) {
+        function tp(percent, type) {
             this.percent = percent;
             this.type = type;
         }

@@ -257,7 +257,7 @@ app.controller('controllers.userTest.result', ['$scope', '$user', '$timeout', fu
                 $scope.chart = false;
                 break;
             case 'LoveType' :
-                setLoveType(result.type);
+                setLoveType(result);
                 $scope.chart = true;
                 break;
             case 'EnneaGram' :
@@ -273,7 +273,7 @@ app.controller('controllers.userTest.result', ['$scope', '$user', '$timeout', fu
 
         function setLoveType(result) {
             var type;
-            switch (result) {
+            switch (result.type) {
                 case 'Passionate':
                     type = "R";
                     break;
@@ -297,7 +297,7 @@ app.controller('controllers.userTest.result', ['$scope', '$user', '$timeout', fu
             var ctx = document.querySelector('#canvasResult').getContext("2d");
             $timeout(function () {
                 if (user == $user) {
-                    drawChart(ctx, $user);
+                    drawChart(ctx, $user, result);
                     return;
                 }
                 drawChart(ctx, [$user, user]);
@@ -310,7 +310,7 @@ app.controller('controllers.userTest.result', ['$scope', '$user', '$timeout', fu
 
     $scope.friend = false;
 
-    function drawChart(ctx, user) {
+    function drawChart(ctx, user, result) {
         var data = {
             labels: ["Passionate", "Friendship", "Possessive", "Selfless", "Logical", "Game-Playing"],
             datasets: [
@@ -344,7 +344,7 @@ app.controller('controllers.userTest.result', ['$scope', '$user', '$timeout', fu
         if (user.length != 2) {
             $scope.friend = false;
             data.datasets[0].label = user.email;
-            var loveData = user.factors.LoveType.types;
+            var loveData = result.types;
             loveData.forEach(function (loveDatum) {
                 data.datasets[0].data.push(loveDatum.percent);
             });
