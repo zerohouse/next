@@ -9,13 +9,40 @@
 </head>
 <body ng-app="meetfit">
 <div id="fb-root"></div>
-<script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v2.3&appId=738322849618910";
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+<script>
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: 'your-app-id',
+            xfbml: true,
+            version: 'v2.3'
+        });
+    };
+
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v2.3&appId=738322849618910";
+        fjs.parentNode.insertBefore(js, fjs);
+
+    }(document, 'script', 'facebook-jssdk'));
+
+
+    FB.login(function (response) {
+        console.log(response);
+        if (response.authResponse) {
+            console.log('Welcome!  Fetching your information.... ');
+            FB.api('/me', function (response) {
+                console.log('Good to see you, ' + response.name + '.');
+            });
+        } else {
+            console.log('User cancelled login or did not fully authorize.');
+        }
+    });
+
+</script>
 
 <div class="back"></div>
 <div style="display:none" ng-style="{'display':'block'}" ng-controller="wrapController">
