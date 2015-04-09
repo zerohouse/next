@@ -1,7 +1,7 @@
 /**
  * Created by park on 15. 4. 4..
  */
-app.controller('wrapController', ['$scope', '$user', '$toggle', '$http', '$timeout', function ($scope, $user, $toggle, $http) {
+app.controller('wrapController', ['$scope', '$user', '$toggle', '$http', '$timeout', function ($scope, $user, $toggle, $http, $timeout) {
     $scope.user = $user;
     $scope.toggle = $toggle;
 
@@ -16,7 +16,7 @@ app.controller('wrapController', ['$scope', '$user', '$toggle', '$http', '$timeo
         $scope.user.email = "";
         angular.copy(user, $scope.user);
         $http(req("GET", "/api/user/logout")).success(function (response) {
-            setTimeout(function () {
+            $timeout(function () {
                 location.reload()
             }, 1000);
         });
