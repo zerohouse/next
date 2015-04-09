@@ -1,7 +1,7 @@
 /**
  * Created by park on 15. 4. 7..
  */
-app.controller('alertController', ['$scope', function ($scope) {
+app.controller('controllers.alert', ['$scope', function ($scope) {
     $scope.close = function () {
         $scope.show = false;
     };
@@ -17,8 +17,8 @@ app.controller('alertController', ['$scope', function ($scope) {
     $scope.errorBackup = [
         "마지막 글입니다.",
         "parksungho86@gmail.com\n\n\nNhn Next",
-        "테스트 내용이 많을 수록, 더 잘 맞는 사람과 만나게 되고 \n\n 더 많은 매칭 기회를 가지게 됩니다.",
-        "MBTI, Enneagram은 해외 논문을 인용해서 알고리즘을 짰고 \n\n" +"연애 유형은 비슷한 사람끼리 잘 맞을거라고 가정했습니다..",
+        "테스트 내용이 많을 수록,\n 더 잘 맞는 사람과 만나게되고 \n\n 더 많은 매칭 기회를 가지게 됩니다.",
+        "MBTI, Enneagram은 \n 해외 논문을 인용해서 알고리즘을 짰고 \n\n" + "연애 유형은 비슷한 사람끼리 \n 잘 맞을거라고 가정했습니다..",
     ];
 
     $scope.nextError = function () {
@@ -33,3 +33,11 @@ app.controller('alertController', ['$scope', function ($scope) {
 
 
 }]);
+
+app.directive("alert", function () {
+    return {
+        restrict: 'E',
+        templateUrl: "directive/alert.div",
+        controller: "controllers.alert"
+    }
+});

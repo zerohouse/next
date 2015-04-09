@@ -1,6 +1,6 @@
 package next.database;
 
-import me.model.database.Essay;
+import me.model.database.Letter;
 
 import org.junit.Test;
 
@@ -8,7 +8,7 @@ public class DAOTest {
 
 	@Test
 	public void test() {
-			Essay e = new Essay();
+			Letter e = new Letter();
 			e.setEmail("man4@uss.com");
 			e.setHead("a");
 			e.setBody("B");

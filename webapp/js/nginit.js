@@ -2,13 +2,10 @@
  * Created by park on 15. 4. 1..
  */
 
-
-
-
 var app = angular.module('meetfit', ['ngAnimate']);
 
 app.factory('$user', function () {
-    var $user = {email: "", password: "", nickName:""};
+    var $user = {email: "", password: "", nickName: ""};
     return $user;
 });
 
@@ -25,6 +22,14 @@ app.service('$toggle', function () {
     return toggle;
 });
 
-app.findController = function (controller) {
-    return angular.element(document.querySelector("[ng-controller='" + controller + "']")).scope();
+app.findScope = function (selector) {
+    return angular.element(document.querySelector(selector)).scope();
 };
+
+
+app.directive("header", function () {
+    return {
+        restrict: 'E',
+        templateUrl: "directive/header.div"
+    }
+});

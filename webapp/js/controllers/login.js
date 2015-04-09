@@ -2,7 +2,7 @@
  * Created by park on 15. 4. 1..
  */
 
-app.controller('loginController', ['$scope', '$http', '$user', '$timeout', function ($scope, $http, $user, $timeout) {
+app.controller('controllers.login', ['$scope', '$http', '$user', '$timeout', function ($scope, $http, $user, $timeout) {
     $scope.user = $user;
 
     $scope.$watch(function () {
@@ -64,7 +64,7 @@ app.controller('loginController', ['$scope', '$http', '$user', '$timeout', funct
             }
             angular.copy(response.obj, $scope.user);
             $timeout(function () {
-                app.findController('userController').refresh();
+                app.findScope('user').refresh();
             }, 300);
             $scope.user.logged = true;
         });
@@ -82,3 +82,12 @@ app.controller('loginController', ['$scope', '$http', '$user', '$timeout', funct
     }
 
 }]);
+
+app.directive("login", function () {
+    return {
+        restrict: 'E',
+        templateUrl: "directive/login.div",
+        controller: "controllers.login",
+        scope: true
+    }
+});

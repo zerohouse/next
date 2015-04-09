@@ -3,7 +3,10 @@
  */
 
 
-app.controller('ennController', ['$http', '$scope', function ($http, $scope) {
+app.controller('controllers.userTest.enneagram', ['$http','$user', '$scope', function ($http,$user ,$scope) {
+
+    $scope.user = $user;
+
 
     var test = {};
     test.a = [];
@@ -57,7 +60,14 @@ app.controller('ennController', ['$http', '$scope', function ($http, $scope) {
     $scope.test = test;
 
 
-    $scope.result = function get_type(str) {
+    $scope.done = false;
+
+    $scope.$watch('test', compute, true);
+
+    function compute() {
+
+        $scope.type = false;
+
         var a = 0;
         var undefinecount = 0;
         $scope.test.a.forEach(function (q) {
@@ -120,7 +130,7 @@ app.controller('ennController', ['$http', '$scope', function ($http, $scope) {
         });
 
         if (undefinecount != 0)
-            return 0;
+            return;
 
         var abc = Math.max(a, b, c);
         var abcString;
@@ -149,8 +159,7 @@ app.controller('ennController', ['$http', '$scope', function ($http, $scope) {
                 result = 8;
                 break;
             case 'az':
-                tmp = 3;
-                result;
+                result = 3;
             case 'bx':
                 result = 9;
                 break;
@@ -171,57 +180,38 @@ app.controller('ennController', ['$http', '$scope', function ($http, $scope) {
                 break;
         }
 
-        if (this.sended)
-            return result;
-        this.sended = true;
-        var test = {};
-        test.name = "EnneaGram";
-
-        var gender = app.findController('userController').user.gender;
+        var gender = app.findScope('user').user.gender;
         if (gender == 1) {
             gender = 'M'
         } else if (gender == 2) {
             gender = 'F'
         }
-        test.result = gender + result;
+
+        $scope.type = gender + result;
+        $scope.done = true;
+    };
+
+    $scope.showResult = function () {
+        app.findScope('result').setResult("EnneaGram", $scope.type);
+        var test = {};
+        test.name = "EnneaGram";
+        test.result = $scope.type;
         $http(req("POST", "/api/test", {test: JSON.stringify(test)})).success(function (response) {
             if (response.error) {
                 error(response.errorMessage);
                 return;
             }
-            app.findController('userController').refresh();
+            app.findScope('user').refresh();
         });
-        return result;
-    }
-
-    $scope.results = {};
-    $scope.results[1] = {};
-    $scope.results[1].title = "개혁가(The Reformer)";
-    $scope.results[1].description = "1번 유형들은 그것이 얼마만큼이든지 자신이 미칠 수 있는 영향력을 사용하여 세상을 개선시키고자 하는 사명감을 갖고 있끼 때문에 우리는 1번유형에게 개혁가라는 이름을 붙였다. 이들은 역경을 극복하려고 노력한다. 역경의 극복을 통해서 인간의 정신은 빛날 수 있다. 이들은 큰 희생을 치르고라도 높은 이상을 실현시키기 위해 노력한다.";
-    $scope.results[2] = {};
-    $scope.results[2].title = "돕고자 하는 사람(The Helper)";
-    $scope.results[2].description = "우리는 이 유형에게 돕고자 하는 사람이라고 이름 붙였다. 이 유형의 사람들은 다른 사람들에게 정말로 도움이 되기 때문이다. 이들은 건강하지 않은 상태에 있을 때 자신을 도움을 주는 사람으로 보는 데 많은 관심을 쏟는다. 2번 유형은 다른 사람을 너그럽게 대하고 사람들을 위해서 뭔가를 할 때 삶을 가장 의미 있고 풍요롭게 느낀다. 사람들에 대한 이들의 사랑과 관심, 그리고 친절은 이들 자신의 가슴을 따뜻하게 하고 가치 있는 사람이라고 느끼게 해 준다. 2번 유형은 사랑, 친밀함, 가족, 우정과 같이 삶에서 정말로 기분 좋게 느껴지는 것들에 많은 관심을 쏟는다.";
-    $scope.results[3] = {};
-    $scope.results[3].title = "성취하는 사람(The Achiever)";
-    $scope.results[3].description = "우리는 3번 성격 유형에게 성취하는 사람이라는 이름을 붙였다. 건강할 때 삶의 많은 영역에서 성공을 이룰 수 있기 때문이다. 이들은 인간 본성의 '별'이다. 사회적으로 많은 것을 성취하기 때문에 사람들로부터도 존경을 받는다. 건강한 3번 유형은 어떻게 자신을 개발하고 세상을 위해서 자신의 능력을 사용해야하는지를 안다. 또한 이들은 다른 사람들을 격려해서 그들 스스로가 생각하는 것보다 훨씬 더 많은 능력을 끌어 낼 수 있다. 이들은 사회에서 존경받을 수 있는 자질을 갖고 있다. 사람들은 이들에게서 자신의 꿈과 희망을 본다.";
-    $scope.results[4] = {};
-    $scope.results[4].title = "개인주의자(The Individualist)";
-    $scope.results[4].description = "우리는 이 유형에게 개인주의자라는 이름을 붙였다. 4번 유형은 자신이 다른 사람들과 기본적으로 다르다고 생각함으로써 자신의 정체성을 유지하기 때문이다. 자신이 다른 사람들과 다르며, 그렇기 때문에 아무도 자신을 이해하고 사랑하지 않는다고 느낀다. 이들은 자신에게는 특별한 재능과 특별한 결함이 동시에 있다고 여긴다. 4번 유형은 다른 어떤 유형보다도 자신의 개성과 자신의 결함을 잘 이해하고 있다.";
-    $scope.results[5] = {};
-    $scope.results[5].title = "탐구자(The Investigator)";
-    $scope.results[5].description = "우리는 5번 유형을 탐구자라고 이름 붙였다. 5번 유형은 다른 어떤 유형보다도 일이 일어나는 방식에 대해 알고 싶어하기 때문인다. 이들은 우주, 동물계, 식물계, 광물계, 그리고 내면의 세계까지 모든 세계가 어떻게 움직여지는지 알고 싶어한다. 항상 뭔가를 추구하고 질문을 던지고 깊이 탐구해 들어간다. 이들은 일반적으로 받아들여지고 있는 의견과 학설을 받아들이지 않으며 자기 나름대로 검증해 보아야 한다고 생각한다.";
-    $scope.results[6] = {};
-    $scope.results[6].title = "충실한 사람(The Loyalist)";
-    $scope.results[6].description = "우리는 6번 유형에게 충실한 사람이라고 이름 붙였다. 모든 성격 유형 중에서 6번 유형은 친구나 자기가 믿는 신념에 가장 충실한 사람들이기 때문인다. 이들은 다른 어떤 유형들보다도 관계를 오래 지속시킨다. 또한 6번 유형은 이상, 체제, 신념 등에도 충실하다. 그러면서도 모든 6번 유형이 있는 그대로의 현상에 만족하는 것은 아니다. 이들의 신념은 반항적이고 체제에 반대되는 것이거나, 심지어 혁명적일 수도 있다. 어떤 경우라도 이들은 아주 격렬하게 자신의 신념을 위해 싸운다. 이들은 자신보다 자신의 지역 사회나 가족을 보호하는 마음이 더 강하다.";
-    $scope.results[7] = {};
-    $scope.results[7].title = "열정적인 사람(The Enthusiast)";
-    $scope.results[7].description = "7번 유형은 자신의 주위를 끄는 거의 모든 것에 대해 열정적이기 때문에 우리는 이 유형에게 열정적인 사람이라는 이름을 붙였다. 이들은 자신이 경험하는 모든 재미있는 것에 대해 어린아이와 같은 기대로 가득 차 있으며 호기심과 낙천주의, 모험심을 가지고 삶에 접근한다. 이들은 대담하고 쾌활하며 삶에서 자신이 원하는 것을 좇는다.";
-    $scope.results[8] = {};
-    $scope.results[8].title = "도전하는 사람(The Challenger)";
-    $scope.results[8].description = "우리는 8번 유형에게 도전하는 사람이라고 이름을 붙였다. 이들은 스스로가 도전하는 것 뿐 아니라 다른 사람들도 어떤 일에 도전해서 자신의 능력 이상의 일을 해 내도록 격려하는 것을 즐기기 때문이다. 이들은 사람들을 설득해서 온갖 종류의 일, 회사를 시작하는 것, 도시를 건설하는 것, 집안을 꾸려 나가는 것, 전쟁을 하는 것, 평화를 이루는 것 등을 할 만한 카리스마와 신체적, 심리적 능력을 가지고 있다.";
-    $scope.results[9] = {};
-    $scope.results[9].title = "평화주의자(The Peacemaker)";
-    $scope.results[9].description = "우리는 9번 유형을 평화주의자라고 부른다. 이들이 다른 어떤 유형보다도 스스로와 다른 사람들을 위해서 내면과 외부의 평화를 추구하려고 애쓰기 때문이다. 이들은 다른 사람들과 혹은 우주와의 연결을 갈망하는 구도자가 될 수도 있다. 자신의 세상에서 조화와 평화를 이루기 위해 노력하는 것처럼 마음의 평화를 이루기 위해 노력한다. 9번 유형에게서 만나는 문제들은 내면의 성장을 추구함에 있어 우리가 생각해 보아야 할 주제들이다. 깨어남과 본성을 보지 못하고 잠들어 있기, 현재에 존재하기와 정신을 놓고 있기, 긴장과 이완, 평화와 고통, 통합과 분리 등.";
+    };
 
 }]);
 
+app.directive("enneagram", function () {
+    return {
+        restrict: 'E',
+        templateUrl: "directive/userTest/enneagram.div",
+        controller: "controllers.userTest.enneagram",
+        scope: true
+    }
+});

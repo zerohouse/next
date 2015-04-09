@@ -8,366 +8,50 @@
     <title>MeetFit</title>
 </head>
 <body ng-app="meetfit">
+<div class="back"></div>
 <div style="display:none" ng-style="{'display':'block'}" ng-controller="wrapController">
 
-    <header>
-        <div class="inlinblock"><span class="logo">Soulmate</span></div>
+    <header></header>
+    <login ng-show="!user.logged" class="container centered"></login>
 
-        <div class="inlinblock" ng-show="user.logged">
-            <span class="icon test-icon pointer" ng-click="toggle.toggle('test')"></span>
-        <span class="icon pointer" ng-class="{manicon:user.gender==1, womanicon:user.gender!=1}"
-              ng-click="toggle.toggle('user');toggle.toggle('partner')"></span>
-        <span class="icon pointer noteicon"
-              ng-click="toggle.toggle('essay')"></span>
-            <span class="icon logout-icon pointer" ng-click="logout()"></span>
-        </div>
-        <span class="icon q-icon pointer" ng-click="mailTo()"></span>
-    </header>
-
-    <div class="container">
-        <div id="login" ng-controller="loginController" ng-show="!user.logged">
-
-
-            <h1>당신과 맞는 사람을 만나세요.</h1>
-
-            <p>세 가지 테스트를 통해 당신과 가장 어울리는 당신의 소울 메이트를 찾아드립니다.</p>
-
-            <h3>MBTI(마이어-브릭스 유형 지표)</h3>
-
-            <h3>에니어그램(Enneagram)</h3>
-
-            <h3>Lasswell, Hotkoff LoveType Test</h3>
-
-
-            <p>간단한 가입으로 사용할 수 있습니다. 개인정보는 받지 않습니다.</p>
-
-
-            <input ng-model="user.email" ng-class="{danger:user.email!='' && !check.email(), success:check.email()}"
-                   placeholder="사용할 이메일을 입력하세요."/>
-
-            <div class='red' ng-show="user.email!='' && !check.email()">이메일 형식이 맞지 않습니다.</div>
-
-            <input ng-class="{danger:user.password!='' && !check.password(), success:check.password()}" maxlength="12"
-                   ng-show="user.email!='' && check.email()" ng-model="user.password" type="password"
-                   placeholder="Password"/>
-
-            <div class='red' ng-show="user.password!='' && !check.password()">패스워드는 4~12자입니다.</div>
-
-            <div ng-show="user.email!='' && !checking && check.email()">
-                <div ng-show="registeredEmail" class="button" ng-click="login()">로그인</div>
-                <div ng-show="registeredEmail" class="button" ng-click="passwordRedefine()">패스워드 찾기</div>
-                <div ng-show="!registeredEmail" class="button" ng-click="register()">입력한 Email/Password로 가입하기</div>
-            </div>
-
-            <a href="http://github.com/zerohouse/next.git">http://github.com/zerohouse/next.git<a/>
-
-                <p>parksungho86@gmail.com</p>
+    <div id="body" ng-show="user.logged">
+        <div ng-show="toggle.test" id="test" class="no-select container" class="light">
+            <h1>Tests</h1>
+            <lovetype></lovetype>
+            <mbti></mbti>
+            <enneagram></enneagram>
         </div>
 
-        <div ng-show="user.logged">
 
-            <div ng-show="toggle.essay" ng-init="toggle.essay=true;" class="light" ng-controller="essayController">
-                <div class='box essay none' ng-repeat="essay in essays">
-
-
-                    <div ng-if="essay.email!=user.email">
-
-                        <h1 class="essay-head">{{essay.head||"제목 없음"}}</h1>
-
-                        <pre>{{essay.body||"내용 없음"}}</pre>
-
-
-                        <span class="writer">written by {{user.email}}</span>
-
-                    </div>
-
-
-                    <div ng-if="essay.email==user.email">
-                        <div ng-show="!toggle['essayMod'+essay.id]">
-                            <div ng-click="toggle.toggle('essayMod'+essay.id)" class="sm-icon pointer pen"></div>
-                            <div ng-click="delete(essay)" class="sm-icon pointer close"></div>
-                            <h1 class="essay-head">{{essay.head||"제목 없음"}}</h1>
-
-                            <pre>{{essay.body||"내용 없음"}}</pre>
-
-                            <span class="writer">written by {{user.email}}</span>
-                        </div>
-
-                        <div ng-show="toggle['essayMod'+essay.id]">
-                            <div class="sm-icon pointer check"
-                                 ng-click="update(essay);toggle.toggle('essayMod'+essay.id)"></div>
-                            <input ng-model="essay.head" placeholder="제목없음">
-                            <textarea placeholder="내용없음" ng-model="essay.body">{{essay.body}}</textarea>
-                        </div>
-                    </div>
-
-
-                </div>
-
-                <span class="add-essay more-essay .flip" ng-click="nextError()"> > </span>
-                <span class="add-essay .flip" ng-click="addEssay()">+</span>
-
-            </div>
-
-            <div ng-show="toggle.test && user.logged" class="light">
-
-                <div ng-controller="loveTypeController" class="box">
-                    <h1 ng-click="toggle.toggle('loveTest')">Love Type Test (Designed By Dr.Lasswell & Dr.Hotkoff)</h1>
-                    <h5> 분석근거 :
-                        http://www.bennadel.com/blog/1958-for-better-the-love-scale-quiz-designed-by-dr-hatkoff.htm</h5>
-
-
-                    <div ng-show="toggle.loveTest">
-                        <input type="checkbox" ng-model="toggle.hideDone" ng-init="toggle.hideDone=true"> 완료된것 숨기기
-                        <ul ng-class="{done:q.answer!=undefined, hidden:q.answer!=undefined && toggle.hideDone}"
-                            ng-repeat="q in test">
-                            <li>
-                                <h1>{{q.question}}</h1>
-
-                                <div class="button" ng-click="q.answer = 'y'" ng-class="{selected:q.answer == 'y'}">맞다
-                                </div>
-                                <div class="button" ng-click="q.answer = 'n'" ng-class="{selected:q.answer == 'n'}">아니다
-                                </div>
-                            </li>
-                        </ul>
-                        <div ng-show="done">
-                            <h1>결과</h1>
-
-                            <div ng-repeat="(k, r) in result">
-                                <div ng-click="toggle.toggle(k)" ng-class="{red:r.highlight}">{{r.title}}
-                                    {{r.percent}}%
-                                </div>
-                                <div ng-show="toggle[k]">{{r.description}}</div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div ng-controller="mbtiController" class="box">
-                    <h1 ng-click="toggle.toggle('mbti')">MBTI</h1>
-                    <h5> 매칭분석근거 : http://www.massmatch.com/MBTI-2.php</h5>
-
-                    <div ng-show="toggle.mbti">
-                        <div ng-show="testDone != 47">
-                            <div>{{testDone}}/47</div>
-                            <input type="checkbox" ng-model="toggle.hideDone" ng-init="toggle.hideDone=true"> 완료된것 숨기기
-                            <ul>
-                                <li ng-repeat="q in mbti"
-                                    ng-class="{done:q.selectedType!=undefined, hidden:q.selectedType!=undefined && toggle.hideDone}">
-                                    <h1>{{q.question}}</h1>
-
-                                    <div class="button" ng-repeat="a in q.answers">
-                                        <div ng-click="q.selectedType = a.type"
-                                             ng-class="{selected:q.selectedType == a.type}">
-                                            {{a.answer}}
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div ng-show="testDone == 47">
-                            <div>{{userType}} {{results[userType].title}} {{results[userType].subTitle}}</div>
-                            <div>{{results[userType].description}}</div>
-                            <div>{{results[userType].love}}</div>
-                            <div>{{results[userType].celebrity}}</div>
-                            <div ng-repeat="(key, v) in types">{{v}} {{value[key]}}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div ng-controller="ennController" class="box">
-                    <h1 ng-click="toggle.toggle('enneagram')">Enneagram</h1>
-                    <h5> 매칭분석근거 : http://www.9types.com/writeup/enneagram_relationships.php</h5>
-
-                    <div ng-show="user.gender==0">이 테스트는 결과 분석을 위해 성별이 필요합니다.</div>
-
-                    <div ng-show="user.gender!=0 && toggle.enneagram" ng-show="result()==0">
-                        <input type="checkbox" ng-model="toggle.hideDone" ng-init="toggle.hideDone=true"> 완료된것 숨기기
-                        <ul>
-                            <li ng-class="{done:q.answer!=undefined, hidden:q.answer!=undefined && toggle.hideDone}"
-                                ng-repeat="q in test.a"><h1>{{q.question}}</h1>
-
-                                <div class="button" ng-click="q.answer = 'y'" ng-class="{selected:q.answer == 'y'}">맞다
-                                </div>
-                                <div class="button" ng-click="q.answer = 'n'" ng-class="{selected:q.answer == 'n'}">아니다
-                                </div>
-                            </li>
-                            <li ng-class="{done:q.answer!=undefined, hidden:q.answer!=undefined && toggle.hideDone}"
-                                ng-repeat="q in test.b"><h1>{{q.question}}</h1>
-
-                                <div class="button" ng-click="q.answer = 'y'" ng-class="{selected:q.answer == 'y'}">맞다
-                                </div>
-                                <div class="button" ng-click="q.answer = 'n'" ng-class="{selected:q.answer == 'n'}">아니다
-                                </div>
-                            </li>
-                            <li ng-class="{done:q.answer!=undefined, hidden:q.answer!=undefined && toggle.hideDone}"
-                                ng-repeat="q in test.c"><h1>{{q.question}}</h1>
-
-                                <div class="button" ng-click="q.answer = 'y'" ng-class="{selected:q.answer == 'y'}">맞다
-                                </div>
-                                <div class="button" ng-click="q.answer = 'n'" ng-class="{selected:q.answer == 'n'}">아니다
-                                </div>
-                            </li>
-                            <li ng-class="{done:q.answer!=undefined, hidden:q.answer!=undefined && toggle.hideDone}"
-                                ng-repeat="q in test.x"><h1>{{q.question}}</h1>
-
-                                <div class="button" ng-click="q.answer = 'y'" ng-class="{selected:q.answer == 'y'}">맞다
-                                </div>
-                                <div class="button" ng-click="q.answer = 'n'" ng-class="{selected:q.answer == 'n'}">아니다
-                                </div>
-                            </li>
-                            <li ng-class="{done:q.answer!=undefined, hidden:q.answer!=undefined && toggle.hideDone}"
-                                ng-repeat="q in test.y"><h1>{{q.question}}</h1>
-
-                                <div class="button" ng-click="q.answer = 'y'" ng-class="{selected:q.answer == 'y'}">맞다
-                                </div>
-                                <div class="button" ng-click="q.answer = 'n'" ng-class="{selected:q.answer == 'n'}">아니다
-                                </div>
-                            </li>
-                            <li ng-class="{done:q.answer!=undefined, hidden:q.answer!=undefined && toggle.hideDone}"
-                                ng-repeat="q in test.z"><h1>{{q.question}}</h1>
-
-                                <div class="button" ng-click="q.answer = 'y'" ng-class="{selected:q.answer == 'y'}">맞다
-                                </div>
-                                <div class="button" ng-click="q.answer = 'n'" ng-class="{selected:q.answer == 'n'}">아니다
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div ng-show="result()!=0">
-                        <h1>
-                            {{results[result()].title}}
-                            <small><a href="http://enneagram-app.appspot.com/type{{result()}}" target="_blank">상세결과 :
-                                Type
-                                {{result()}}</a></small>
-                        </h1>
-
-                        <div>{{results[result()].description}}</div>
-                    </div>
-
-
-                </div>
-            </div>
-
-
-            <div id="user" ng-show="toggle.user" class="box" ng-controller="userController">
-                <h3><span class="profile" ng-style="{'background-image':url(user.profileUrl)}"
-                          ng-class="{mancon:user.gender==1, womancon:user.gender!=1}"></span>
-                    <span ng-click="toggle.toggle('nickName')"
-                          ng-show="!toggle.nickName">{{user.nickName||"내 프로필"}}</span>
-                    <span class="getEssay pointer" ng-click="getEssays(matchedUser)"></span>
-                    <input type="text" style="width:inherit" placeholder="닉네임을 정해주세요." ng-model="user.nickName"
-                           ng-show="toggle.nickName">
-                    <span ng-click="toggle.toggle('nickName')" ng-show="toggle.nickName">OK</span></h3>
-
-                <div>{{user.email}}
-                    <span ng-click="toggle.toggle('age')"><span ng-show="user.age==0" class="red">나이 없음</span><span
-                            ng-show="user.age!=0">{{user.age||"나이없음"}}세</span></span>
-                <span ng-show="toggle.age">나이<input class='input' ng-model="user.age" maxlength="3" type="number">
-                    <span ng-click="toggle.toggle('age')">확인</span>
-                </span>
-                    (<span ng-click="toggle.toggle('gender')">
-                            <span ng-show="user.gender!=1 && user.gender!=2" class="red">성별 없음</span>
-                            <span ng-show="user.gender==1">남</span><span ng-show="user.gender==2">여</span></span>
-                        <span ng-show="toggle.gender"
-                              ng-click="toggle.toggle('gender')">
-                            <span ng-click="user.gender=1">남</span>
-                            <span ng-click="user.gender=2">여</span></span>)
-                    <span class="green" ng-show="user.authEmail">메일인증</span>
-                <span class="red" ng-show="!user.authEmail">메일인증필요 <span ng-click="reMail()"
-                                                                         class="green">메일재요청</span></span>
-
-                </div>
-
-
-                <div class="marginTop">
-                    <div class="factor pointer" ng-repeat="(name, factor) in user.factors">
-                        <span ng-click="toggle.toggle(name);setResult(name, factor, user)">{{name}} : {{factor.type}}</span>
-
-
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div id="matchedUsers" ng-show="toggle.partner" ng-controller="matchedController">
-                <div class='box' ng-repeat="matchedUser in matchedUsers">
-                    <h3><span class="profile" ng-style="{backgroundImage:matchedUser.profileUrl}"
-                              ng-class="{mancon:matchedUser.gender==1, womancon:matchedUser.gender!=1}"></span>
-                        {{matchedUser.nickName||"나의 인연"}}
-                        <span class="getEssay pointer" ng-click="getEssays(matchedUser)"></span></h3>
-
-                    <div>{{matchedUser.email}}
-                        <span ng-show="matchedUser.age!=2 && matchedUser.age!=1" class="red">나이 없음</span><span
-                                ng-show="matchedUser.age!=0">{{matchedUser.age}}세</span>
-
-                        (<span ng-show="matchedUser.gender==0" class="red">성별 없음</span><span
-                                ng-show="matchedUser.gender==1">남</span><span
-                                ng-show="matchedUser.gender==2">여</span>)
-                        <span class="green" ng-show="matchedUser.authEmail">메일인증</span>
-                        <span class="red" ng-show="!matchedUser.authEmail">메일인증필요</span>
-
-                        ( Matching : {{matchedUser.point}}% )
-                    </div>
-
-
-                    <div class="marginTop">
-                        <div class="factor pointer" ng-repeat="(name, factor) in matchedUser.factors">
-                    <span ng-click="toggle.toggle(name + matchedUser.email);setResult(name, factor, matchedUser);">{{name}} <span
-                            ng-if="factor.point">( {{factor.point}}% )</span> : <span
-                            ng-class="{red:user.factors[name].bestTypes.contains(factor.type),green:user.factors[name].goodTypes.contains(factor.type)}">{{factor.type}}</span></span>
-
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="light box description" ng-show="show" ng-controller="resultController">
-                <div ng-click="show=false" class="close-icon pointer"></div>
-                <h2>{{result.title}}</h2>
-
-                <p>{{result.description}}</p>
-                <canvas ng-show="factor.types!=undefined" width="400" height="400" id="canvasResult"></canvas>
-                <div class="ppwrap" ng-show="factor.types!=undefined">
-                    <div ng-show="friend"><span class="nemo fcolor"></span><span>친구</span></div>
-                    <div><span class="nemo mcolor"></span><span>나</span></div>
-                </div>
-
-                <div ng-show="factor.types==undefined">
-                    <div>{{factor.type}}과 잘 맞는 타입(<span class="red">Best</span> <span class="green">Good</span>)
-                    </div>
-                    <span ng-repeat="type in factor.bestTypes" class="red"> {{type}} </span>
-                    <span ng-repeat="type in factor.goodTypes" class="green"> {{type}} </span>
-                </div>
-
-            </div>
-
+        <div ng-show="toggle.profile" id="profile" class="container">
+            <h1>Profile</h1>
+            <user></user>
+            <matched></matched>
         </div>
+
+        <letter ng-show="toggle.letter" id="letter" class="container"></letter>
+
+        <result></result>
+
     </div>
 </div>
 
-<div class="alert-body" ng-click="close()" ng-controller="alertController" ng-show="show">
-    <span class="alert-text"><pre>{{errorMessage}}</pre></span>
-</div>
+<alert></alert>
+
 <script src="library/Chart.min.js"></script>
 <script src="library/angular/angular.min.js"></script>
 <script src="library/angular/angular-animate.min.js"></script>
 <script src="js/util.js"></script>
-<script src="js/ngStart.js"></script>
-<script src="js/controllers/wrapController.js"></script>
-<script src="js/controllers/essayController.js"></script>
-<script src="js/controllers/loginController.js"></script>
-<script src="js/controllers/userController.js"></script>
-<script src="js/controllers/matchedController.js"></script>
-<script src="js/controllers/alertController.js"></script>
-<script src="js/test/resultController.js"></script>
-<script src="js/test/mbtiController.js"></script>
-<script src="js/test/ennController.js"></script>
-<script src="js/test/loveTypeController.js"></script>
+<script src="js/nginit.js"></script>
+<script src="js/controllers/wrap.js"></script>
+<script src="js/controllers/letter.js"></script>
+<script src="js/controllers/login.js"></script>
+<script src="js/controllers/user.js"></script>
+<script src="js/controllers/matched.js"></script>
+<script src="js/controllers/alert.js"></script>
+<script src="js/controllers/type/result.js"></script>
+<script src="js/controllers/type/mbti.js"></script>
+<script src="js/controllers/type/enneagram.js"></script>
+<script src="js/controllers/type/loveType.js"></script>
 </body>
 </html>

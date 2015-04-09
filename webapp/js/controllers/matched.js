@@ -1,7 +1,7 @@
 /**
  * Created by park on 15. 4. 3..
  */
-app.controller('matchedController', ['$scope', '$http', '$user', function ($scope, $http, $user) {
+app.controller('controllers.matched', ['$scope', '$http', '$user', function ($scope, $http, $user) {
     $scope.user = $user;
 
     $scope.refresh = function () {
@@ -20,7 +20,7 @@ app.controller('matchedController', ['$scope', '$http', '$user', function ($scop
 
 
     $scope.setResult = function (type, result, user) {
-        app.findController('resultController').setResult(type, result, user);
+        app.findScope('result').setResult(type, result, user);
     };
 
     var computePoint = function () {
@@ -93,8 +93,17 @@ app.controller('matchedController', ['$scope', '$http', '$user', function ($scop
     }
 
 
-    $scope.getEssays = function (User) {
-        app.findController('essayController').getEssays(User);
-    };
-
+    $scope.writeLetter = function(user){
+        app.findScope('letter').writeLetter(user);
+    }
 }]);
+
+
+app.directive("matched", function () {
+    return {
+        restrict: 'E',
+        templateUrl: "directive/matched.div",
+        controller: "controllers.matched",
+        scope: true
+    }
+});

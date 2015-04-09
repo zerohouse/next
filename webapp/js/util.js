@@ -30,8 +30,9 @@ function getGetUrlParsed(obj){
     }
     return str;
 }
+
 function error(message) {
-    app.findController('alertController').alert(message);
+    app.findScope('alert').alert(message);
 }
 
 Date.prototype.toJSON = function () {

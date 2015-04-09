@@ -1,11 +1,12 @@
 /**
  * Created by park on 15. 4. 3..
  */
-app.controller('userController', ['$scope', '$http', '$user', '$toggle', '$timeout', function ($scope, $http, $user, $toggle, $timeout) {
+app.controller('controllers.user', ['$scope', '$http', '$user', '$toggle', '$timeout', function ($scope, $http, $user, $toggle, $timeout) {
     $scope.user = $user;
 
-
     $scope.reMail = function () {
+        if (!confirm("메일을 다시 전송할까요?"))
+            return;
         $http(req("POST", "/api/user/mailRequest", {email: $user.email})).success(function (response) {
             if (response.error) {
                 error(response.errorMessage);
@@ -27,15 +28,15 @@ app.controller('userController', ['$scope', '$http', '$user', '$toggle', '$timeo
 
             if (Object.keys($scope.user.factors).length > 2)
                 $toggle.test = false;
-            app.findController('matchedController').refresh();
-            app.findController('essayController').refresh();
+            app.findScope('matched').refresh();
+            app.findScope('letter').refresh();
         });
     };
 
     $scope.refresh();
 
     $scope.setResult = function (type, result, user) {
-        app.findController('resultController').setResult(type, result, user);
+        app.findScope('result').setResult(type, result, user);
     };
 
     $scope.$watch(function () {
@@ -64,7 +65,7 @@ app.controller('userController', ['$scope', '$http', '$user', '$toggle', '$timeo
     }, function () {
         if ($scope.user.email == "")
             return;
-        if (!app.findController('userController').toggle.gender)
+        if (!app.findScope('user').toggle.nickName)
             return;
         clearTimeout(this.ajax);
         this.ajax = setTimeout(function () {
@@ -85,8 +86,8 @@ app.controller('userController', ['$scope', '$http', '$user', '$toggle', '$timeo
     }, function () {
         if ($scope.user.email == "")
             return;
-        if (!app.findController('userController').toggle.age);
-        return;
+        if (!app.findScope('user').toggle.age)
+            return;
         clearTimeout(this.ajax);
         this.ajax = setTimeout(function () {
             var obj = {};
@@ -102,3 +103,13 @@ app.controller('userController', ['$scope', '$http', '$user', '$toggle', '$timeo
     });
 
 }]);
+
+
+app.directive("user", function () {
+    return {
+        restrict: 'E',
+        templateUrl: "directive/user.div",
+        controller: "controllers.user",
+        scope: true
+    }
+});

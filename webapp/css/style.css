@@ -7,7 +7,23 @@
 body {
     padding: 0;
     margin: 0;
-    background-color: #F1F4F9;
+    background-size:cover;
+}
+
+.back {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: -1;
+}
+
+.striked {
+    text-decoration: line-through;
+}
+
+.centered {
+    text-align: center;
 }
 
 h3 {
@@ -37,19 +53,21 @@ header {
 }
 
 div#login {
-    -webkit-transition: all linear 0.5s;
-    transition: all linear 0.5s;
     text-align: center;
     margin-top: 30px;
 }
 
 .container {
-    width: 95%;
-    margin: auto;
-    margin-top: 30px;
+    width: 80%;
+    overflow: auto;
+    display: block;
+    padding: 10%;
+    padding-top: 40px;
+    padding-bottom: 40px;
 }
 
-input {
+.input {
+    /*background: transparent;*/
     width: 92%;
     margin: 10px 2%;
     border: none;
@@ -58,9 +76,6 @@ input {
     outline: none;
 }
 
-#login input {
-    text-align: center;
-}
 
 textarea {
     width: 96%;
@@ -170,7 +185,7 @@ ul, li {
     top: 0;
     left: 0;
     text-align: center;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.4);
 }
 
 .alert-text {
@@ -179,7 +194,7 @@ ul, li {
     font-size: 40px;
     width: 80%;
     margin: auto;
-    margin-top: 30%;
+    margin-top: 20%;
 }
 
 .nemo {
@@ -204,7 +219,7 @@ ul, li {
     bottom: 15px;
 }
 
-.add-essay {
+.add-letter {
     position: fixed;
     width: 100px;
     height: 100px;
@@ -222,25 +237,25 @@ ul, li {
     z-index: 100;
 }
 
-.add-essay:hover {
+.add-letter:hover {
     color: black;
 }
 
-.more-essay {
+.more-letter {
     bottom: 140px;
 }
 
-.essay-head {
+.letter-head {
     margin-right: 90px;
 }
 
-.essay {
+.letter {
     min-width: 300px;
     max-width: 600px;
 }
 
-.getEssay {
-    background: url('image/icon/essay.png');
+.writeLetter {
+    background: url('image/icon/letter.png');
     background-size: 100%;
     display: inline-block;
     width: 25px;
@@ -272,9 +287,33 @@ ul, li {
     bottom: 15px;
 }
 
-.input {
+.input-number {
     font-size: 25px;
     width: 100px;
     outline: none;
     text-align: center;
 }
+
+.no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+.alert-tbody{
+    font-size:40px;
+    color:white;
+}
+.alert-writer{
+    font-size:20px;
+}
+
+
+#letter{background-color: wheat}
+#profile{background-color: greenyellow}
+#test{background-color: aquamarine}
+

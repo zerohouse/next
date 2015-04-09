@@ -6,7 +6,7 @@ import next.database.annotation.Column;
 import next.database.annotation.Key;
 import next.mapping.annotation.DateFormat;
 
-public class Essay {
+public class Letter {
 
 	@Key(AUTO_INCREMENT = true)
 	private Integer id;
@@ -21,11 +21,6 @@ public class Essay {
 
 	public String getKey() {
 		return key;
-	}
-
-	@Override
-	public String toString() {
-		return "Essay [id=" + id + ", key=" + key + ", email=" + email + ", head=" + head + ", body=" + body + ", date=" + date + "]";
 	}
 
 	public void setKey(String key) {
