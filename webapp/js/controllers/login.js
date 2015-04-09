@@ -28,7 +28,7 @@ app.controller('controllers.login', ['$scope', '$http', '$user', '$timeout', fun
             return regex.test($scope.user.email);
         },
         password: function () {
-            return /^[\w\W]{4,12}$/i.test($scope.user.password);
+            return /^[\w\W]{4,}$/i.test($scope.user.password);
         },
         all: function () {
             if (!$scope.check.password())
