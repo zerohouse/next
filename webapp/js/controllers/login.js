@@ -72,6 +72,7 @@ app.controller('controllers.login', ['$scope', '$http', '$user', '$timeout', fun
             }
             angular.copy(response.obj, $scope.user);
             $scope.user.logged = true;
+            app.findScope('user').refresh();
         });
     };
 

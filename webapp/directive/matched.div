@@ -1,6 +1,6 @@
 <div>
     <div class='box' ng-repeat="matchedUser in matchedUsers">
-        <h3><span class="profile" ng-style="{backgroundImage:matchedUser.profileUrl}"
+        <h3><span class="profile" style="{{ifProfile(matchedUser)}}"
                   ng-class="{mancon:matchedUser.gender==1, womancon:matchedUser.gender!=1}"></span>
             {{matchedUser.nickName||"나의 인연"}}
             <span class="writeLetter pointer" ng-click="writeLetter(matchedUser)"></span></h3>

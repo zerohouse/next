@@ -1,5 +1,5 @@
 <div class="box">
-    <h3><span class="profile" ng-style="{'background-image':url(user.profileUrl)}"
+    <h3><span class="profile" style="{{ifProfile(user)}}"
               ng-class="{mancon:user.gender==1, womancon:user.gender!=1}"></span>
                     <span ng-click="toggle.toggle('nickName')"
                           ng-show="!toggle.nickName">{{user.nickName||"내 프로필"}}</span>

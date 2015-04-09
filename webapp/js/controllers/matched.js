@@ -90,7 +90,16 @@ app.controller('controllers.matched', ['$scope', '$http', '$user', function ($sc
             }
 
         });
-    }
+    };
+
+    $scope.ifProfile = function (user) {
+        if (user.profileUrl == undefined)
+            return;
+        else if (user.profileUrl == "")
+            return;
+        else
+            return 'background-image:url(' + user.profileUrl + ')'
+    };
 
 
     $scope.writeLetter = function(user){

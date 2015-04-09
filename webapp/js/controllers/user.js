@@ -81,6 +81,15 @@ app.controller('controllers.user', ['$scope', '$http', '$user', '$toggle', '$tim
         }, 500);
     });
 
+    $scope.ifProfile = function (user) {
+        if (user.profileUrl == undefined)
+            return;
+        else if (user.profileUrl == "")
+            return;
+        else
+            return 'background-image:url(' + user.profileUrl + ')'
+    };
+
     $scope.$watch(function () {
         return $scope.user.age;
     }, function () {
