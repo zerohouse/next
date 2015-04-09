@@ -10,15 +10,6 @@
 <body ng-app="meetfit">
 <div id="fb-root"></div>
 <script>
-    window.fbAsyncInit = function () {
-        FB.init({
-            appId: 'your-app-id',
-            xfbml: true,
-            version: 'v2.3'
-        });
-    };
-
-
     (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
@@ -29,18 +20,7 @@
 
     }(document, 'script', 'facebook-jssdk'));
 
-
-    FB.login(function (response) {
-        console.log(response);
-        if (response.authResponse) {
-            console.log('Welcome!  Fetching your information.... ');
-            FB.api('/me', function (response) {
-                console.log('Good to see you, ' + response.name + '.');
-            });
-        } else {
-            console.log('User cancelled login or did not fully authorize.');
-        }
-    });
+    console.log(FB);
 
 </script>
 
