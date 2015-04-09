@@ -22,9 +22,9 @@ app.controller('wrapController', ['$scope', '$user', '$toggle', '$http', '$timeo
         $scope.user.email = "";
         angular.copy(user, $scope.user);
         $http(req("GET", "/api/user/logout")).success(function (response) {
-            $timeout(function () {
+            FB.logout(function (response) {
                 location.reload()
-            }, 1000);
+            });
         });
     };
 

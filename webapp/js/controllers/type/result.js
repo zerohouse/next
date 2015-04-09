@@ -252,6 +252,8 @@ app.controller('controllers.userTest.result', ['$scope', '$user', '$timeout', fu
         $scope.show = true;
         switch (type) {
             case 'MBTI' :
+                if (result.type != undefined)
+                    result = result.type;
                 $scope.result = mbtiResult[result];
                 $scope.result.type = result;
                 $scope.chart = false;
@@ -261,14 +263,16 @@ app.controller('controllers.userTest.result', ['$scope', '$user', '$timeout', fu
                 $scope.chart = true;
                 break;
             case 'EnneaGram' :
+                if (result.type != undefined)
+                    result = result.type;
                 $scope.result = ennagramResult[result.substring(1)];
                 $scope.result.type = result;
                 $scope.result.goodTypes = ennagramResult[result].goodTypes;
                 $scope.result.bestTypes = ennagramResult[result].bestTypes;
                 $scope.chart = false;
                 break;
-        };
-
+        }
+        ;
 
 
         function setLoveType(result) {
