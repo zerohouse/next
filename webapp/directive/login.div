@@ -1,7 +1,7 @@
 <div>
     <h1>당신과 맞는 사람을 만나세요.</h1>
 
-    <p>메일 주소만으로 간단히 가입하여 사용할 수 있습니다.</p>
+    <p>메일 주소만으로 간단히 가입하여 사용할 수 있습니다. 혹은 페북으로 로그인 <span class="fb-login-button" data-max-rows="1" data-size="icon" data-show-faces="false" data-auto-logout-link="false"></span> </p>
 
 
     <input ng-model="user.email" class="input centered"

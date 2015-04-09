@@ -7,14 +7,15 @@
 body {
     padding: 0;
     margin: 0;
-    background-size:cover;
+    background-size: cover;
+    background-image: url('image/back.jpg');
 }
 
 .back {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.5);
     z-index: -1;
 }
 
@@ -32,7 +33,7 @@ h3 {
 }
 
 header {
-    background-color: #2F98CD;
+    background-color: rgba(47, 152, 205, 0.39);
     color: white;
     overflow: auto;
     width: 95%;
@@ -58,12 +59,14 @@ div#login {
 }
 
 .container {
-    width: 80%;
+    width: 90%;
     overflow: auto;
     display: block;
-    padding: 10%;
+    padding: 0 2.5%;
     padding-top: 40px;
     padding-bottom: 40px;
+    margin: 15px 2.5%;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 .input {
@@ -75,7 +78,6 @@ div#login {
     padding: 10px 2%;
     outline: none;
 }
-
 
 textarea {
     width: 96%;
@@ -303,17 +305,51 @@ ul, li {
     user-select: none;
 }
 
-
-.alert-tbody{
-    font-size:40px;
-    color:white;
-}
-.alert-writer{
-    font-size:20px;
+.alert-tbody {
+    font-size: 40px;
+    color: white;
 }
 
+.alert-writer {
+    font-size: 20px;
+}
 
-#letter{background-color: wheat}
-#profile{background-color: greenyellow}
-#test{background-color: aquamarine}
+/*body {*/
+/*-webkit-animation: animate_background 20s linear 0s infinite;*/
+/*-moz-animation: animate_background 20s linear 0s infinite;*/
+/*-o-animation: animate_background 20s linear 0s infinite;*/
+/*animation: animate_background 20s linear 0s infinite;*/
+/*}*/
 
+/*@-webkit-keyframes animate_background {*/
+/*from {*/
+/*background-position: 0 0;*/
+/*}*/
+/*to {*/
+/*background-position: -200px 0;*/
+/*}*/
+/*}*/
+/*@-moz-keyframes animate_background {*/
+/*from {*/
+/*background-position: 0 0;*/
+/*}*/
+/*to {*/
+/*background-position: -200px 0;*/
+/*}*/
+/*}*/
+/*@-o-keyframes animate_background {*/
+/*from {*/
+/*background-position: 0 0;*/
+/*}*/
+/*to {*/
+/*background-position: 0 -200px;*/
+/*}*/
+/*}*/
+/*@keyframes animate_background {*/
+/*from {*/
+/*background-position: 0 0;*/
+/*}*/
+/*to {*/
+/*background-position: 0 -200px;*/
+/*}*/
+/*}*/
