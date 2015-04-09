@@ -104,14 +104,10 @@ public class UserController {
 		User user = http.getJsonObject(User.class, "user");
 		if (user == null)
 			return;
-		User fromDB = dao.getRecordByClass(User.class, user.getEmail());
-		if (fromDB == null)
-			dao.insert(user);
-		else
-			fromDB.defineFactors(dao);
-		http.setSessionAttribute("user", fromDB);
-		fromDB.removePassword();
-		http.setView(new Json(new Result(fromDB)));
+		if (dao.insertIfExistUpdate(user))
+			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
+		http.setSessionAttribute("user", user);
+		http.setView(new Json(new Result(user)));
 	}
 
 	@Mapping(value = "/api/user/logout", method = "GET")
