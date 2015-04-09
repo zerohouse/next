@@ -314,6 +314,15 @@ ul, li {
     font-size: 20px;
 }
 
+.facebook-button {
+    background-color: #4B609F;
+    color: white;
+    padding: 11px;
+    border-radius: 8px;
+    font-size: 92%;
+    cursor:pointer;
+}
+
 /*body {*/
 /*-webkit-animation: animate_background 20s linear 0s infinite;*/
 /*-moz-animation: animate_background 20s linear 0s infinite;*/
