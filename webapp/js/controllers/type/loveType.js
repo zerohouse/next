@@ -109,7 +109,7 @@ app.controller('controllers.userTest.loveType', ['$http', '$scope', '$user', fun
             }
 
         });
-        if (!$scope.done != 50)
+        if ($scope.done != 50)
             return;
 
         var resultString = "";
