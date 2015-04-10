@@ -116,3 +116,20 @@
 .womancon {
     background-image: url('image/icon/woman.png');
 }
+
+
+.writeLetter{
+    background-image: url('image/icon/letter.png');
+}
+
+.writeLetter:hover{
+    background-image: url('image/icon/letterhover.png');
+}
+
+.location{
+    background-image: url('image/icon/location.png');
+}
+
+.location:hover{
+    background-image: url('image/icon/locationhover.png');
+}

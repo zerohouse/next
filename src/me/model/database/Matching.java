@@ -26,6 +26,7 @@ public class Matching {
 	public Matching() {
 
 	}
+	
 
 	@Override
 	public String toString() {
@@ -50,6 +51,8 @@ public class Matching {
 			this.woman = user2.getEmail();
 		}
 	}
+
+	
 
 	@Override
 	public int hashCode() {

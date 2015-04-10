@@ -8,7 +8,7 @@
 
     <div ng-show="chart">
         <canvas width="400" height="400" id="canvasResult"></canvas>
-        <div class="ppwrap" ng-show="factor.types!=undefined">
+        <div class="ppwrap">
             <div ng-show="friend"><span class="nemo fcolor"></span><span>친구</span></div>
             <div><span class="nemo mcolor"></span><span>나</span></div>
         </div>

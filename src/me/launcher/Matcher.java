@@ -25,9 +25,12 @@ public class Matcher {
 
 		MatchingUsers mu = new MatchingUsers(men, women, dao);
 		List<MatchedUsers> m = mu.getMatcheds();
+		System.out.println(m);
 		m.forEach(mm->{
 			dao.insert(mm.getMatching());
 		});
+		
+		
 		dao.commitAndClose();
 	}
 

@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.matching.factor.Age;
 import me.matching.factor.Factor;
+import me.matching.factor.Location;
 import next.database.DAO;
 import next.database.annotation.Column;
 import next.database.annotation.Exclude;
@@ -28,6 +30,8 @@ public class User {
 	private Integer age;
 	private String nickName;
 	private String profileUrl;
+	private String location;
+	private String address;
 
 	@Exclude
 	private Map<String, Factor> factors;
@@ -36,6 +40,14 @@ public class User {
 
 	public Map<String, Factor> getFactors() {
 		return factors;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public String getAddress() {
+		return address;
 	}
 
 	public String getNickName() {
@@ -136,7 +148,8 @@ public class User {
 	}
 
 	public void defineFactors(DAO dao) {
-		factors = new HashMap<String, Factor>();
+		if (factors == null)
+			factors = new HashMap<String, Factor>();
 		List<Map<String, Object>> map = dao.getRecordsMap("SELECT * FROM TestResult WHERE TestResult_userEmail=?", email);
 		if (map == null)
 			return;
@@ -145,9 +158,20 @@ public class User {
 		});
 	}
 
+	public void defineUserFactors() {
+		if (factors == null)
+			factors = new HashMap<String, Factor>();
+		if (age == null || age == 0)
+			return;
+		factors.put("Age", new Age(age));
+		if (location == null || location.equals(""))
+			return;
+		factors.put("Location", new Location(location));
+	}
+
 	@Override
 	public String toString() {
-		return email + "|" + point + "\n";
+		return email;
 	}
 
 	public void putFactor(String key, Factor factor) {

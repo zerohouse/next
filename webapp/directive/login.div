@@ -1,8 +1,14 @@
 <div>
-    <h1>당신과 맞는 사람을 만나세요.</h1>
+    <br>
 
-    <p>메일 주소만으로 간단히 가입하여 사용할 수 있습니다. 혹은 <span class="facebook-button" ng-click="facebookLogin()">Facebook으로 로그인</span> </p>
+    <h1>다시 한번, </h1>
 
+    <h1>당신과 꼭 맞는 사람을 만나요.</h1>
+
+    <br>
+
+    <p>메일 주소만으로 간단히 가입하여 사용할 수 있습니다. 또는 <span class="facebook-button" ng-click="facebookLogin()">Facebook으로 로그인</span>
+    </p>
 
 
     <input ng-model="user.email" class="input centered"
@@ -24,7 +30,7 @@
         <div ng-show="!registeredEmail" class="button" ng-click="register()">입력한 Email/Password로 가입하기</div>
     </div>
 
-    <p><span class="striked">일단은</span> 세 가지 테스트를 통해 당신과 가장 어울리는 당신의 소울 메이트를 찾아드립니다.</p>
+    <p><span class="striked">일단은</span> 세 가지 테스트를 통해 당신과 가장 어울리는 인연을 찾아드립니다.</p>
 
     <h3>MBTI(마이어-브릭스 유형 지표 Katharine Cook Briggs, Isabel Briggs Myers)</h3>
 

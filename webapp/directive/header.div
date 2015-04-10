@@ -1,4 +1,4 @@
-<div class="inlinblock"><span class="logo">Soulmate</span></div>
+<div class="inlinblock"><span class="logo">BeginAgain</span></div>
 <div class="inlinblock" ng-show="user.logged">
     <span class="icon test-icon pointer" ng-click="move('test')"></span>
         <span class="icon pointer" ng-class="{manicon:user.gender==1, womanicon:user.gender!=1}"

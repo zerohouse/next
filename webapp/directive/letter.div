@@ -1,4 +1,4 @@
-<h1>Letter</h1>
+<h1>편지들</h1>
 
 
 <h2>받은 편지<small ng-show="receiveLetters.length==0">가 없습니다.</small></h2>

@@ -7,6 +7,11 @@ import java.util.List;
 
 public class LoveType implements Factor {
 
+	@Override
+	public String toString() {
+		return "LoveType";
+	}
+
 	private static Comparator<TypePercent> tComparator = new Comparator<TypePercent>() {
 		@Override
 		public int compare(TypePercent o1, TypePercent o2) {

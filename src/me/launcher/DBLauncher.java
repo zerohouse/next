@@ -11,12 +11,12 @@ import next.database.maker.PackageCreator;
 public class DBLauncher {
 	public static void main(String[] args) throws Exception {
 		PackageCreator.createTable(true, "me.model.database");
-		//insertTestData();
+		insertTestData();
 	}
 
 	static void insertTestData() {
 		DAO dao = new DAO();
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 3; i++) {
 			User user = new User();
 			Double a = (Math.random() * 10) + 20;
 			user.setAge(a.intValue());
@@ -41,7 +41,7 @@ public class DBLauncher {
 			dao.insert(result3);
 			dao.insert(user);
 		}
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 5; i++) {
 			User user = new User();
 			user.setAuthEmail(true);
 			user.setPassword("12345");

@@ -5,7 +5,9 @@
                           ng-show="!toggle.nickName">{{user.nickName||"내 프로필"}}</span>
         <input type="text" style="width:inherit" placeholder="닉네임을 정해주세요." ng-model="user.nickName"
                ng-show="toggle.nickName">
-        <span ng-click="toggle.toggle('nickName')" ng-show="toggle.nickName">OK</span></h3>
+        <span ng-click="toggle.toggle('nickName')" ng-show="toggle.nickName">OK</span><span class="location profile-icon" ng-click="getLocation()"></span></h3>
+
+    <div class="vertical-margin" ng-show="user.address">@ {{user.address}}</div>
 
     <div>{{user.email}}
                     <span ng-click="toggle.toggle('age')"><span ng-show="user.age==0" class="red">나이 없음</span><span

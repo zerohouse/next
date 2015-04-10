@@ -18,6 +18,10 @@ public class MachedController {
 	public void user(Http http, DAO dao) throws JsonAlert {
 		User user = http.getSessionAttribute(User.class, "user");
 		String column = "";
+		if (user == null)
+			throw new JsonAlert("");
+		if (user.getGender() == null)
+			throw new JsonAlert("성별이 없어 이성 매칭이 되지 않습니다.");
 		switch (user.getGender()) {
 		case 1:
 			column = "Matching_man";
@@ -28,7 +32,8 @@ public class MachedController {
 		default:
 			return;
 		}
-		List<Matching> matchings = dao.getRecordsByClass(Matching.class, String.format("SELECT * FROM Matching WHERE %s=?", column), user.getEmail());
+		List<Matching> matchings = dao.getRecordsByClass(Matching.class,
+				String.format("SELECT * FROM Matching WHERE %s=? ORDER BY Matching_matchDay Limit 0,3", column), user.getEmail());
 		List<User> matchedUsers = new ArrayList<User>();
 		if (matchings == null)
 			return;

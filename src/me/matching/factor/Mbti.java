@@ -170,6 +170,11 @@ public class Mbti implements Factor {
 
 	}
 
+	@Override
+	public String toString() {
+		return "Mbti [type=" + type + ", bestTypes=" + bestTypes + ", goodTypes=" + goodTypes + "]";
+	}
+
 	// http://www.massmatch.com/MBTI-2.php
 	@Override
 	public int getPoint(Factor factor) {

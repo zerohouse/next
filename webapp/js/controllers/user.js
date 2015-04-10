@@ -53,7 +53,7 @@ app.controller('controllers.user', ['$scope', '$http', '$user', '$toggle', '$tim
             obj.gender = $scope.user.gender;
             $http(req("POST", "/api/user/update", {user: JSON.stringify(obj)})).success(function (response) {
                 if (response.error) {
-                    error(reponse.errorMessage);
+                    error(response.errorMessage);
                     return;
                 }
             });
@@ -74,7 +74,7 @@ app.controller('controllers.user', ['$scope', '$http', '$user', '$toggle', '$tim
             obj.nickName = $scope.user.nickName;
             $http(req("POST", "/api/user/update", {user: JSON.stringify(obj)})).success(function (response) {
                 if (response.error) {
-                    error(reponse.errorMessage);
+                    error(response.errorMessage);
                     return;
                 }
             });
@@ -104,12 +104,60 @@ app.controller('controllers.user', ['$scope', '$http', '$user', '$toggle', '$tim
             obj.age = $scope.user.age;
             $http(req("POST", "/api/user/update", {user: JSON.stringify(obj)})).success(function (response) {
                 if (response.error) {
-                    error(reponse.errorMessage);
+                    error(response.errorMessage);
                     return;
                 }
             });
         }, 500);
     });
+
+    $scope.$watch(function () {
+        return $scope.user.location;
+    }, function () {
+        if ($scope.user.email == "")
+            return;
+        clearTimeout(this.ajax);
+        this.ajax = setTimeout(function () {
+            var obj = {};
+            obj.email = $scope.user.email;
+            obj.location = $scope.user.location;
+            obj.address = $scope.user.address;
+            $http(req("POST", "/api/user/update", {user: JSON.stringify(obj)})).success(function (response) {
+                if (response.error) {
+                    error(response.errorMessage);
+                    return;
+                }
+            });
+        }, 500);
+    });
+
+
+    var position;
+
+    function getGoogleMapUrl(response) {
+        position = response.coords.latitude + "," + response.coords.longitude;
+        var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + position;
+        $http(req("GET", url)).success(function (response) {
+            if (response.status != "OK") {
+                error("주소를 가져오는 과정에서 문제가 생겼네요.");
+                return;
+            }
+            $scope.user.location = position;
+            $scope.user.address = response.results[4].formatted_address;
+        });
+    }
+
+    $scope.getLocation = function () {
+        if (!confirm("현재 위치를 내 지역으로 설정합니다."))
+            return;
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(getGoogleMapUrl);
+        } else {
+            error("브라우저가 지원하지 않는 기능입니다.");
+        }
+    };
+
 
 }]);
 

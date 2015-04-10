@@ -119,6 +119,11 @@ public class Enneagram implements Factor {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "Enneagram [type=" + type + ", bestTypes=" + bestTypes + ", goodTypes=" + goodTypes + ", badTypes=" + badTypes + "]";
+	}
+
 	// http://www.9types.com/writeup/enneagram_relationships.php
 	@Override
 	public int getPoint(Factor f) {
