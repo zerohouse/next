@@ -77,16 +77,16 @@ public class MatchingUsers {
 		List<MatchedUsers> result = new ArrayList<MatchedUsers>();
 		List<User> men = this.men.size() > women.size() ? this.men : women;
 		List<User> other = this.men.size() <= women.size() ? this.men : women;
-		
-		men.forEach(man->{
+
+		men.forEach(man -> {
 			int point = 0;
-			for(int i=0;i<other.size();i++){
+			for (int i = 0; i < other.size(); i++) {
 				point += getPoint(man, other.get(i));
 			}
 			man.setPoint(point);
 		});
-		
-		Collections.sort(men, new Comparator<User>(){
+
+		Collections.sort(men, new Comparator<User>() {
 
 			@Override
 			public int compare(User o1, User o2) {
@@ -94,10 +94,9 @@ public class MatchingUsers {
 					return 0;
 				return o1.getPoint() < o2.getPoint() ? 1 : -1;
 			}
-			
+
 		});
-		
-		
+
 		int max = other.size();
 		int i = 0;
 		while (men.size() != other.size()) {
@@ -109,8 +108,10 @@ public class MatchingUsers {
 		while (!men.isEmpty()) {
 			User user = men.get(0);
 			User selected = getHighest(user);
-			if (selected == null)
-				return result;
+			if (selected == null) {
+				men.remove(user);
+				continue;
+			}
 			MatchedUsers mu = new MatchedUsers(user, selected);
 			if (has(alreadyMatched, mu)) {
 				other.remove(selected);

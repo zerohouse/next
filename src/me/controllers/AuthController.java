@@ -47,7 +47,7 @@ public class AuthController {
 		auth.setKey(AuthKeyMaker.getKey(15));
 		if (!dao.insertIfExistUpdate(auth))
 			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
-		AuthSender.sendMail(email, new Mail("Uss 패스워드 변경 메일입니다.", String.format("<form action='%s' method='post'>"
+		AuthSender.sendMail(email, new Mail("BeginAgain 패스워드 변경 메일입니다.", String.format("<form action='%s' method='post'>"
 				+ "변경할 패스워드 : <input maxlength='12' minlength='4' name='password' type='password' required>" + "<button type='submit'>변경</button></form>", auth.getLink())));
 		http.setView(new Json(new Result()));
 	}

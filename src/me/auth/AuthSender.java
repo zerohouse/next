@@ -39,7 +39,7 @@ public class AuthSender {
 				}
 			}
 		};
-		sendMail.run();
-
+		Thread thread = new Thread(sendMail);
+		thread.start();
 	}
 }
