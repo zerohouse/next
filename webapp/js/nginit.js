@@ -33,3 +33,7 @@ app.directive("header", function () {
         templateUrl: "directive/header.div"
     }
 });
+
+app.setting = {
+    questionDelay: 800
+};

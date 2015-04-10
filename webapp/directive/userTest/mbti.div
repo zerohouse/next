@@ -1,4 +1,4 @@
-<div class="box">
+<div class="box" ng-class="{success:user.factors.MBTI!=undefined, disabled:disabled}">
     <h3 class="green" ng-if="user.factors.MBTI!=undefined">테스트 결과 : {{user.factors.MBTI.type}}</h3>
     
     <h1 ng-click="toggle.toggle('mbti')" class="pointer">MBTI</h1>

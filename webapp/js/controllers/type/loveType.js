@@ -1,7 +1,7 @@
 /**
  * Created by park on 15. 4. 6..
  */
-app.controller('controllers.userTest.loveType', ['$http', '$scope', '$user', function ($http, $scope, $user) {
+app.controller('controllers.userTest.loveType', ['$http', '$scope', '$user','$timeout', function ($http, $scope, $user, $timeout) {
     $scope.user = $user;
 
     $scope.test = [
@@ -85,7 +85,15 @@ app.controller('controllers.userTest.loveType', ['$http', '$scope', '$user', fun
 
     $scope.$watch('test', compute, true);
     $scope.done = 0;
+
     function compute() {
+
+        $scope.disabled = true;
+        $timeout(function(){
+            $scope.disabled = false;
+        }, app.setting.questionDelay);
+
+
         $scope.result.R.value = 0;
         $scope.result.B.value = 0;
         $scope.result.F.value = 0;

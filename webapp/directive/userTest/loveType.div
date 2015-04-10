@@ -1,4 +1,4 @@
-<div class="box">
+<div class="box" ng-class="{success:user.factors.LoveType!=undefined, disabled:disabled}">
     <h3 class="green" ng-if="user.factors.LoveType!=undefined">테스트 결과 : {{user.factors.LoveType.type}}</h3>
 
     <h1 ng-click="toggle.toggle('loveTest')" class="pointer">Love Type Test (Designed By Dr.Lasswell & Dr.Hotkoff)</h1>

@@ -1,4 +1,4 @@
-<div class="box">
+<div class="box" ng-class="{success:user.factors.EnneaGram!=undefined, disabled:disabled}">
     <h3 class="green" ng-if="user.factors.EnneaGram!=undefined">테스트 결과 : {{user.factors.EnneaGram.type}}</h3>
 
     <h1 ng-click="toggle.toggle('enneagram')" class="pointer">Enneagram</h1>

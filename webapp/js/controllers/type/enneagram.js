@@ -3,7 +3,7 @@
  */
 
 
-app.controller('controllers.userTest.enneagram', ['$http', '$user', '$scope', function ($http, $user, $scope) {
+app.controller('controllers.userTest.enneagram', ['$http', '$user', '$scope', '$timeout', function ($http, $user, $scope, $timeout) {
 
     $scope.user = $user;
 
@@ -65,6 +65,13 @@ app.controller('controllers.userTest.enneagram', ['$http', '$user', '$scope', fu
     $scope.$watch('test', compute, true);
 
     function compute() {
+
+        $scope.disabled = true;
+        $timeout(function () {
+            $scope.disabled = false;
+        }, app.setting.questionDelay);
+
+
         $scope.done = 0;
 
         $scope.type = false;

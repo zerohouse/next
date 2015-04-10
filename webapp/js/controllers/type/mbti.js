@@ -1,4 +1,4 @@
-app.controller('controllers.userTest.mbti', ['$http', '$scope', '$user', function ($http, $scope, $user) {
+app.controller('controllers.userTest.mbti', ['$http', '$scope', '$user','$timeout', function ($http, $scope, $user,$timeout) {
 
     $scope.user = $user;
     var questions = ["나는 ____이 좋다.", "처음 만나는 사람을 보면 어떤 기분이 드나요?", "'해야할 일 목록'을 작성하는 것을 좋아하나요?", "다른 사람들은 나를 알기 쉬운 사람이라고 생각하나요?", "관심을 받는 느낌은 어떠한가요?", "나는 말할 때 생각하며 말을 하나요, 아니면 생각을 한 후에 말을 하나요?", "나는 '말'을 잘 하나요?", "나는 어떤 사람과도 수다를 떨 수 있나요?", "나의 사교성은?", "나의 관심은?", "일상 생활에서든 회사에서든 나는 ____이(가) 더 좋다.", "나의 취미는?", "나는 평소에 컴퓨터나 휴대폰 등으로 게임하는 것을 즐긴다.", "내가 더 믿는 것은?", "나의 성별은?", "나는 어떠한 사람인가요?", "만약 현실적인 한계가 없다면, 나는 어떤 일을 더 선호할까요?", "나는 어떠한 방식으로 무언가를 이해하고 설명하나요?", "나는 어떠한 사람인가요?", "나는 무엇을 하기를 좋아하나요?", "내가 더 중요히 여기는 것은?", "남이 하는 말을 들을 때면...", "나의 생활 방식은?", "내가 어떠한 이론을 이해할 때...", "나는...", "나는 평소에...", "나는 토론을 좋아하나요?", "나는 어떠한 사람인가요?", "나는 가끔...", "나의 생각을 표현할 때...", "다른 사람들과 함께 지낼 때...", "나를 표현할 때는...", "나에게 공평이란?", "표현할 때 가장 중요한 것은 무엇인가요?", "비평에 대해 어떻게 생각하나요?", "남의 눈에 나는...", "나는 _____에 따른다.", "내가 더 좋아하는 것은 무엇인가요?", "나의 집중력은?", "데드라인에 대한 나의 태도?", "나는 ____고 생각한다.", "무언가를 할 때....", "시간을 지키는 것은 중요하나요?", "나는 어디에서 힘을 얻나요?", "나는 계획 짜는 것을 좋아하나요?", "나만의 공간에서...", "일과 오락에 대한 나의 태도는?"];
@@ -26,6 +26,12 @@ app.controller('controllers.userTest.mbti', ['$http', '$scope', '$user', functio
     $scope.$watch("mbti", computeType, true);
 
     function computeType() {
+
+        $scope.disabled = true;
+        $timeout(function(){
+            $scope.disabled = false;
+        }, app.setting.questionDelay);
+
         $scope.value = {E: 0, S: 0, F: 0, J: 0, I: 0, N: 0, T: 0, P: 0};
         $scope.testDone = 0;
         $scope.mbti.forEach(function (each) {
