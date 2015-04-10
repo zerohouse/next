@@ -45,7 +45,7 @@
     <br>
 
 
-    <div ng-click="toggle.toggle('explain')">덧</div>
+    <div ng-click="toggle.toggle('explain')"><span class="striked">덫</span>덧</div><br>
     <div class="light" ng-show="toggle.explain">
         헤어지고 늦은 나이에 다시 만나기도 힘들고, 지난번 이별이 힘들었던지라.. 안 헤어질 잘 맞는
         사람 만나 보고싶어서 만들고 있습니다.<span class="striked">흔한 개발자의 실연 극복 방법..</span><br><br>
