@@ -35,5 +35,5 @@ app.directive("header", function () {
 });
 
 app.setting = {
-    questionDelay: 800
+    questionDelay: 200
 };
