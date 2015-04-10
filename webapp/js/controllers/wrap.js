@@ -8,6 +8,8 @@ app.controller('wrapController', ['$scope', '$user', '$toggle', '$http', '$timeo
     $toggle.test = true;
     $toggle.profile = true;
     $toggle.letter = true;
+    $toggle.hideDone = true;
+
 
     $scope.move = function (id) {
         var body = document.querySelector('#body');

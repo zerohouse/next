@@ -1,12 +1,13 @@
 <div class="box" ng-class="{success:user.factors.MBTI!=undefined, disabled:disabled}">
     <h3 class="green" ng-if="user.factors.MBTI!=undefined">테스트 결과 : {{user.factors.MBTI.type}}</h3>
-    
+
     <h1 ng-click="toggle.toggle('mbti')" class="pointer">MBTI</h1>
     <h5 class="mobile-none"> 매칭분석근거 : http://www.massmatch.com/MBTI-2.php</h5>
 
     <div ng-show="toggle.mbti">
 
-        <input type="checkbox" ng-model="toggle.hideDone" ng-init="toggle.hideDone=true"> 완료된것 숨기기
+        <span ng-click="toggle.toggle('hideDone')">완료된것 <span ng-show="toggle.hideDone">보이기</span>  <span
+                ng-show="!toggle.hideDone">숨기기</span></span>
         <span>{{testDone}}/47</span>
         <ul>
             <li ng-repeat="q in mbti"

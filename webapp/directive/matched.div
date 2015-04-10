@@ -10,13 +10,14 @@
             <span class="writeLetter profile-icon" ng-click="writeLetter(matchedUser)"></span></h3>
 
         <div class="vertical-margin" ng-show="matchedUser.address">@ {{matchedUser.address}}</div>
-        <div>{{matchedUser.email}}
+        <div>{{matchedUser.email}}</div>
+        <div>
             <span ng-show="matchedUser.age==0" class="red">나이 없음</span><span
-                    ng-show="matchedUser.age!=0">{{matchedUser.age}}세</span>
+                ng-show="matchedUser.age!=0">{{matchedUser.age}}세</span>
 
             ( <span ng-show="matchedUser.gender==0" class="red">성별 없음</span><span
-                    ng-show="matchedUser.gender==1">남</span><span
-                    ng-show="matchedUser.gender==2">여</span> )
+                ng-show="matchedUser.gender==1">남</span><span
+                ng-show="matchedUser.gender==2">여</span> )
             <span class="green" ng-show="matchedUser.authEmail">인증</span>
             <span class="red" ng-show="!matchedUser.authEmail">인증필요</span>
 
