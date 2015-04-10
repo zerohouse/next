@@ -20,6 +20,22 @@
         margin-bottom: 0;
     }
 
+    input {
+        width: 86%;
+        margin: 5px 5%;
+        font-size: 22px;
+        padding: 5px 2%;
+    }
+
+    .button.mobile-big {
+        margin: 0;
+    }
+
+    .facebook-button {
+        padding: 8px;
+        margin: 3px;
+    }
+
     .inline-block {
         margin-top: 5px;
         margin-bottom: -5px;
