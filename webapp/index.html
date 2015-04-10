@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, user-scalable=no">
     <link rel="shortcut icon" href="css/favicon.ico" type="image/x-icon">
     <link rel="icon" href="css/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/icon.css">
     <link rel="stylesheet" href="css/loading.css">
     <link rel="stylesheet" href="css/ng-animate.css">
+    <link rel="stylesheet" href="css/mobile.css">
     <title>BeginAgain.be</title>
 </head>
 <body ng-app="meetfit">
@@ -22,7 +23,7 @@
 
     <div id="body" ng-show="user.logged">
         <div ng-show="toggle.test" id="test" class="light no-select container" class="light">
-            <h1>당신은 어떤 사람인가요?</h1>
+            <h1 class="mobile-big">당신은 어떤 사람인가요?</h1>
             <lovetype></lovetype>
             <mbti></mbti>
             <enneagram></enneagram>
@@ -30,9 +31,9 @@
 
 
         <div ng-show="toggle.profile" id="profile" class="container">
-            <h1>내 프로필</h1>
+            <h1 class="mobile-big">내 프로필</h1>
             <user></user>
-            <h1>인연</h1>
+            <h1 class="mobile-big">인연</h1>
             <matched></matched>
         </div>
 

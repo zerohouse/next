@@ -7,4 +7,3 @@
               ng-click="move('letter')"></span>
     <span class="icon logout-icon pointer" ng-click="logout()"></span>
 </div>
-<span class="icon q-icon pointer" ng-click="mailTo()"></span>

@@ -4,7 +4,7 @@
     <h1 ng-click="toggle.toggle('loveTest')" class="pointer">Love Type Test (Designed By Dr.Lasswell & Dr.Hotkoff)</h1>
 
 
-    <h5> 분석근거 :
+    <h5 class="mobile-none"> 분석근거 :
         http://www.bennadel.com/blog/1958-for-better-the-love-scale-quiz-designed-by-dr-hatkoff.htm</h5>
 
 

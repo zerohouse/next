@@ -1,0 +1,110 @@
+@media screen and (max-width: 600px) {
+
+    ul, li {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+    }
+
+    body {
+        text-align: center;
+    }
+
+    .logo {
+        font-size: 25px;
+        padding-top: 2px;
+        padding-right: 5px;
+        margin-bottom: 0;
+    }
+
+    .inline-block {
+        margin-top: 5px;
+        margin-bottom: -5px;
+    }
+
+    .icon {
+        float: left;
+        margin: 8px;
+        margin-bottom: 10px;
+        background-size: 100%;
+        width: 30px;
+        background-position: center;
+        height: 30px;
+        background-repeat: no-repeat;
+    }
+
+    .mobile-none {
+        display: none;
+    }
+
+    .container {
+        width: 88%;
+        overflow: auto;
+        display: block;
+        padding: 0 4%;
+        margin: 2%;
+        border-radius: 0;
+    }
+
+    .box {
+        text-align: justify;
+        margin: 10px 0;
+        padding: 5px 20px;
+    }
+
+    .q-icon {
+        display: none;
+    }
+
+    .button {
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 16px;
+    }
+
+    .mobile-small {
+        font-size: 16px;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+
+    h3 {
+        font-size: 14px;
+    }
+
+    result .box {
+        width: 80%;
+        left: 6%;
+        position: absolute;
+    }
+
+    .add-letter {
+        width: 60px;
+        height: 60px;
+        bottom: 15px;
+        right: 15px;
+        line-height: 60px;
+        font-size: 25px;
+    }
+
+    alert * {
+        font-size: 20px;
+    }
+
+    .alert-text {
+        margin-top: 120px;
+    }
+
+    .mobile-big {
+        font-size: 25px;
+        margin-top: 20px;
+        margin-bottom: 0px;
+    }
+}
