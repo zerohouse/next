@@ -3,7 +3,7 @@
  */
 
 
-app.controller('controllers.userTest.enneagram', ['$http','$user', '$scope', function ($http,$user ,$scope) {
+app.controller('controllers.userTest.enneagram', ['$http', '$user', '$scope', function ($http, $user, $scope) {
 
     $scope.user = $user;
 
@@ -60,19 +60,19 @@ app.controller('controllers.userTest.enneagram', ['$http','$user', '$scope', fun
     $scope.test = test;
 
 
-    $scope.done = false;
+    $scope.done = 0;
 
     $scope.$watch('test', compute, true);
 
     function compute() {
+        $scope.done = 0;
 
         $scope.type = false;
 
         var a = 0;
-        var undefinecount = 0;
         $scope.test.a.forEach(function (q) {
-            if (q.answer == undefined) {
-                undefinecount++;
+            if (q.answer != undefined) {
+                $scope.done++;
                 return;
             }
             if (q.answer == 'y')
@@ -81,8 +81,8 @@ app.controller('controllers.userTest.enneagram', ['$http','$user', '$scope', fun
 
         var b = 0;
         $scope.test.b.forEach(function (q) {
-            if (q.answer == undefined) {
-                undefinecount++;
+            if (q.answer != undefined) {
+                $scope.done++;
                 return;
             }
             if (q.answer == 'y')
@@ -91,8 +91,8 @@ app.controller('controllers.userTest.enneagram', ['$http','$user', '$scope', fun
 
         var c = 0;
         $scope.test.c.forEach(function (q) {
-            if (q.answer == undefined) {
-                undefinecount++;
+            if (q.answer != undefined) {
+                $scope.done++;
                 return;
             }
             if (q.answer == 'y')
@@ -101,8 +101,8 @@ app.controller('controllers.userTest.enneagram', ['$http','$user', '$scope', fun
 
         var x = 0;
         $scope.test.x.forEach(function (q) {
-            if (q.answer == undefined) {
-                undefinecount++;
+            if (q.answer != undefined) {
+                $scope.done++;
                 return;
             }
             if (q.answer == 'y')
@@ -111,8 +111,8 @@ app.controller('controllers.userTest.enneagram', ['$http','$user', '$scope', fun
 
         var y = 0;
         $scope.test.y.forEach(function (q) {
-            if (q.answer == undefined) {
-                undefinecount++;
+            if (q.answer != undefined) {
+                $scope.done++;
                 return;
             }
             if (q.answer == 'y')
@@ -121,15 +121,15 @@ app.controller('controllers.userTest.enneagram', ['$http','$user', '$scope', fun
 
         var z = 0;
         $scope.test.z.forEach(function (q) {
-            if (q.answer == undefined) {
-                undefinecount++;
+            if (q.answer != undefined) {
+                $scope.done++;
                 return;
             }
             if (q.answer == 'y')
                 z++;
         });
 
-        if (undefinecount != 0)
+        if ($scope.done != 36)
             return;
 
         var abc = Math.max(a, b, c);
@@ -188,7 +188,6 @@ app.controller('controllers.userTest.enneagram', ['$http','$user', '$scope', fun
         }
 
         $scope.type = gender + result;
-        $scope.done = true;
     };
 
     $scope.showResult = function () {

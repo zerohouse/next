@@ -16,10 +16,8 @@ public class User {
 	@Exclude
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-	@Key(AUTO_INCREMENT = true)
-	private Integer id;
+	@Key
 	@RequiredRegex(EMAIL_PATTERN)
-	@Column(function = "UNIQUE", hasDefaultValue = false)
 	private String email;
 	private Boolean authEmail;
 	@RequiredRegex("^[\\w\\W]{4,}$")

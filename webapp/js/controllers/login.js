@@ -42,11 +42,16 @@ app.controller('controllers.login', ['$scope', '$http', '$user', '$timeout', fun
     $scope.send = false;
 
     $scope.register = function () {
-        if ($scope.send)
-            error("처리중입니다. 삐리삐리.");
-        $scope.send = true;
-        if (!$scope.check.all())
+        if (!$scope.check.all()) {
+            error("입력값을 확인해주세요!");
             return;
+        }
+        if ($scope.send) {
+            error("처리중입니다. 삐리삐리.");
+            return;
+        }
+        $scope.send = true;
+
         $http(req("POST", "/api/user", {user: JSON.stringify($scope.user)})).success(function (response) {
             $scope.send = false;
             if (response.error) {
@@ -86,8 +91,10 @@ app.controller('controllers.login', ['$scope', '$http', '$user', '$timeout', fun
     };
 
     $scope.fbregister = function () {
-        if ($scope.send)
+        if ($scope.send) {
             error("처리중입니다. 삐리삐리.");
+            return;
+        }
         $scope.send = true;
         $http(req("POST", "/api/user/fblogin", {user: JSON.stringify($scope.user)})).success(function (response) {
             $scope.send = false;
@@ -104,11 +111,17 @@ app.controller('controllers.login', ['$scope', '$http', '$user', '$timeout', fun
 
 
     $scope.login = function () {
-        if ($scope.send)
-            error("처리중입니다. 삐리삐리.");
-        $scope.send = true;
-        if (!$scope.check.all())
+        if (!$scope.check.all()){
+            error("입력값을 확인해주세요!");
             return;
+        }
+
+        if ($scope.send) {
+            error("처리중입니다. 삐리삐리.");
+            return;
+        }
+        $scope.send = true;
+
         $http(req("POST", "/api/user/login", {user: JSON.stringify($scope.user)})).success(function (response) {
             $scope.send = false;
             if (response.error) {
@@ -125,8 +138,13 @@ app.controller('controllers.login', ['$scope', '$http', '$user', '$timeout', fun
     }
 
     $scope.passwordRedefine = function () {
-        error("이메일을 보내는 중입니다.");
+        if ($scope.send) {
+            error("처리중입니다. 삐리삐리.");
+            return;
+        }
+        $scope.send = true;
         $http(req("GET", "/api/passwordRedefine?email=" + $scope.user.email)).success(function (response) {
+            $scope.send = false
             if (response.error) {
                 error(response.errorMessage);
                 return;

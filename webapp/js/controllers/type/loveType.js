@@ -83,12 +83,9 @@ app.controller('controllers.userTest.loveType', ['$http', '$scope', '$user', fun
     $scope.result.P.title = "Game-Playing";
     $scope.result.P.description = "유희적 사랑을 추구하는 사람은 사랑을 책임져야 하는 것으로 보기보다는 인생을 즐기기 위한 하나의 수단으로 생각한다. 여러 가지 취미생활을 할 수 있는 것과 마찬가지로 파트너도 한 사람으로 만족하지 못하는 경향이 있다. 사랑도 게임처럼 재미있게 할 수 있어야 되기 때문에 책임감이나 의무감에 많은 비중을 두지 않는다. 섹스를 추구하기 때문에 다양하고 노련한 취향과 매너를 보여줄 수는 있으나 지나치게 친밀해지는 것을 경계하고 사랑하는 사람과 헤어져도 심한 고통을 겪지 않는다.";
 
-    $scope.done = false;
-
     $scope.$watch('test', compute, true);
-
+    $scope.done = 0;
     function compute() {
-        var done = true;
         $scope.result.R.value = 0;
         $scope.result.B.value = 0;
         $scope.result.F.value = 0;
@@ -97,12 +94,13 @@ app.controller('controllers.userTest.loveType', ['$http', '$scope', '$user', fun
         $scope.result.P.value = 0;
         $scope.resultType;
         var max = 0;
+        $scope.done = 0;
         $scope.test.forEach(function (q) {
             if ($scope.resultType == undefined) {
                 $scope.resultType = q.type;
             }
-            if (q.answer == undefined)
-                done = false;
+            if (q.answer != undefined)
+                $scope.done++;
             if (q.answer == 'y') {
                 $scope.result[q.type].value++;
                 $scope.result[q.type].percent = parseInt(($scope.result[q.type].value / $scope.result[q.type].max) * 100);
@@ -111,7 +109,7 @@ app.controller('controllers.userTest.loveType', ['$http', '$scope', '$user', fun
             }
 
         });
-        if (!done)
+        if (!$scope.done != 50)
             return;
 
         $scope.done = true;

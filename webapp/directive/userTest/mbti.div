@@ -1,7 +1,7 @@
 <div class="box">
     <h3 class="green" ng-if="user.factors.MBTI!=undefined">테스트 결과 : {{user.factors.MBTI.type}}</h3>
     
-    <h1 ng-click="toggle.toggle('mbti')">MBTI</h1>
+    <h1 ng-click="toggle.toggle('mbti')" class="pointer">MBTI</h1>
     <h5> 매칭분석근거 : http://www.massmatch.com/MBTI-2.php</h5>
 
     <div ng-show="toggle.mbti">
