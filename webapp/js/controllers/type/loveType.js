@@ -112,8 +112,6 @@ app.controller('controllers.userTest.loveType', ['$http', '$scope', '$user', fun
         if (!$scope.done != 50)
             return;
 
-        $scope.done = true;
-
         var resultString = "";
         for (var k in $scope.result) {
             resultString += k + $scope.result[k].percent + ",";
