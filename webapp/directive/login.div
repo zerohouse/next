@@ -37,7 +37,7 @@
         <div ng-show="!registeredEmail" class="button mobile-big" ng-click="register()">입력한 Email/Password로 가입하기</div>
     </div>
 
-    <p>메일 주소만으로 간단히 가입하여 사용할 수 있습니다.</p>
+    <p>메일 주소만으로 가입하여 사용할 수 있습니다.</p>
 
     <span class="facebook big-button" ng-click="facebookLogin()">Facebook으로 로그인</span>
     <span class="testLogin big-button" ng-click="testLogin();">테스트 계정으로 둘러보기</span>

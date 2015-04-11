@@ -352,6 +352,7 @@ ul, li {
     border-radius: 8px;
     font-size: 92%;
     cursor: pointer;
+    margin:10px;
 }
 
 .facebook {
