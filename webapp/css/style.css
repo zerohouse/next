@@ -40,8 +40,8 @@ img {
     max-width: 90%;
 }
 
-.wrapCon{
-    padding-top:90px;
+.wrapCon {
+    padding-top: 90px;
 }
 
 header {
@@ -165,16 +165,21 @@ user .box, matched .box {
     padding-top: 25px;
 }
 
-.description {
+result {
     position: fixed;
+    z-index: 30;
+    right: 0;
+    top: 100px;
+}
+
+.description {
     background: #fff;
     max-width: 450px;
     text-align: justify;
     padding-top: 15px;
     box-shadow: 1px 1px 1px silver;
     border: 1px solid #EEE;
-    right: 0;
-    top: 20px;
+
 }
 
 .description p {
@@ -359,7 +364,7 @@ ul, li {
     border-radius: 8px;
     font-size: 92%;
     cursor: pointer;
-    margin:10px;
+    margin: 10px;
 }
 
 .facebook {
