@@ -12,10 +12,10 @@
 
     <div>{{user.email}}</div>
     <div>
-                    <span ng-click="toggle.toggle('age')"><span ng-show="!toggle.age&&user.age==0"
+                    <span ng-click="toggle.toggle('age')" ng-show="!toggle.age"><span ng-show="user.age==0"
                                                                 class="red">나이 없음</span><span
-                            ng-show="user.age!=0">{{user.age||"나이없음"}}</span></span>
-                <span ng-show="toggle.age">나이<input class='small-input input-number' ng-model="user.age" maxlength="3"
+                            ng-show="user.age!=0">{{user.age||"나이 없음"}}</span></span>
+                <span ng-show="toggle.age"><input class='small-input input-number' ng-model="user.age" maxlength="3"
                                                     type="number">
                     <span ng-click="toggle.toggle('age')">확인</span>
                 </span>
