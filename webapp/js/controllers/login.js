@@ -111,7 +111,7 @@ app.controller('controllers.login', ['$scope', '$http', '$user', '$timeout', fun
 
 
     $scope.login = function () {
-        if (!$scope.check.all()){
+        if (!$scope.check.all()) {
             error("입력값을 확인해주세요!");
             return;
         }
@@ -135,7 +135,7 @@ app.controller('controllers.login', ['$scope', '$http', '$user', '$timeout', fun
             }, 300);
             $scope.user.logged = true;
         });
-    }
+    };
 
     $scope.passwordRedefine = function () {
         if ($scope.send) {
@@ -151,7 +151,17 @@ app.controller('controllers.login', ['$scope', '$http', '$user', '$timeout', fun
             }
             error("이메일을 확인해주세요.");
         });
-    }
+    };
+
+
+    $scope.testLogin = function () {
+        var tests =
+            ["taehee@begin.again", "sumin@begin.again", "songe@begin.again", "leehyuk@begin.again", "jobin@begin.again", "dongmin@begin.again"];
+        $scope.user.email = tests[parseInt(Math.random() * 5.99)];
+        $scope.user.password = "begin";
+
+        $scope.login();
+    };
 
 }]);
 
