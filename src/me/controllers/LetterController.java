@@ -66,7 +66,7 @@ public class LetterController {
 		Letter fromDb = dao.getRecordByClass(Letter.class, letter.getId());
 		if (!fromDb.getEmail().equals(letter.getEmail()))
 			throw new JsonAlert("권한이 없습니다.");
-		if (!dao.insertIfExistUpdate(letter))
+		if (!dao.update(letter))
 			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
 		http.setView(new Json(new Result(true)));
 	}
