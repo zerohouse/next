@@ -23,7 +23,9 @@ app.controller('wrapController', ['$scope', '$user', '$toggle', '$http', '$ancho
         $http(req("GET", "/api/user/logout")).success(function (response) {
             FB.logout(function (response) {
             });
-            location.reload();
+            $timeout(function () {
+                location.reload();
+            }, 1000);
         });
     };
 
