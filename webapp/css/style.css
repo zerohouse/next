@@ -40,12 +40,19 @@ img {
     max-width: 90%;
 }
 
+.wrapCon{
+    padding-top:90px;
+}
+
 header {
     background-color: rgba(47, 152, 205, 0.39);
     color: white;
     overflow: hidden;
     width: 95%;
     padding: 0 2.5%;
+    position: fixed;
+    top: 0;
+    z-index: 10;
 }
 
 .selected {

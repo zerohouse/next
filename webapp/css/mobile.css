@@ -96,6 +96,10 @@
         font-size: 14px;
     }
 
+    .wrapCon{
+        padding-top:60px;
+    }
+
     result .box {
         width: 80%;
         left: 6%;

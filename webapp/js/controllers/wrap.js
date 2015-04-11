@@ -1,7 +1,7 @@
 /**
  * Created by park on 15. 4. 4..
  */
-app.controller('wrapController', ['$scope', '$user', '$toggle', '$http', '$timeout', function ($scope, $user, $toggle, $http, $timeout) {
+app.controller('wrapController', ['$scope', '$user', '$toggle', '$http', '$anchorScroll', '$location', '$timeout', function ($scope, $user, $toggle, $http, $anchorScroll, $location, $timeout) {
     $scope.user = $user;
     $scope.toggle = $toggle;
 
@@ -12,10 +12,7 @@ app.controller('wrapController', ['$scope', '$user', '$toggle', '$http', '$timeo
 
 
     $scope.move = function (id) {
-        var body = document.querySelector('#body');
-        if (body.children[0].id == id)
-            $toggle.toggle(id);
-        body.insertBefore(document.querySelector('#' + id), body.children[0]);
+        app.scroll(id);
     };
 
     $scope.logout = function () {
@@ -38,5 +35,19 @@ app.controller('wrapController', ['$scope', '$user', '$toggle', '$http', '$timeo
     $scope.nextError = function () {
         app.findScope('alert').nextError();
     };
+
+
+    app.scroll = function (x) {
+        $timeout(function () {
+            var newHash = x;
+            if ($location.hash() !== newHash) {
+                $location.hash(x);
+                $anchorScroll();
+            } else {
+                $anchorScroll();
+            }
+        }, 300);
+    };
+
 
 }]);

@@ -16,13 +16,13 @@
 <script src="js/facebook.js"></script>
 
 <div class="back"></div>
-<div style="display:none" ng-style="{'display':'block'}" ng-controller="wrapController">
+<div style="display:none" ng-style="{'display':'block'}" ng-controller="wrapController" class="wrapCon">
 
     <header></header>
     <login ng-show="!user.logged" class="container centered"></login>
 
     <div id="body" ng-show="user.logged">
-        <div ng-show="toggle.test" id="test" class="light no-select container" class="light">
+        <div id="test" class="light no-select container" class="light">
             <h1 class="mobile-big">당신은 어떤 사람인가요?</h1>
             <lovetype></lovetype>
             <mbti></mbti>
@@ -30,14 +30,14 @@
         </div>
 
 
-        <div ng-show="toggle.profile" id="profile" class="container">
+        <div id="profile" class="container">
             <h1 class="mobile-big">내 프로필</h1>
             <user></user>
             <h1 class="mobile-big">인연</h1>
             <matched></matched>
         </div>
 
-        <letter ng-show="toggle.letter" id="letter" class="container"></letter>
+        <letter id="letter" class="container"></letter>
 
         <result></result>
 

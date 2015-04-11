@@ -25,9 +25,6 @@ app.controller('controllers.user', ['$scope', '$http', '$user', '$toggle', '$tim
             angular.copy(response.obj, $scope.user);
             $scope.user.logged = true;
 
-
-            if (Object.keys($scope.user.factors).length > 2)
-                $toggle.test = false;
             app.findScope('matched').refresh();
             app.findScope('letter').refresh();
         });

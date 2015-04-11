@@ -37,3 +37,7 @@ app.directive("header", function () {
 app.setting = {
     questionDelay: 200
 };
+
+app.run(['$anchorScroll', function($anchorScroll) {
+    $anchorScroll.yOffset = 60;
+}]);
