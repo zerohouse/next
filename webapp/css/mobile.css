@@ -99,7 +99,7 @@
     result .box {
         width: 80%;
         left: 6%;
-        position: absolute;
+        top:0px;
     }
 
     .add-letter {
