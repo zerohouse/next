@@ -22,8 +22,8 @@ app.controller('wrapController', ['$scope', '$user', '$toggle', '$http', '$ancho
         angular.copy(user, $scope.user);
         $http(req("GET", "/api/user/logout")).success(function (response) {
             FB.logout(function (response) {
-                location.reload();
             });
+            location.reload();
         });
     };
 
