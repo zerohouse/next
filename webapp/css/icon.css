@@ -133,3 +133,10 @@
 .location:hover{
     background-image: url('image/icon/locationhover.png');
 }
+
+.logo-icon{
+    background-image: url('image/icon/logo.png');
+    margin: 0 20px;
+    width: 80px;
+    height: 80px;
+}

@@ -43,13 +43,20 @@
 
     .icon {
         float: left;
-        margin: 8px;
+        margin: 8px 12px;
         margin-bottom: 10px;
         background-size: 100%;
         width: 30px;
         background-position: center;
         height: 30px;
         background-repeat: no-repeat;
+    }
+
+    .logo-icon{
+        margin: 0 20px;
+        width: 46px;
+        height: 46px;
+        background-image: url('image/icon/logom.png');
     }
 
     .mobile-none {
@@ -96,8 +103,8 @@
         font-size: 14px;
     }
 
-    .wrapCon{
-        padding-top:60px;
+    .top-buffer{
+        padding-top:50px;
     }
 
     result {
@@ -135,7 +142,7 @@
     }
 
     canvas{
-        max-width:100%;
+        margin:auto;
     }
 
 

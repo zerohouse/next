@@ -315,6 +315,12 @@ app.controller('controllers.userTest.result', ['$scope', '$user', '$timeout', fu
     $scope.friend = false;
 
     function drawChart(ctx, user, result) {
+        var canvas = document.querySelector('canvas');
+        var width = parseInt(getComputedStyle(canvas.parentElement.parentElement).width) -
+            parseInt(getComputedStyle(canvas.parentElement.parentElement).paddingLeft) * 2;
+        canvas.setAttribute('width', width);
+        canvas.setAttribute('height', width);
+
         var data = {
             labels: ["Passionate", "Friendship", "Possessive", "Selfless", "Logical", "Game-Playing"],
             datasets: [

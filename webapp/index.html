@@ -16,9 +16,10 @@
 <script src="js/facebook.js"></script>
 
 <div class="back"></div>
-<div style="display:none" ng-style="{'display':'block'}" ng-controller="wrapController" class="wrapCon">
+<div style="display:none" ng-style="{'display':'block'}" ng-controller="wrapController"
+     ng-class="{'top-buffer':user.logged}">
 
-    <header></header>
+    <header ng-show="user.logged"></header>
     <result></result>
     <login ng-show="!user.logged" class="container centered"></login>
 
@@ -43,6 +44,9 @@
 
     </div>
 </div>
+
+
+
 
 <alert></alert>
 

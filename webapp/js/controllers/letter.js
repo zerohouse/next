@@ -51,10 +51,10 @@ app.controller('controllers.letter',
                         if ($scope.receiveLetters.contains(letter))
                             return;
                         $scope.receiveLetters.push(letter);
-                        app.findScope('alert').error.push(letter);
-                        app.findScope('alert').errorBackup.push(letter);
+                        //app.findScope('alert').error.push(letter);
+                        //app.findScope('alert').errorBackup.push(letter);
                     });
-                    app.findScope('alert').nextError();
+                    //app.findScope('alert').nextError();
                 });
             };
 

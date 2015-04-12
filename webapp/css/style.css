@@ -40,8 +40,8 @@ img {
     max-width: 90%;
 }
 
-.wrapCon {
-    padding-top: 90px;
+.top-buffer {
+    padding-top: 80px;
 }
 
 header {
@@ -212,16 +212,16 @@ ul, li {
 }
 
 .logo {
-    font-size: 50px;
-    float: left;
-    font-weight: 900;
-    margin-bottom: -10px;
-    margin-top: 12px;
+    max-width: 50%;
+    margin-top: 80px;
+    margin-bottom: 20px;
 }
 
 .inlinblock {
     display: inline-block;
 }
+
+
 
 .alert-body {
     position: fixed;
@@ -354,6 +354,7 @@ ul, li {
 }
 
 .alert-writer {
+    color: grey;
     font-size: 20px;
 }
 

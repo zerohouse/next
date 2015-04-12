@@ -40,4 +40,4 @@
     </div>
 
 </div>
-<span class="add-letter flip" ng-click="nextError()"> > </span>
+<!--<span class="add-letter flip" ng-click="nextError()"> > </span>-->
