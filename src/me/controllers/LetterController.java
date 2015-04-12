@@ -2,6 +2,8 @@ package me.controllers;
 
 import java.util.List;
 
+import me.auth.AuthSender;
+import me.auth.Mail;
 import me.exception.JsonAlert;
 import me.model.Result;
 import me.model.database.Letter;
@@ -83,5 +85,14 @@ public class LetterController {
 		if (!dao.update(letter))
 			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
 		http.setView(new Json(new Result(true)));
+	}
+
+	@Mapping(value = "/api/feedback", method = "POST", before = "loginCheck")
+	public void feedback(Http http, DAO dao) throws JsonAlert {
+		Letter letter = http.getJsonObject(Letter.class, "letter");
+		AuthSender.sendMail("parksungho86@gmail.com", new Mail(letter.getHead(), letter.getBody()));
+		letter.setKey("parksungho86@gmail.com");
+		if (!dao.insert(letter))
+			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
 	}
 }

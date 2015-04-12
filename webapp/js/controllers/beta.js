@@ -13,12 +13,11 @@ app.controller('beta', ['$scope', '$user', '$http', function ($scope, $user, $ht
         if (obj.head == "" || obj.head == undefined || obj.body == "" || obj.body == undefined) {
             return;
         }
-        obj.key = 'parksungho86@gmail.com';
         obj.email = $user.email;
         obj.date = new Date();
         if (typeof obj.id == 'string')
             obj.id = undefined;
-        $http(req("POST", "/api/letter", {letter: JSON.stringify(obj)})).success(function (response) {
+        $http(req("POST", "/api/feedback", {letter: JSON.stringify(obj)})).success(function (response) {
             error("소중한 피드백 감사드립니다.");
             obj.head = "";
             obj.body = "";
