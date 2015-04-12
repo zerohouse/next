@@ -7,7 +7,7 @@
     <p >{{result.description}}</p>
 
     <div ng-show="chart">
-        <canvas id="canvasResult"></canvas>
+        <canvas width="400" height="400" id="canvasResult"></canvas>
         <div class="ppwrap">
             <div ng-show="friend"><span class="nemo fcolor"></span><span>인연</span></div>
             <div><span class="nemo mcolor"></span><span>나</span></div>
