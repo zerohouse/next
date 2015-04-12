@@ -248,6 +248,7 @@ app.controller('controllers.userTest.result', ['$scope', '$user', '$timeout', fu
     $scope.show = false;
 
     $scope.setResult = function (type, result, user) {
+        app.scroll('result');
         $scope.test = type;
         $scope.show = true;
         switch (type) {

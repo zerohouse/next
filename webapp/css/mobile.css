@@ -111,6 +111,7 @@
         width: 90%;
         left: 6%;
         top:0px;
+        position:absolute;
     }
 
     .add-letter {
