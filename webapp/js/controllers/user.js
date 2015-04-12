@@ -24,9 +24,10 @@ app.controller('controllers.user', ['$scope', '$http', '$user', '$toggle', '$tim
             }
             angular.copy(response.obj, $scope.user);
             $scope.user.logged = true;
-
-            app.findScope('matched').refresh();
-            app.findScope('letter').refresh();
+            $timeout(function () {
+                app.findScope('matched').refresh();
+                app.findScope('letter').refresh();
+            }, 300);
         });
     };
 
@@ -206,7 +207,7 @@ app.controller('controllers.user', ['$scope', '$http', '$user', '$toggle', '$tim
         });
     };
 
-    $scope.showClip = function(id){
+    $scope.showClip = function (id) {
         app.findScope('alert').showClip(id);
     }
 
