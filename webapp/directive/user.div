@@ -13,10 +13,10 @@
     <div>{{user.email}}</div>
     <div>
                     <span ng-click="toggle.toggle('age')" ng-show="!toggle.age"><span ng-show="user.age==0"
-                                                                class="red">나이 없음</span><span
+                                                                                      class="red">나이 없음</span><span
                             ng-show="user.age!=0">{{user.age||"나이 없음"}}</span></span>
                 <span ng-show="toggle.age"><input class='small-input input-number' ng-model="user.age" maxlength="3"
-                                                    type="number">
+                                                  type="number">
                     <span ng-click="toggle.toggle('age')">확인</span>
                 </span>
         (<span ng-click="toggle.toggle('gender')">
@@ -28,7 +28,6 @@
                             <span ng-click="user.gender=2">여</span></span> )
         <span class="green" ng-show="user.authEmail">인증</span>
         <span class="red" ng-click="reMail()" ng-show="!user.authEmail">인증필요</span>
-
     </div>
 
 
@@ -40,4 +39,18 @@
         </div>
     </div>
 
+    <ul class="youtubeUl">
+        <li ng-click="showClip(like.id)"  ng-repeat="like in user.likes" style="background-image:url('{{like.url}}')">
+            <div>{{like.title}}</div>
+            <span ng-click="deleteLike(like)" class="sm-icon pointer close-icon close-white"></span>
+        </li>
+    </ul>
+
+    <input type="text" class="input" ng-model="youtubeQuery" placeholder="I Like...">
+    <ul class="youtubeUl">
+        <li ng-click="addLike(result)" style="background-image:url('{{result.snippet.thumbnails.high.url}}')"
+            ng-repeat="result in youtubeResults">
+            <div>{{result.snippet.title}}</div>
+        </li>
+    </ul>
 </div>

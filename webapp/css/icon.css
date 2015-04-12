@@ -19,7 +19,7 @@
 }
 
 .q-icon {
-    float:right;
+    float: right;
     background-image: url('image/icon/q.png');
     margin-top: 59px;
     width: 30px;
@@ -93,6 +93,14 @@
     height: 30px;
 }
 
+.close-white {
+    background-image: url('image/icon/closewhite.png');
+    width: 20px;
+    height: 20px;
+    right: 10px;
+    top: 10px;
+}
+
 .close {
     background-image: url('image/icon/close.png');
 }
@@ -117,24 +125,23 @@
     background-image: url('image/icon/woman.png');
 }
 
-
-.writeLetter{
+.writeLetter {
     background-image: url('image/icon/letter.png');
 }
 
-.writeLetter:hover{
+.writeLetter:hover {
     background-image: url('image/icon/letterhover.png');
 }
 
-.location{
+.location {
     background-image: url('image/icon/location.png');
 }
 
-.location:hover{
+.location:hover {
     background-image: url('image/icon/locationhover.png');
 }
 
-.logo-icon{
+.logo-icon {
     background-image: url('image/icon/logo.png');
     margin: 0 20px;
     width: 80px;

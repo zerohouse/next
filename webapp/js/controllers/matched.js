@@ -104,6 +104,10 @@ app.controller('controllers.matched', ['$scope', '$http', '$user', function ($sc
 
     $scope.writeLetter = function (user) {
         app.findScope('letter').writeLetter(user);
+    };
+
+    $scope.showClip = function(id){
+        app.findScope('alert').showClip(id);
     }
 }]);
 

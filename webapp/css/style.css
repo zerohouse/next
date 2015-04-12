@@ -133,7 +133,7 @@ textarea {
     background-color: #eee;
     border-radius: 5px;
     padding: 5px 10px;
-    float: left;
+    display: inline-block;
 }
 
 canvas {
@@ -221,8 +221,6 @@ ul, li {
     display: inline-block;
 }
 
-
-
 .alert-body {
     position: fixed;
     width: 100%;
@@ -231,6 +229,7 @@ ul, li {
     left: 0;
     text-align: center;
     background: rgba(0, 0, 0, 0.6);
+    z-index:100;
 }
 
 .alert-text {
@@ -391,6 +390,49 @@ ul, li {
 
 .disabled {
     z-index: -1;
+}
+
+.youtube {
+    width: 100%;
+    height: 350px;
+    margin: auto;
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.youtubeUl {
+    padding: 0;
+    margin-top:15px;
+}
+
+.youtubeUl li {
+    width: 100%;
+    height: 300px;
+    max-width: 400px;
+    background-size: cover;
+    display: inline-block;
+    float: left;
+    margin-bottom: 10px;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.youtubeUl li > div {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 12px;
+    display: block;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+}
+
+.clip {
+    position:absolute;
+    left:5%;
+    width:90%;
+    top:5%;
+    height:90%;
 }
 
 /*-webkit-animation: disabled 1s linear 0s infinite;*/

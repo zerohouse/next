@@ -34,5 +34,14 @@
 
             </div>
         </div>
+
+        <ul class="youtubeUl">
+            <li ng-click="showClip(like.id)" ng-repeat="like in matchedUser.likes" style="background-image:url('{{like.url}}')"
+                ng-repeat="result in youtubeResults">
+                <div>{{like.title}}</div>
+            </li>
+        </ul>
+
+
     </div>
 </div>

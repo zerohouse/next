@@ -5,7 +5,7 @@
 var app = angular.module('meetfit', ['ngAnimate']);
 
 app.factory('$user', function () {
-    var $user = {email: "", password: "", nickName: ""};
+    var $user = {email: "", password: "", nickName: "", likes: [], factors: {}};
     return $user;
 });
 

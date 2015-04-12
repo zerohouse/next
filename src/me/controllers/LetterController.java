@@ -68,7 +68,7 @@ public class LetterController {
 			throw new JsonAlert("권한이 없습니다.");
 		if (!dao.update(letter))
 			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
-		http.setView(new Json(new Result(true)));
+		http.setView(new Json(new Result(letter)));
 	}
 
 	@Mapping(value = "/api/letter/delete", method = "POST", before = "loginCheck")

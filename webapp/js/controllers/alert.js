@@ -10,6 +10,7 @@ app.controller('controllers.alert', ['$scope', function ($scope) {
 
     $scope.alert = function (error) {
         $scope.show = true;
+        $scope.clip = false;
         $scope.error.push(error);
         $scope.errorMessage = $scope.error.pop();
     };
@@ -23,6 +24,7 @@ app.controller('controllers.alert', ['$scope', function ($scope) {
 
     $scope.nextError = function () {
         $scope.show = true;
+        $scope.clip = false;
         var error = $scope.error.pop();
         if (error == undefined) {
             angular.copy($scope.errorBackup, $scope.error);
@@ -31,6 +33,15 @@ app.controller('controllers.alert', ['$scope', function ($scope) {
         $scope.errorMessage = error;
     };
 
+    $scope.clip = false;
+    $scope.youtube = {};
+    $scope.showClip = function (id) {
+        var url = "https://www.youtube.com/embed/" + id;
+        if (document.querySelector('.clip').getAttribute('src') != url)
+            document.querySelector('.clip').setAttribute('src', url);
+        $scope.show = true;
+        $scope.clip = true;
+    };
 
 }]);
 

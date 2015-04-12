@@ -156,6 +156,60 @@ app.controller('controllers.user', ['$scope', '$http', '$user', '$toggle', '$tim
     };
 
 
+    $scope.$watch('youtubeQuery', function () {
+        if ($scope.youtubeQuery == undefined)
+            return;
+        if ($scope.youtubeQuery == "") {
+            $scope.youtubeResults = [];
+            $timeout.cancel(this.ajax);
+            return;
+        }
+        var request = {};
+        request.part = 'snippet';
+        request.key = "AIzaSyA8a-qgzHt-PxUpj5-65A7ZFK_BFGTZ440";
+        request.q = $scope.youtubeQuery;
+        $timeout.cancel(this.ajax);
+        this.ajax = $timeout(function () {
+            $http(req("GET", "https://www.googleapis.com/youtube/v3/search?" + getGetUrlParsed(request))).success(function (response) {
+                $scope.youtubeResults = response.items;
+            });
+        }, 800);
+    });
+
+    $scope.addLike = function (result) {
+        var like = {};
+        like.url = result.snippet.thumbnails.high.url;
+        like.email = $user.email;
+        like.title = result.snippet.title;
+        like.id = result.id.videoId;
+        $http(req("POST", "/api/like", {like: JSON.stringify(like)})).success(function (response) {
+            if (response.error) {
+                error(response.errorMessage);
+                return;
+            }
+            if ($user.likes == undefined)
+                $user.likes = [];
+            $user.likes.push(like);
+
+        });
+    };
+
+    $scope.deleteLike = function (result) {
+        if (!confirm("관심사를 삭제하시겠습니까?"))
+            return;
+        $http(req("POST", "/api/like/delete", {like: JSON.stringify(result)})).success(function (response) {
+            if (response.error) {
+                error(response.errorMessage);
+                return;
+            }
+            $user.likes.splice($user.likes.indexOf(result), 1);
+        });
+    };
+
+    $scope.showClip = function(id){
+        app.findScope('alert').showClip(id);
+    }
+
 }]);
 
 

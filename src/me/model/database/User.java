@@ -36,6 +36,8 @@ public class User {
 	@Exclude
 	private Map<String, Factor> factors;
 	@Exclude
+	List<UserLike> likes;
+	@Exclude
 	private Integer point;
 
 	public Map<String, Factor> getFactors() {
@@ -156,6 +158,10 @@ public class User {
 		map.forEach(each -> {
 			factors.put(each.get("TestResult_name").toString(), Factor.get(each.get("TestResult_name").toString(), each.get("TestResult_result")));
 		});
+	}
+	
+	public void defineLikes(DAO dao) {
+		likes = dao.getRecords(UserLike.class, "SELECT * FROM UserLike WHERE UserLike_email=?", email);
 	}
 
 	public void defineUserFactors() {

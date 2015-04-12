@@ -130,16 +130,15 @@ app.controller('controllers.letter',
                     return;
                 }
                 obj.date = new Date();
-                if (obj.id.charAt(0) == 'n')
+                if (typeof obj.id == 'string')
                     obj.id = undefined;
                 $http(req("POST", "/api/letter", {letter: JSON.stringify(obj)})).success(function (response) {
                     if (response.error) {
                         error(response.errorMessage);
                         return;
                     }
-                    if (obj.id == undefined)
-                        obj.id = response.obj.id;
-                    $toggle('letterMod' + letter.id);
+                    obj.id = response.obj.id;
+                    $toggle.toggle('letterMod' + obj.id);
 
                 });
             };

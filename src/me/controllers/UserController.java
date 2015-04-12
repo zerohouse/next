@@ -71,6 +71,7 @@ public class UserController {
 		User user = http.getSessionAttribute(User.class, "user");
 		user = dao.getRecord(User.class, GET_USER_BY_EMAIL, user.getEmail());
 		user.defineFactors(dao);
+		user.defineLikes(dao);
 		user.removePassword();
 		http.setSessionAttribute("user", user);
 		http.setView(new Json(new Result(user)));

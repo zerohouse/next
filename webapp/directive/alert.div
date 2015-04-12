@@ -1,6 +1,10 @@
 <div class="alert-body" ng-click="close()" ng-show="show">
 
-    <div class="dialog">
+
+    <iframe ng-show="clip" class="clip" frameborder="0"
+            allowfullscreen></iframe>
+
+    <div class="dialog" ng-show="!clip">
         <span class="alert-text"><h1>{{errorMessage.head||"?!!"}}</h1></span>
         <span class="alert-tbody"><pre>{{errorMessage.body||errorMessage}}</pre></span>
         <span class="alert-writer">message from {{errorMessage.email||"만든 사람"}}</span>

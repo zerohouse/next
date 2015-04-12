@@ -48,6 +48,7 @@ public class MachedController {
 				break;
 			}
 			partner.removePassword();
+			partner.defineLikes(dao);
 			partner.defineFactors(dao);
 			matchedUsers.add(partner);
 		}
