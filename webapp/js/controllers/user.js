@@ -169,6 +169,7 @@ app.controller('controllers.user', ['$scope', '$http', '$user', '$toggle', '$tim
         request.part = 'snippet';
         request.key = "AIzaSyA8a-qgzHt-PxUpj5-65A7ZFK_BFGTZ440";
         request.q = $scope.youtubeQuery;
+        request.type = "video";
         $timeout.cancel(this.ajax);
         this.ajax = $timeout(function () {
             $http(req("GET", "https://www.googleapis.com/youtube/v3/search?" + getGetUrlParsed(request))).success(function (response) {
