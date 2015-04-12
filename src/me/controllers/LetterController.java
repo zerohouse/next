@@ -87,7 +87,7 @@ public class LetterController {
 		http.setView(new Json(new Result(true)));
 	}
 
-	@Mapping(value = "/api/feedback", method = "POST", before = "loginCheck")
+	@Mapping(value = "/api/feedback", method = "POST")
 	public void feedback(Http http, DAO dao) throws JsonAlert {
 		Letter letter = http.getJsonObject(Letter.class, "letter");
 		AuthSender.sendMail("parksungho86@gmail.com", new Mail(letter.getHead(), letter.getBody()));
