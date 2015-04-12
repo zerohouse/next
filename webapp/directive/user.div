@@ -43,7 +43,7 @@
     <ul class="youtubeUl">
         <li ng-click="showClip(like.id)"  ng-repeat="like in user.likes" style="background-image:url('{{like.url}}')">
             <div>{{like.title}}</div>
-            <span ng-click="deleteLike(like)" class="sm-icon pointer close-icon close-white"></span>
+            <span ng-click="deleteLike(like);$event.stopPropagation();" class="sm-icon pointer close-icon close-white"></span>
         </li>
     </ul>
 
