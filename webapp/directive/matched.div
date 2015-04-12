@@ -10,7 +10,7 @@
             <span class="writeLetter profile-icon" ng-click="writeLetter(matchedUser)"></span></h3>
 
         <div class="vertical-margin" ng-show="matchedUser.address">@ {{matchedUser.address}}</div>
-        <div>{{matchedUser.email}}</div>
+        <!--<div>{{matchedUser.email}}</div>-->
         <div>
             <span ng-show="matchedUser.age==0" class="red">나이 없음</span><span
                 ng-show="matchedUser.age!=0">{{matchedUser.age}}세</span>
