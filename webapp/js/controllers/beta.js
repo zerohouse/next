@@ -24,4 +24,5 @@ app.controller('beta', ['$scope', '$user', '$http', function ($scope, $user, $ht
             $scope.mod = false;
         });
     };
+
 }]);

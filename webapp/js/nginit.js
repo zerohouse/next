@@ -2,7 +2,7 @@
  * Created by park on 15. 4. 1..
  */
 
-var app = angular.module('meetfit', ['ngAnimate']);
+var app = angular.module('meetfit', ['ngAnimate', 'angularFileUpload']);
 
 app.factory('$user', function () {
     var $user = {email: "", password: "", nickName: "", likes: [], factors: {}};

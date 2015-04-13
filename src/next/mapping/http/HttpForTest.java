@@ -3,11 +3,13 @@ package next.mapping.http;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Part;
 
 import next.mapping.view.View;
 
@@ -183,6 +185,16 @@ public class HttpForTest implements Http {
 
 	public View getView() {
 		return view;
+	}
+
+	@Override
+	public Part getPart(String name) {
+		return null;
+	}
+
+	@Override
+	public Collection<Part> getParts() {
+		return null;
 	}
 
 }

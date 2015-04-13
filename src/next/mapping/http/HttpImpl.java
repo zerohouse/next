@@ -3,11 +3,13 @@ package next.mapping.http;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import next.mapping.view.View;
 
@@ -166,6 +168,30 @@ public class HttpImpl implements Http {
 	@Override
 	public Object getAttribute(String key) {
 		return req.getAttribute(key);
+	}
+
+	@Override
+	public Part getPart(String name) {
+		try {
+			return req.getPart(name);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ServletException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public Collection<Part> getParts() {
+		try {
+			return req.getParts();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ServletException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

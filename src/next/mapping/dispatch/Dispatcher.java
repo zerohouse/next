@@ -3,6 +3,7 @@ package next.mapping.dispatch;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import ch.qos.logback.classic.Logger;
 import next.mapping.http.HttpImpl;
 import next.setting.Setting;
 
+@MultipartConfig(location = "webapp/uploads", maxFileSize = 1024 * 1024 * 10, fileSizeThreshold = 1024 * 1024, maxRequestSize = 1024 * 1024 * 20)
 public class Dispatcher extends HttpServlet {
 
 	private static final long serialVersionUID = -2929326068606297558L;
