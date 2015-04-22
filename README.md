@@ -22,14 +22,14 @@
 	BigInteger getLastKey();
     
 ### Example Usage
-    DAO dao = new DAO();
+    DAO dao = new Mysql();
     User user = dao.getObject(User.class, userId);
     List<User> users = dao.getObjects(User.class, "SELECT * FROM User Where User_Id=?", userId);
     dao.insert(user);
     dao.update(user);
     dao.delete(user);
     dao.insertIfExistUpdate(user);
-    dao.fill(user);
+    dao.fill(user); //키만있는 오브젝트 채우기
     dao.execute("DROP TABLE User");
     
 ## TableMaker.class, PackageCreator.class
@@ -136,10 +136,11 @@ Json.class, Jsp.class
 
     @Mapping("/api/user")
     public class UserController {
-        @Mapping(value = "/{}", before = { "loginCheck" }, after = { "" }, method = Method.GET)  
+        @Mapping(value = "/{}", before = { "loginCheck" }, method = Method.GET)  
                 // {}는 해당하는 패턴의 리퀘스트를 받음
                 // 해당 메서드를 실행하기전 loginCheck를 먼저함
-        public Response getUser(Http http) {
+        public Response getUser(Http http, DAO dao) { // 메서드 내에서 트랜젝션
+        		dao.getObject(User.class, http.getParameter("userId")); 
             String userId = http.getUriVariable(0); // {}의 변수 사용
         }
     }

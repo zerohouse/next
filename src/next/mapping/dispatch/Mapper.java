@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import next.database.ConnectionPool;
 import next.database.DAO;
 import next.database.MySql;
 import next.mapping.annotation.After;
@@ -36,10 +35,8 @@ public class Mapper {
 	private UriMap uriMap;
 	private List<MethodHolder> beforeList;
 	private List<MethodHolder> afterList;
-	private ConnectionPool pool;
 
-	Mapper(ConnectionPool pool) {
-		this.pool = pool;
+	Mapper() {
 		methodMap = new HashMap<UriKey, MethodHolder>();
 		uriMap = new UriMap();
 		beforeList = new ArrayList<MethodHolder>();
@@ -63,7 +60,7 @@ public class Mapper {
 			http.sendError(404);
 			return;
 		}
-		DAO dao = new MySql(pool.getConnection(false));
+		DAO dao = new MySql(true);
 
 		Queue<MethodHolder> todo = new LinkedList<MethodHolder>();
 

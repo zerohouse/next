@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import next.database.ConnectionPool;
 import next.database.DAO;
 import next.database.MySql;
 import next.database.annotation.testdata.Insert;
@@ -29,7 +28,6 @@ public class Dispatcher extends HttpServlet {
 
 	private static final long serialVersionUID = -2929326068606297558L;
 	private Mapper mapper;
-	private ConnectionPool pool;
 
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -42,8 +40,7 @@ public class Dispatcher extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
-		pool = new ConnectionPool();
-		mapper = new Mapper(pool);
+		mapper = new Mapper();
 		databseSetting();
 		InsertTestData();
 	}
@@ -53,7 +50,7 @@ public class Dispatcher extends HttpServlet {
 			return;
 		Reflections ref = new Reflections(Setting.get().getDatabase().getTestDataPackage(), new SubTypesScanner(), new TypeAnnotationsScanner());
 		ref.getTypesAnnotatedWith(TestData.class).forEach(each -> {
-			DAO dao = new MySql(pool.getConnection(true));
+			DAO dao = new MySql();
 			try {
 				Object obj = each.getConstructor().newInstance();
 				Field[] fields = each.getDeclaredFields();

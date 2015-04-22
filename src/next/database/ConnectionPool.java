@@ -12,12 +12,13 @@ public class ConnectionPool {
 
 	private static final String COM_MYSQL_JDBC_DRIVER = "com.mysql.jdbc.Driver";
 
-	private BoneCP pool;
-
-	public Connection getConnection(boolean autocommit) {
+	private static ConnectionPool instance = new ConnectionPool();
+	private BoneCP boneCp;
+	
+	public static Connection getConnection(boolean autocommit) {
 		Connection connection = null;
 		try {
-			connection = pool.getConnection();
+			connection = instance.boneCp.getConnection();
 			if (!autocommit)
 				connection.setAutoCommit(false);
 		} catch (SQLException e) {
@@ -27,10 +28,10 @@ public class ConnectionPool {
 	}
 
 	public void shutdown() {
-		pool.shutdown();
+		boneCp.shutdown();
 	}
 
-	public ConnectionPool() {
+	private ConnectionPool() {
 		try {
 			Class.forName(COM_MYSQL_JDBC_DRIVER);
 		} catch (Exception e) {
@@ -39,7 +40,7 @@ public class ConnectionPool {
 
 		try {
 			BoneCPConfig config = Setting.get().getDatabase().getConnectionSetting();
-			pool = new BoneCP(config);
+			boneCp = new BoneCP(config);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
