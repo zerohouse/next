@@ -5,7 +5,7 @@
 
 ## 1. Class
 
-### Http.class Interface
+### Http.class
 HttpImpl.class, HttpForTest.class
 
     public interface Http {
