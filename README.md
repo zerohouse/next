@@ -16,8 +16,7 @@
         }
         
         @Mapping(value = "/update", before = "loginCheck", method = Method.POST)
-    		public Response updatePost(@FromDB(keyParameter = "userId") User user1, @Parameter("userId") String userId,
-             @JsonParameter("Post") Post post, @SessionAttribute("user") User user) {
+    		public Response updatePost(@JsonParameter("Post") Post post, @SessionAttribute("user") User user) {
         if(!post.getUserId().equals(user.getId()))
             return new Json("권한이 없습니다");
 		return new Json(post);
