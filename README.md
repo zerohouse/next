@@ -1,37 +1,11 @@
 # Next MVC + JDBC Library
 편합니다!
 
-# MVC
+# MVC Library
 
-### Example Controller
+## 1. Class
 
-	@Mapping("/api")
-    public class UserController {
-        @Mapping(value = "/user/{}", before = "loginCheck", method = Method.GET)  
-                // {}는 해당하는 패턴의 리퀘스트를 받음
-                // 해당 메서드를 실행하기전 loginCheck를 먼저함
-        public Response getUser(Http http, DAO dao) { // 메서드 내에서 트랜젝션
-        		dao.getObject(User.class, http.getParameter("userId")); 
-            String userId = http.getUriVariable(0); // {}의 변수 사용
-        }
-        
-        @Mapping(value = "/update", before = "loginCheck", method = Method.POST)
-    		public Response updatePost(@JsonParameter("Post") Post post, @SessionAttribute("user") User user) {
-        if(!post.getUserId().equals(user.getId()))
-            return new Json("권한이 없습니다");
-		return new Json(post);
-        }
-        
-	    @HttpMethod("loginCheck")
-	    public Result loginCheck(Http http) {
-	        if(http.getSessionAttribute("user") == null)
-	            return new Result("로그인이 필요한 서비스입니다.");
-	    }
-	        
-    }
-    
-
-### Http.class
+### Http.class Interface
 HttpImpl.class, HttpForTest.class
 
     public interface Http {
@@ -60,65 +34,86 @@ HttpImpl.class, HttpForTest.class
 
 ### Response.class : 출력할 형태
 Json.class, Jsp.class
-
-    void render(Http http);
-
 #### Construct
     new Json(JsonObject);
     new Jsp(Jsp파일명);
 
-## Annotation
-### @Controller : 컨트롤러 클래스에 사용
-### @Mapping : Url 매핑 정보를 정의
+## 2. Annotation
 
+### Class Annotations
+#### @Controller : 컨트롤러 클래스에 사용, @Mapping  : Url 매핑 정보를 정의,
 
+### Method Annotations
+
+#### @Mapping 클래스, 메서드 모두 사용
     String[] value() default ""; // 매핑될 url들
 	String[] before() default ""; // 해당 메서드를 실행하기 전 실행될 메서드 
 	String[] after() default ""; // 해당 메서드를 실행한 후 실행될 메서드
 	String[] method() default "GET"; // 매핑될 메서드(Post, Get, Put, Delete등) 
 
-#### Example
-
-    @Mapping("/api/user")
-    public class UserController {
-        @Mapping(value = "/{}", before = { "loginCheck" }, method = Method.GET)  
-                // {}는 해당하는 패턴의 리퀘스트를 받음
-                // 해당 메서드를 실행하기전 loginCheck를 먼저함
-        public Response getUser(Http http, DAO dao) { // 메서드 내에서 트랜젝션
-        		dao.getObject(User.class, http.getParameter("userId")); 
-            String userId = http.getUriVariable(0); // {}의 변수 사용
-        }
-    }
     
-### @HttpMethod : 공통적으로 사용할 메서드 정의 @Mapping의 before, after에서 사용
+#### @HttpMethod : 공통적으로 사용할 메서드 정의 @Mapping의 before, after에서 사용
     
     String value() default ""; // 매핑될 이름 값이 없으면 메서드 이름으로 매핑
+    
+#### @Before 메서드 실행전 실행될 메서드, @After 메서드 실행 후 실행될 메서드
 
+### Example Controller
+
+    @Controller
+    @Mapping("/api")
+    public class UserController {
+        @Mapping(value = "/user/{}", before = "loginCheck", method = Method.GET)  
+        public void getUser(Http http, DAO dao) { // 메서드 내에서 트랜젝션
+            dao.getObject(User.class, http.getParameter("userId")); 
+            String userId = http.getUriVariable(0); // {}의 변수 사용
+        }
+        
+        @Mapping(value = "/update", before = "loginCheck", method = Method.POST)
+    	public Post updatePost(@JsonParameter("Post") Post post, @SessionAttribute("user") User user) {
+            if(!post.getUserId().equals(user.getId()))
+                return new Json("권한이 없습니다");
+    		return post;
+        }
+        
+	    @HttpMethod("loginCheck")
+	    public Result loginCheck(Http http) {
+	        if(http.getSessionAttribute("user") == null)
+	            return new Result("로그인이 필요한 서비스입니다.");
+            return null;
+	    }
+        
+        @Before // 이 컨트롤러 뿐만 아니라 모든 컨트롤러에 적용
+        public Result before(Http http) {
+	        if(http.getSessionAttribute("user") == null)
+	            return new Result("로그인이 필요한 서비스입니다.");
+            return null;
+	    }
+    }
     
 
+
+### Field Annotations
+#### @DateFormat // 필드에 사용, Gson변환시 지정된 데이트포맷 사용
     
-### @Parameter, @JsonParameter, @SessionAttribute, @FromDB(keyParameter="?")
+
+### Parameter Annotations
+#### @Parameter, @JsonParameter, @SessionAttribute, @FromDB(keyParameter="?")
     String value(); // 해당하는 속성키
 	boolean require() default true; // True일때, 해당 속성이 없으면 에러를 Response함
         
+#### example
+    @Mapping(value = "/update", before = "loginCheck", method = Method.POST)
+    public void updatePost(@Parameter("userId") String parameter, @FromDB(keyParameter="userId") User user2,
+            @JsonParameter("Post") Post post, @SessionAttribute("user") User user) {
+    }
         
 
-# JDBC
+# JDBC Library
 어노테이션 기반 모델 설정 -> JDBC 한줄로 해결
 테이블 생성 SQL 파일도 필요없습니다.
     
-## Annotation
-### @Table, @Key, @Column
-
-### Example Model
-    @Table
-    public class User {
-    	@Key(AUTO_INCREMENT = true)
-    	private Integer id;
-    	@Column(DATA_TYPE="TEXT", function="INDEX")
-    	private String introduce;
-    	private Integer age;
-    }
+## 1. Class
 
 ## DAO.class
     List<Object> getRecord(String sql, int resultSize, Object... parameters);
@@ -160,8 +155,31 @@ Json.class, Jsp.class
     tm.reset(); // 드롭 후 크리에이트
     
     
+## 2. Annotation
+### @Table, @Key, @Column, @Exclude, @RequiredRegex
+
+### Example Model
+    @Table
+    public class User {
+        @Key(AUTO_INCREMENT = true)
+    	private Integer id;
+    	@Column(DATA_TYPE="TEXT", function="INDEX")
+    	private String introduce;
+    	private Integer age;
+        
+        @Exclude
+    	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        
+        @RequiredRegex(EMAIL_PATTERN)
+        private String email;
+        
+        @OtherTable
+        private List<Post> posts;
+        
+    }
     
-## TestData 관리
+    
+## ### TestData 관리
     @TestData
     public class Tests {
         @InsertList
