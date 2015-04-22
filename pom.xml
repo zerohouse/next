@@ -53,6 +53,19 @@
 		</resources>
 		<plugins>
 			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<!-- <archive>
+						<manifest>
+							<mainClass>com.yourfirm.YourMainClass</mainClass>
+						</manifest>
+					</archive> -->
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<version>2.9</version>
@@ -73,7 +86,7 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
 				<executions>
@@ -87,7 +100,7 @@
 				<configuration>
 					<finalName>next-${artifactId}-${version}</finalName>
 				</configuration>
-			</plugin>
+			</plugin> -->
 
 		</plugins>
 	</build>
