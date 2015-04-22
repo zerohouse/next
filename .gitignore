@@ -1,11 +1,12 @@
 /build/
-!/target/*.setting
+/target/
 .DS_Store
 .classpath
 .project
 .settings
 /tomcat.8080/
 /bin/
+
 
 
 # Created by https://www.gitignore.io
@@ -82,3 +83,6 @@ pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.next
 release.properties
+
+
+!next-0.1.jar
