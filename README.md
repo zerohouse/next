@@ -73,7 +73,7 @@ Json.class, Jsp.class
     	public Post updatePost(@JsonParameter("Post") Post post, @SessionAttribute("user") User user) {
             if(!post.getUserId().equals(user.getId()))
                 return new Json("권한이 없습니다");
-    		return post;
+    		return post; //Object Return시 Json으로 파싱되어 리턴됨.
         }
         
 	    @HttpMethod("loginCheck")
