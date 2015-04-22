@@ -2,12 +2,10 @@ package next.mapping.http;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Part;
-
-import next.mapping.view.View;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public interface Http {
 
@@ -45,16 +43,12 @@ public interface Http {
 
 	void sendError(int errorNo, String errorMesage);
 
-	void render();
-
-	void setView(View view);
-
 	void setAttribute(String key, Object value);
 
 	Object getAttribute(String key);
 
-	Part getPart(String name);
+	HttpServletRequest getReq();
 
-	Collection<Part> getParts();
+	HttpServletResponse getResp();
 
 }

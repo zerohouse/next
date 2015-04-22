@@ -1,133 +1,35 @@
 package me.controllers;
 
-import me.auth.AuthKeyMaker;
-import me.auth.AuthSender;
-import me.auth.Mail;
-import me.exception.JsonAlert;
-import me.model.Result;
-import me.model.database.EmailAuth;
-import me.model.database.User;
+import javax.servlet.http.HttpServletRequest;
+
+import me.model.User;
 import next.database.DAO;
+import next.mapping.annotation.Controller;
 import next.mapping.annotation.HttpMethod;
 import next.mapping.annotation.Mapping;
-import next.mapping.http.Http;
-import next.mapping.view.Json;
+import next.mapping.annotation.parameters.FromDB;
+import next.mapping.annotation.parameters.Parameter;
+import next.mapping.constant.Method;
+import next.mapping.response.Json;
+import next.mapping.response.Response;
+import next.mapping.response.support.Result;
 
+@Controller
+@Mapping("/api/user")
 public class UserController {
 
-	@Mapping(value = "/api/user", method = "POST")
-	public void register(Http http, DAO dao) throws JsonAlert {
-		User user = http.getJsonObject(User.class, "user");
-		if (user == null)
-			return;
-		if (!dao.insert(user))
-			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
-		EmailAuth auth = new EmailAuth();
-		auth.setEmail(user.getEmail());
-		auth.setKey(AuthKeyMaker.getKey(15));
-		if (!dao.insertIfExistUpdate(auth))
-			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
-		AuthSender.sendMail(
-				user.getEmail(),
-				new Mail("BeginAgain 가입 인증 메일입니다.", String.format(
-						"<h1>BeginAgain에 가입하신 것을 환영합니다.</h1><p><h3><a href='%s'>email 인증하기</a></h3>링크를 누르면 회원님의 메일이 인증됩니다.</p>", auth.getLink())));
-		http.setSessionAttribute("user", user);
-		user.removePassword();
-		http.setView(new Json(new Result(user)));
+	@Mapping(method = Method.GET)
+	public Response getUser(@FromDB(keyParameter = "userId") User user, @Parameter("userId") String userId, DAO dao) {
+		System.out.println(user);
+		return new Json("abc");
 	}
 
-	@Mapping(value = "/api/user/mailRequest", method = "POST")
-	public void remail(Http http, DAO dao) throws JsonAlert {
-		EmailAuth auth = new EmailAuth();
-		auth.setEmail(http.getParameter("email"));
-		auth.setKey(AuthKeyMaker.getKey(15));
-		if (!dao.insertIfExistUpdate(auth))
-			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
-		AuthSender.sendMail(
-				http.getParameter("email"),
-				new Mail("BeginAgain 가입 인증 메일입니다.", String.format(
-						"<h1>BeginAgain에 가입하신 것을 환영합니다.</h1><p><h3><a href='%s'>email 인증하기</a></h3>링크를 누르면 회원님의 메일이 인증됩니다.</p>", auth.getLink())));
-		http.setView(new Json(new Result()));
-	}
-
-	@Mapping(value = "/api/user/update", method = "POST", before = "loginCheck")
-	public void update(Http http, DAO dao) throws JsonAlert {
-		User user = http.getJsonObject(User.class, "user");
-		if (user == null)
-			return;
-		if (!user.getEmail().equals(http.getSessionAttribute(User.class, "user").getEmail()))
-			return;
-		if (!dao.update(user))
-			throw new JsonAlert("DB입력 중 오류가 발생했습니다.");
-		http.setSessionAttribute("user", user);
-		user.removePassword();
-		http.setView(new Json(new Result(user)));
-	}
-
-	public static final String GET_USER_BY_EMAIL = "SELECT * FROM User Where User_email=?";
-
-	@Mapping(value = "/api/user", method = "GET", before = "loginCheck")
-	public void user(Http http, DAO dao) throws JsonAlert {
-		User user = http.getSessionAttribute(User.class, "user");
-		user = dao.getRecord(User.class, GET_USER_BY_EMAIL, user.getEmail());
-		user.defineFactors(dao);
-		user.defineLikes(dao);
-		user.removePassword();
-		http.setSessionAttribute("user", user);
-		http.setView(new Json(new Result(user)));
-	}
-
-	@Mapping(value = "/api/user/registeredEmail", method = "POST")
-	public void checkId(Http http, DAO dao) throws JsonAlert {
-		String email = http.getParameter("email");
-		User user = dao.getRecord(User.class, GET_USER_BY_EMAIL, email);
-		if (user == null) {
-			http.setView(new Json(false));
-			return;
-		}
-		http.setView(new Json(email));
-	}
-
-	@Mapping(value = "/api/user/login", method = "POST")
-	public void login(Http http, DAO dao) throws JsonAlert {
-		User user = http.getJsonObject(User.class, "user");
-		User fromDB = dao.getRecord(User.class, GET_USER_BY_EMAIL, user.getEmail());
-		if (fromDB == null)
-			throw new JsonAlert("없는 아이디입니다.");
-		if (!user.getPassword().equals(fromDB.getPassword()))
-			throw new JsonAlert("패스워드가 다릅니다.");
-		fromDB.defineFactors(dao);
-		http.setSessionAttribute("user", fromDB);
-		fromDB.removePassword();
-		http.setView(new Json(new Result(fromDB)));
-	}
-
-	@Mapping(value = "/api/user/fblogin", method = "POST")
-	public void fblogin(Http http, DAO dao) throws JsonAlert {
-		User user = http.getJsonObject(User.class, "user");
-		if (user == null)
-			return;
-		User fromDB = dao.getRecord(User.class, GET_USER_BY_EMAIL, user.getEmail());
-		if (fromDB == null)
-			dao.insert(user);
-		else
-			dao.update(user);
-		user.defineFactors(dao);
-		http.setSessionAttribute("user", user);
-		http.setView(new Json(new Result(user)));
-	}
-
-	@Mapping(value = "/api/user/logout", method = "GET")
-	public void logout(Http http) throws JsonAlert {
-		http.removeSessionAttribute("user");
-		http.setView(new Json(new Result(true)));
-	}
-
-	@HttpMethod
-	public void loginCheck(Http http, DAO dao) throws JsonAlert {
-		User user = http.getSessionAttribute(User.class, "user");
-		if (user == null)
-			throw new JsonAlert("로그인이 필요합니다.");
+	@Mapping(value = "/user", method = Method.GET)
+	@HttpMethod(value = "loginCheck")
+	public Result loginCheck(HttpServletRequest req) {
+		if (req.getSession().getAttribute("user") == null)
+			return new Result("로그인이 필요한 서비스입니다.");
+		return null;
 	}
 
 }

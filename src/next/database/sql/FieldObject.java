@@ -1,7 +1,5 @@
 package next.database.sql;
 
-import java.lang.reflect.Field;
-
 import next.database.exception.RegexNotMatchedException;
 
 public class FieldObject {
@@ -9,12 +7,12 @@ public class FieldObject {
 	Object param;
 	SqlField field;
 
-	public FieldObject(Object param, Field field) {
+	public FieldObject(Object param, SqlField field) {
 		this.param = param;
-		this.field = SqlField.getInstance(field);
+		this.field = field;
 		if (param == null)
 			return;
-		if (!RegexCheck.check(param, field))
+		if (!field.check(param))
 			throw new RegexNotMatchedException();
 	}
 

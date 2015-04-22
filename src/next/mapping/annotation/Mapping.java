@@ -5,12 +5,11 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Mapping {
+	String[] value() default "";
 
-	String[] value();
-	
 	String[] before() default "";
-	
+
 	String[] after() default "";
-	
+
 	String[] method() default "GET";
 }

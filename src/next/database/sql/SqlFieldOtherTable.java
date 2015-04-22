@@ -20,4 +20,9 @@ public class SqlFieldOtherTable implements SqlField {
 		return columnName;
 	}
 
+	@Override
+	public boolean check(Object param) {
+		return true;
+	}
+
 }

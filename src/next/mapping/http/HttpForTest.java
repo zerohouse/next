@@ -3,23 +3,17 @@ package next.mapping.http;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Part;
-
-import next.mapping.view.View;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
 public class HttpForTest implements Http {
-	private static final Logger logger = LoggerFactory.getLogger(HttpForTest.class);
 
 	Map<String, String> parameters = new HashMap<String, String>();
 
@@ -132,13 +126,6 @@ public class HttpForTest implements Http {
 	}
 
 	@Override
-	public void render() {
-		logger.debug(this.toString());
-		if (view != null)
-			logger.debug(view.toString());
-	}
-
-	@Override
 	public String toString() {
 		String result = "";
 		if (!parameters.isEmpty())
@@ -164,13 +151,6 @@ public class HttpForTest implements Http {
 		return result;
 	}
 
-	private View view;
-
-	@Override
-	public void setView(View view) {
-		this.view = view;
-	}
-
 	Map<String, Object> attribute = new HashMap<String, Object>();
 
 	@Override
@@ -183,17 +163,13 @@ public class HttpForTest implements Http {
 		attribute.put(key, value);
 	}
 
-	public View getView() {
-		return view;
-	}
-
 	@Override
-	public Part getPart(String name) {
+	public HttpServletRequest getReq() {
 		return null;
 	}
 
 	@Override
-	public Collection<Part> getParts() {
+	public HttpServletResponse getResp() {
 		return null;
 	}
 

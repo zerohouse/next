@@ -10,8 +10,8 @@ import next.database.annotation.Exclude;
 import next.database.annotation.Key;
 import next.database.annotation.OtherTable;
 import next.database.annotation.Table;
-import next.database.sql.SqlField;
 import next.database.sql.SqlFieldNormal;
+import next.database.sql.SqlSupports;
 import next.setting.Setting;
 
 public class TableMaker {
@@ -22,11 +22,11 @@ public class TableMaker {
 	private String table_suffix;
 	private String createQuery;
 
-	public TableMaker(Class<?> tableObj) {
-		dao = new DAO();
+	public TableMaker(Class<?> tableObj, DAO dao) {
 		tableClass = tableObj;
+		this.dao = dao;
 		tableName = tableClass.getSimpleName();
-		table_suffix = Setting.get("database", "default", "table_suffix");
+		table_suffix = Setting.get().getDatabase().getCreateOption().getTable_suffix();
 		if (!tableClass.isAnnotationPresent(Table.class))
 			return;
 		Table table = tableClass.getAnnotation(Table.class);
@@ -38,7 +38,7 @@ public class TableMaker {
 			table_suffix = table.table_suffix();
 	}
 
-	private static final String CREATE_TABLE = "CREATE TABLE `%s` %s %s";
+	private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS `%s` %s %s";
 
 	public void createTable() {
 		String sql = createQuery;
@@ -71,7 +71,7 @@ public class TableMaker {
 				continue;
 			if (fields[i].isAnnotationPresent(Exclude.class))
 				continue;
-			SqlFieldNormal fm = (SqlFieldNormal) SqlField.getInstance(fields[i]);
+			SqlFieldNormal fm = (SqlFieldNormal) SqlSupports.getInstance().getSqlField(fields[i]);
 			result += fm.getFieldString() + ", ";
 			if (fields[i].isAnnotationPresent(Key.class)) {
 				addFunction(fm, PRIMARY_KEY);
@@ -107,7 +107,4 @@ public class TableMaker {
 		return tableName + getColumnString();
 	}
 
-	public void commitAndReturn() {
-		dao.commitAndClose();
-	}
 }
