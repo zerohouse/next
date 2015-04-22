@@ -203,6 +203,8 @@ Json.class, Jsp.class
 
 
 # Setting (resource/nextSetting.json)
+web.xml ...등 기타 세팅파일 필요없습니다. 다지우시고 이거만. 리소스 아래에.
+
     {
 		"mapping" : {
 			"mappings" : ["/api/*", "/user/*"],
