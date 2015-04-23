@@ -1,6 +1,5 @@
 package next.database;
 
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,32 +49,8 @@ public class MySql implements DAO {
 	}
 
 	@Override
-	public List<Object> getRecord(String sql, int resultSize, Object... parameters) {
-		List<Object> record = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			pstmt = getPSTMT(sql, parameters);
-			rs = pstmt.executeQuery();
-			if (rs.next()) {
-				if (record == null)
-					record = new ArrayList<Object>();
-				for (int i = 0; i < resultSize; i++) {
-					record.add(rs.getObject(i + 1));
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-			close(rs);
-		}
-		return record;
-	}
-
-	@Override
-	public Map<String, Object> getRecordMap(String sql, Object... parameters) {
-		Map<String, Object> record = null;
+	public LinkedHashMap<String, Object> getRecord(String sql, Object... parameters) {
+		LinkedHashMap<String, Object> record = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
@@ -101,36 +76,8 @@ public class MySql implements DAO {
 	}
 
 	@Override
-	public List<List<Object>> getRecords(String sql, int resultSize, Object... parameters) {
-		List<Object> record;
-		List<List<Object>> result = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			pstmt = getPSTMT(sql, parameters);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				if (result == null)
-					result = new ArrayList<List<Object>>();
-				record = new ArrayList<Object>();
-				for (int i = 0; i < resultSize; i++) {
-					record.add(rs.getObject(i + 1));
-				}
-				result.add(record);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-			close(rs);
-		}
-
-		return result;
-	}
-
-	@Override
-	public List<Map<String, Object>> getRecordMaps(String sql, Object... parameters) {
-		List<Map<String, Object>> result = null;
+	public List<LinkedHashMap<String, Object>> getRecords(String sql, Object... parameters) {
+		List<LinkedHashMap<String, Object>> result = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
@@ -140,8 +87,8 @@ public class MySql implements DAO {
 			int columnCount = metaData.getColumnCount();
 			while (rs.next()) {
 				if (result == null)
-					result = new ArrayList<Map<String, Object>>();
-				Map<String, Object> columns = new LinkedHashMap<String, Object>();
+					result = new ArrayList<LinkedHashMap<String, Object>>();
+				LinkedHashMap<String, Object> columns = new LinkedHashMap<String, Object>();
 				for (int i = 1; i <= columnCount; i++) {
 					columns.put(metaData.getColumnLabel(i), rs.getObject(i));
 				}
@@ -159,7 +106,7 @@ public class MySql implements DAO {
 
 	@Override
 	public <T> T getObject(String sql, Class<T> cLass, Object... parameters) {
-		Map<String, Object> record = getRecordMap(sql, parameters);
+		LinkedHashMap<String, Object> record = getRecord(sql, parameters);
 		T result = sqlSupports.getObject(cLass, record);
 		return result;
 	}
@@ -167,7 +114,7 @@ public class MySql implements DAO {
 	@Override
 	public <T> T getObject(Class<T> cLass, Object... parameters) {
 		KeyParams sp = sqlSupports.getKeyParams(cLass);
-		Map<String, Object> record = getRecordMap(String.format("SELECT * FROM %s WHERE %s", sp.getTableName(), sp.getKeyFieldNames(EQ, and)),
+		LinkedHashMap<String, Object> record = getRecord(String.format("SELECT * FROM %s WHERE %s", sp.getTableName(), sp.getKeyFieldNames(EQ, and)),
 				parameters);
 		T result = sqlSupports.getObject(cLass, record);
 		return result;
@@ -175,7 +122,7 @@ public class MySql implements DAO {
 
 	@Override
 	public <T> List<T> getObjects(String sql, Class<T> cLass, Object... parameters) {
-		List<Map<String, Object>> records = getRecordMaps(sql, parameters);
+		List<LinkedHashMap<String, Object>> records = getRecords(sql, parameters);
 		List<T> result = new ArrayList<T>();
 		if (records == null)
 			return null;
@@ -248,7 +195,7 @@ public class MySql implements DAO {
 	@Override
 	public boolean fill(Object record) {
 		KeyParams kp = new NullableParams(sqlSupports, record);
-		Map<String, Object> recordMap = getRecordMap(String.format("SELECT * FROM %s WHERE %s", kp.getTableName(), kp.getKeyFieldNames(EQ, and)), kp
+		Map<String, Object> recordMap = getRecord(String.format("SELECT * FROM %s WHERE %s", kp.getTableName(), kp.getKeyFieldNames(EQ, and)), kp
 				.getKeyParams().toArray());
 		return sqlSupports.setObject(record, recordMap);
 	}
@@ -312,13 +259,6 @@ public class MySql implements DAO {
 		if (!sap.hasKeyParams())
 			return false;
 		return execute(String.format(DELETE, sap.getTableName(), sap.getKeyFieldNames(EQ, and)), sap.getKeyParams().toArray());
-	}
-
-	private final static String LAST = "SELECT LAST_INSERT_ID();";
-
-	@Override
-	public BigInteger getLastKey() {
-		return (BigInteger) getRecordMap(LAST, 1).get(0);
 	}
 
 }
