@@ -1,7 +1,41 @@
-# Next MVC + JDBC Library
+# Next MVC + DAO Library
 편합니다!
 
-# MVC Library
+### Example
+
+    @Controller
+    @Mapping("/api")
+    public class UserController {
+        @Mapping(value = "/user/{}", before = "loginCheck", method = Method.GET)  
+        public void getUser(Http http, DAO dao) { // 메서드 내에서 트랜젝션
+            dao.getObject(User.class, http.getParameter("userId")); 
+            String userId = http.getUriVariable(0); // {}의 변수 사용
+        }
+        
+        @Mapping(value = "/update", before = "loginCheck", method = Method.POST)
+    	public Post updatePost(@JsonParameter("Post") Post post, @SessionAttribute("user") User user) {
+            if(!post.getUserId().equals(user.getId()))
+                return new Json("권한이 없습니다");
+    		return post;
+        }
+        
+	    @HttpMethod("loginCheck")
+	    public Result loginCheck(Http http) {
+	        if(http.getSessionAttribute("user") == null)
+	            return new Result("로그인이 필요한 서비스입니다.");
+            return null;
+	    }
+        
+        @Before // 이 컨트롤러 뿐만 아니라 모든 컨트롤러에 적용
+        public Result before(Http http) {
+	        if(http.getSessionAttribute("user") == null)
+	            return new Result("로그인이 필요한 서비스입니다.");
+            return null;
+	    }
+    }
+
+
+#MVC
 
 ## 1. Class
 
@@ -58,40 +92,6 @@ Json.class, Jsp.class
     
 #### @Before 메서드 실행전 실행될 메서드, @After 메서드 실행 후 실행될 메서드
 
-### Example Controller
-
-    @Controller
-    @Mapping("/api")
-    public class UserController {
-        @Mapping(value = "/user/{}", before = "loginCheck", method = Method.GET)  
-        public void getUser(Http http, DAO dao) { // 메서드 내에서 트랜젝션
-            dao.getObject(User.class, http.getParameter("userId")); 
-            String userId = http.getUriVariable(0); // {}의 변수 사용
-        }
-        
-        @Mapping(value = "/update", before = "loginCheck", method = Method.POST)
-    	public Post updatePost(@JsonParameter("Post") Post post, @SessionAttribute("user") User user) {
-            if(!post.getUserId().equals(user.getId()))
-                return new Json("권한이 없습니다");
-    		return post;
-        }
-        
-	    @HttpMethod("loginCheck")
-	    public Result loginCheck(Http http) {
-	        if(http.getSessionAttribute("user") == null)
-	            return new Result("로그인이 필요한 서비스입니다.");
-            return null;
-	    }
-        
-        @Before // 이 컨트롤러 뿐만 아니라 모든 컨트롤러에 적용
-        public Result before(Http http) {
-	        if(http.getSessionAttribute("user") == null)
-	            return new Result("로그인이 필요한 서비스입니다.");
-            return null;
-	    }
-    }
-    
-
 
 ### Field Annotations
 #### @DateFormat // 필드에 사용, Gson변환시 지정된 데이트포맷 사용
@@ -109,7 +109,7 @@ Json.class, Jsp.class
     }
         
 
-# JDBC Library
+# DAO
 어노테이션 기반 모델 설정 -> JDBC 한줄로 해결
 테이블 생성 SQL 파일도 필요없습니다.
     
