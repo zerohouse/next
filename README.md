@@ -5,7 +5,7 @@
 
 ## 1. Class
 
-### Http.class
+### Http.class Interface
 HttpImpl.class, HttpForTest.class
 
     public interface Http {
@@ -73,7 +73,7 @@ Json.class, Jsp.class
     	public Post updatePost(@JsonParameter("Post") Post post, @SessionAttribute("user") User user) {
             if(!post.getUserId().equals(user.getId()))
                 return new Json("권한이 없습니다");
-    		return post; //Object Return시 Json으로 파싱되어 리턴됨.
+    		return post;
         }
         
 	    @HttpMethod("loginCheck")
@@ -202,74 +202,176 @@ Json.class, Jsp.class
 
 
 
-# Setting (resource/nextSetting.json)
-web.xml ...등 기타 세팅파일 필요없습니다. 다지우시고 이거만. 리소스 아래에.
+# Setting
+1. 아래 web.xml을 webapp디렉토리의 WEB-INF폴더 내에 위치.
+2. resource폴더 내에 nextSetting.json 위치
+
+## web.xml (webapp/WEB-INF/web.xml)
+    <?xml version="1.0" encoding="UTF-8"?>
+    <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://java.sun.com/xml/ns/javaee"
+    	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    	version="3.0">
+    	<listener>
+    		<listener-class>next.Next</listener-class>
+    	</listener>
+    </web-app>
+
+
+## nextSetting.json (resources/nextSetting.json)
+### Setting Required Options : 아래 옵션은 필수입니다.
 
     {
-		"mapping" : {
-			"mappings" : ["/api/*", "/user/*"],
-			"characterEncoding" : "UTF-8",
-			"url":"localhost:8080",
-			"controllerPackage" : "me.controllers",
-			"jspPath" : "/WEB-INF/jsp/"
-		},
-		"logger" : {
-			"level" : "ALL",
-			"logFilePath" : "/log/",
-			"pattern" : "%level [%thread] %msg - %logger{10} : %file:%line %date%n"
-		},
-		"database" : {
-	        "modelPackage" : "me.model",
-	        "testDataPackage" : "me.model.test",
-	        "connectionSetting" : {
-				"jdbcUrl" : "jdbc:mysql://localhost:3306/mydb?useUnicode=true&characterEncoding=utf8",
-	        	"username" : "root",
-	        	"password" : "",
-	        	"minConnectionsPerPartition" : 5,
-				"maxConnectionsPerPartition" : 10,
-				"setPartitionCount" : 1
-	        	},
-			"createOption" : {
-			    "createTablesOnServerStart" : true,
-	        	"resetTablesOnServerStart" : false,
-	        	"insertDataOnServerStart" : true,
-				"table_suffix" : "ENGINE = InnoDB DEFAULT CHARACTER SET utf8",
-				"stringOptions" : {
-					"dataType" : "VARCHAR(255)",
-					"notNull" : true,
-					"hasDefaultValue" : true,
-					"defaultValue" : ""
-				},
-				"integerOptions" : {
-					"dataType" : "INTEGER",
-					"notNull" : true,
-					"hasDefaultValue" : true,
-					"defaultValue" : "0"
-				},
-				"booleanOptions" : {
-					"dataType" : "TINYINT(1)",
-					"notNull" : true,
-					"hasDefaultValue" : true,
-					"defaultValue" : "0"
-				},
-				"dateOptions" : {
-					"dataType" : "DATETIME",
-					"notNull" : true,
-					"hasDefaultValue" : true,
-					"defaultValue" : "CURRENT_TIMESTAMP"
-				},
-				"floatOptions" : {
-					"dataType" : "FLOAT",
-					"notNull" : true,
-					"hasDefaultValue" : true,
-					"defaultValue" : "0"
-				},
-				"longOptions" : {
-					"dataType" : "BIGINT",
-					"notNull" : true,
-					"hasDefaultValue" : true,
-					"defaultValue" : "0"
-				}
-			}
-		}
-	}
+      "mapping": {
+        "mappings": [],
+        "url": "",
+        "controllerPackage": "",
+        "jspPath": ""
+      },
+      "database": {
+        "modelPackage": "",
+        "testDataPackage": "",
+        "connectionSetting": {
+          "jdbcUrl": "",
+          "username": "",
+          "password": ""
+        }
+      }
+    }
+
+
+### Setting Example : 필요한 옵션을 더 세팅하여 세팅 파일을 만듭니다.
+
+    {
+      "mapping": {
+        "mappings": [
+          "/api/*",
+          "/user/*"
+        ],
+        "url": "localhost:8080",
+        "controllerPackage": "me.controllers",
+        "jspPath": "/WEB-INF/jsp/"
+      },
+      "database": {
+        "modelPackage": "me.model",
+        "testDataPackage": "me.model.test",
+        "connectionSetting": {
+          "jdbcUrl": "jdbc:mysql://localhost:3306/mydb?useUnicode=true&characterEncoding=utf8",
+          "username": "root",
+          "password": "",
+          "maxConnectionsPerPartition": 30,
+          "partitionCount": 2,
+        },
+        "createOption": {
+          "resetTablesOnServerStart": true,
+          "insertDataOnServerStart": true,
+          "table_suffix": "ENGINE \u003d InnoDB DEFAULT CHARACTER SET utf8",
+          "stringOptions": {
+            "dataType": "TEXT",
+         }
+      }
+    }
+
+
+### Default Setting : 기본 세팅은 아래와 같습니다.
+    {
+      "mapping": {
+        "mappings": [],
+        "characterEncoding": "UTF-8",
+        "url": "",
+        "controllerPackage": "",
+        "jspPath": ""
+      },
+      "logger": {
+        "level": "ALL",
+        "logFilePath": "/log/",
+        "pattern": "%level [%thread] %msg - %logger{10} : %file:%line %date%n"
+      },
+      "database": {
+        "modelPackage": "",
+        "testDataPackage": "",
+        "connectionSetting": {
+          "minConnectionsPerPartition": 0,
+          "maxConnectionsPerPartition": 10,
+          "acquireIncrement": 2,
+          "partitionCount": 1,
+          "jdbcUrl": "",
+          "username": "",
+          "password": "",
+          "idleConnectionTestPeriodInSeconds": 14400,
+          "idleMaxAgeInSeconds": 3600,
+          "statementsCacheSize": 0,
+          "statementsCachedPerConnection": 0,
+          "releaseHelperThreads": 0,
+          "statementReleaseHelperThreads": 0,
+          "closeConnectionWatch": false,
+          "logStatementsEnabled": false,
+          "acquireRetryDelayInMs": 7000,
+          "acquireRetryAttempts": 5,
+          "lazyInit": false,
+          "transactionRecoveryEnabled": false,
+          "disableJMX": false,
+          "queryExecuteTimeLimitInMs": 0,
+          "poolAvailabilityThreshold": 0,
+          "disableConnectionTracking": false,
+          "connectionTimeoutInMs": 0,
+          "closeConnectionWatchTimeoutInMs": 0,
+          "maxConnectionAgeInSeconds": 0,
+          "serviceOrder": "FIFO",
+          "statisticsEnabled": false,
+          "defaultAutoCommit": true,
+          "defaultReadOnly": false,
+          "defaultTransactionIsolationValue": -1,
+          "externalAuth": false,
+          "deregisterDriverOnClose": false,
+          "nullOnConnectionTimeout": false,
+          "resetConnectionOnClose": false,
+          "detectUnresolvedTransactions": false,
+          "poolStrategy": "DEFAULT",
+          "closeOpenStatements": false,
+          "detectUnclosedStatements": false
+        },
+        "createOption": {
+          "createTablesOnServerStart": true,
+          "resetTablesOnServerStart": false,
+          "insertDataOnServerStart": false,
+          "table_suffix": "ENGINE \u003d InnoDB DEFAULT CHARACTER SET utf8",
+          "stringOptions": {
+            "dataType": "VARCHAR(255)",
+            "notNull": true,
+            "hasDefaultValue": true,
+            "defaultValue": ""
+          },
+          "integerOptions": {
+            "dataType": "INTEGER",
+            "notNull": true,
+            "hasDefaultValue": true,
+            "defaultValue": 0
+          },
+          "booleanOptions": {
+            "dataType": "TINYINT(1)",
+            "notNull": true,
+            "hasDefaultValue": true,
+            "defaultValue": 0
+          },
+          "dateOptions": {
+            "dataType": "DATETIME",
+            "notNull": true,
+            "hasDefaultValue": true,
+            "defaultValue": "CURRENT_TIMESTAMP"
+          },
+          "floatOptions": {
+            "dataType": "FLOAT",
+            "notNull": true,
+            "hasDefaultValue": true,
+            "defaultValue": 0
+          },
+          "longOptions": {
+            "dataType": "BIGINT",
+            "notNull": true,
+            "hasDefaultValue": true,
+            "defaultValue": 0
+          }
+        }
+      }
+    }

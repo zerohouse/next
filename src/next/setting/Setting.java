@@ -8,9 +8,9 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
 public class Setting {
-	private MappingSetting mapping;
-	private LoggerSetting logger;
-	private DatabaseSetting database;
+	private MappingSetting mapping = new MappingSetting();
+	private LoggerSetting logger = new LoggerSetting();
+	private DatabaseSetting database = new DatabaseSetting();
 
 	private static Setting instance;
 
@@ -33,12 +33,6 @@ public class Setting {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public Setting(MappingSetting mapping, DatabaseSetting database) {
-		this.mapping = mapping;
-		logger = new LoggerSetting();
-		this.database = database;
 	}
 
 	public MappingSetting getMapping() {

@@ -2,15 +2,9 @@ package next.setting;
 
 public class LoggerSetting {
 
-	private String level;
-	private String logFilePath;
-	private String pattern;
-
-	public LoggerSetting() {
-		this.level = "ALL";
-		this.logFilePath = "/log/";
-		this.pattern = "%level [%thread] %msg - %logger{10} : %file:%line %date%n";
-	}
+	private String level = "ALL";
+	private String logFilePath = "/log/";
+	private String pattern = "%level [%thread] %msg - %logger{10} : %file:%line %date%n";
 
 	public String getLevel() {
 		return level;

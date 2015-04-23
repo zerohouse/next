@@ -1,4 +1,4 @@
-package next.mapping.dispatch;
+package next;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +12,8 @@ import javax.servlet.annotation.WebListener;
 import next.setting.Setting;
 
 @WebListener
-public class DispatcherListener implements ServletContextListener {
+public class Next implements ServletContextListener {
 
-	
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext sc = sce.getServletContext();

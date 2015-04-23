@@ -7,17 +7,7 @@ public class DatabaseSetting {
 	private String modelPackage;
 	private String testDataPackage;
 	private BoneCPConfig connectionSetting;
-	private CreateOption createOption;
-
-	public DatabaseSetting(String modelPackage, String testDataPackage, String jdbcUrl, String username, String password) {
-		this.modelPackage = modelPackage;
-		this.testDataPackage = testDataPackage;
-		this.connectionSetting = new BoneCPConfig();
-		connectionSetting.setPassword(password);
-		connectionSetting.setJdbcUrl(jdbcUrl);
-		connectionSetting.setUser(username);
-		this.createOption = new CreateOption();
-	}
+	private CreateOption createOption = new CreateOption();
 
 	public String getModelPackage() {
 		return modelPackage;

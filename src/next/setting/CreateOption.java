@@ -2,29 +2,16 @@ package next.setting;
 
 public class CreateOption {
 
-	private Boolean createTablesOnServerStart;
-	private Boolean resetTablesOnServerStart;
-	private Boolean insertDataOnServerStart;
-	private String table_suffix;
-	private TableOptions stringOptions;
-	private TableOptions integerOptions;
-	private TableOptions booleanOptions;
-	private TableOptions dateOptions;
-	private TableOptions floatOptions;
-	private TableOptions longOptions;
-
-	public CreateOption() {
-		this.createTablesOnServerStart = true;
-		this.resetTablesOnServerStart = false;
-		this.insertDataOnServerStart = false;
-		this.table_suffix = "ENGINE = InnoDB DEFAULT CHARACTER SET utf8";
-		this.stringOptions = new TableOptions("VARCHAR(255)", true, true, "");
-		this.integerOptions = new TableOptions("INTEGER", true, true, 0);
-		this.booleanOptions = new TableOptions("TINYINT(1)", true, true, 0);
-		this.dateOptions = new TableOptions("DATETIME", true, true, "CURRENT_TIMESTAMP");
-		this.floatOptions = new TableOptions("FLOAT", true, true, 0);
-		this.longOptions = new TableOptions("BIGINT", true, true, 0);
-	}
+	private Boolean createTablesOnServerStart = true;
+	private Boolean resetTablesOnServerStart = false;
+	private Boolean insertDataOnServerStart = false;
+	private String table_suffix = "ENGINE = InnoDB DEFAULT CHARACTER SET utf8";
+	private TableOptions stringOptions = new TableOptions("VARCHAR(255)", true, true, "");
+	private TableOptions integerOptions = new TableOptions("INTEGER", true, true, 0);
+	private TableOptions booleanOptions = new TableOptions("TINYINT(1)", true, true, 0);
+	private TableOptions dateOptions = new TableOptions("DATETIME", true, true, "CURRENT_TIMESTAMP");
+	private TableOptions floatOptions = new TableOptions("FLOAT", true, true, 0);
+	private TableOptions longOptions = new TableOptions("BIGINT", true, true, 0);
 
 	public Boolean getCreateTablesOnServerStart() {
 		return createTablesOnServerStart;

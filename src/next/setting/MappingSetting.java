@@ -1,32 +1,11 @@
 package next.setting;
 
-import java.util.Arrays;
-
 public class MappingSetting {
 	private Object mappings;
-	private String characterEncoding;
+	private String characterEncoding = "UTF-8";;
 	private String url;
 	private String controllerPackage;
 	private String jspPath;
-
-	public MappingSetting(String url, String controllerPackage, String jspPath, String... mappings) {
-		if (mappings.length < 2)
-			this.mappings = mappings;
-		else
-			this.mappings = Arrays.asList(mappings);
-		this.characterEncoding = "UTF-8";
-		this.url = url;
-		this.controllerPackage = controllerPackage;
-		this.jspPath = jspPath;
-	}
-
-	public MappingSetting(String url, String controllerPackage, String jspPath, Object mappings) {
-		this.mappings = mappings;
-		this.characterEncoding = "UTF-8";
-		this.url = url;
-		this.controllerPackage = controllerPackage;
-		this.jspPath = jspPath;
-	}
 
 	public Object getMappings() {
 		return mappings;
