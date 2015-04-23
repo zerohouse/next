@@ -9,7 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import next.util.GsonInstance;
+import next.setting.Setting;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -37,7 +37,7 @@ public class HttpImpl implements Http {
 
 	@Override
 	public <T> T getJsonObject(Class<T> cLass, String name) {
-		Gson gson = GsonInstance.get();
+		Gson gson = Setting.getGson();
 		try {
 			return gson.fromJson(req.getParameter(name), cLass);
 		} catch (JsonSyntaxException e) {
@@ -47,7 +47,7 @@ public class HttpImpl implements Http {
 
 	@Override
 	public <T> T getJsonObject(Class<T> cLass) {
-		Gson gson = GsonInstance.get();
+		Gson gson = Setting.getGson();
 		try {
 			return gson.fromJson(gson.toJson(req.getParameterMap()), cLass);
 		} catch (JsonSyntaxException e) {

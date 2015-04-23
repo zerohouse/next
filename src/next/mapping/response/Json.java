@@ -1,13 +1,13 @@
 package next.mapping.response;
 
 import next.mapping.http.Http;
-import next.util.GsonInstance;
+import next.setting.Setting;
 
 public class Json implements Response {
 
 	private Boolean error;
 	private String errorMessage;
-	private Object object;
+	private Object response;
 
 	public Json() {
 	}
@@ -16,28 +16,28 @@ public class Json implements Response {
 		super();
 		this.error = error;
 		this.errorMessage = errorMessage;
-		this.object = object;
+		this.response = object;
 	}
 
 	public void setJsonObj(Object jsonObj) {
-		this.object = jsonObj;
+		this.response = jsonObj;
 	}
 
 	public Json(Object obj) {
-		this.object = obj;
+		this.response = obj;
 	}
 
 	@Override
 	public String toString() {
-		return "Json [error=" + error + ", errorMessage=" + errorMessage + ", object=" + object + "]";
+		return "Json [error=" + error + ", errorMessage=" + errorMessage + ", object=" + response + "]";
 	}
 
-	public Object getObject() {
-		return object;
+	public Object getResponse() {
+		return response;
 	}
 
 	public String getJsonString() {
-		return GsonInstance.get().toJson(this);
+		return Setting.getGson().toJson(this);
 	}
 
 	public void render(Http http) {

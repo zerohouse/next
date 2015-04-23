@@ -3,13 +3,14 @@ package next.setting;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-import next.util.GsonInstance;
-
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
 public class Setting {
+	private static Gson gson;
+
 	private MappingSetting mapping = new MappingSetting();
 	private LoggerSetting logger = new LoggerSetting();
 	private DatabaseSetting database = new DatabaseSetting();
@@ -24,10 +25,15 @@ public class Setting {
 		return instance;
 	}
 
+	public static Gson getGson(){
+		return gson;
+	}
+	
 	static {
-		Gson gson = GsonInstance.get();
+		Gson gsons = new Gson();
 		try {
-			instance = gson.fromJson(new FileReader(Setting.class.getResource("/nextSetting.json").getFile()), Setting.class);
+			instance = gsons.fromJson(new FileReader(Setting.class.getResource("/nextSetting.json").getFile()), Setting.class);
+			gson = new GsonBuilder().setDateFormat(Setting.get().getMapping().getDateFormat()).create();
 		} catch (JsonSyntaxException e) {
 			e.printStackTrace();
 		} catch (JsonIOException e) {
@@ -35,6 +41,7 @@ public class Setting {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	public MappingSetting getMapping() {
