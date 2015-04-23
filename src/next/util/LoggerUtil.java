@@ -37,6 +37,8 @@ public class LoggerUtil {
 			lv = Level.ALL;
 			break;
 		}
+		Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+		root.setLevel(lv);
 	}
 
 	public static org.slf4j.Logger getLogger(Class<?> cLass) {

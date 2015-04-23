@@ -11,7 +11,7 @@ HttpImpl.class, HttpForTest.class
     public interface Http {
         String getParameter(String name);
         <T> T getJsonObject(Class<T> cLass, String name); // Json오브젝트를 꺼내옴(Gson기반)
-    	<T> T getJsonObject(Class<T> cLass); // Json오브젝트를 꺼내옴(Gson기반)
+        <T> T getJsonObject(Class<T> cLass); // Json오브젝트를 꺼내옴(Gson기반)
     	void forword(String path) throws ServletException, IOException;
     	void setContentType(String type);
     	void write(String string);
@@ -200,6 +200,10 @@ Json.class, Jsp.class
     	}
     }
 
+
+##Logger 사용 
+    LoggerUtil.getLogger(Class<?> type); 
+    private static final Logger logger = LoggerUtil.getLogger(Mapper.class);
 
 
 # Setting
