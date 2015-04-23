@@ -195,7 +195,6 @@ public class MySql implements DAO {
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = getPSTMT(sql, parameters);
-			logger.debug(pstmt.toString());
 			pstmt.execute();
 			return true;
 		} catch (SQLException e) {
