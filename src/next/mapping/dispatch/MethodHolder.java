@@ -15,7 +15,7 @@ import next.mapping.annotation.parameters.Parameter;
 import next.mapping.annotation.parameters.SessionAttribute;
 import next.mapping.exception.RequiredParamNullException;
 import next.mapping.http.Http;
-import next.mapping.response.support.Result;
+import next.mapping.response.Json;
 
 public class MethodHolder {
 
@@ -37,9 +37,9 @@ public class MethodHolder {
 			List<Object> parameterArray = makeInsertParameters(http, dao);
 			returnValue = method.invoke(instance, parameterArray.toArray());
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			return new Result(true, e.getMessage());
+			return new Json(true, e.getMessage(), null);
 		} catch (RequiredParamNullException e) {
-			return new Result(true, e.getMessage());
+			return new Json(true, e.getMessage(), null);
 		}
 		return returnValue;
 	}

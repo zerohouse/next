@@ -93,9 +93,6 @@ Json.class, Jsp.class
 #### @Before 메서드 실행전 실행될 메서드, @After 메서드 실행 후 실행될 메서드
 
 
-### Field Annotations
-#### @DateFormat // 필드에 사용, Gson변환시 지정된 데이트포맷 사용
-    
 
 ### Parameter Annotations
 #### @Parameter, @JsonParameter, @SessionAttribute, @FromDB(keyParameter="?")
@@ -254,7 +251,8 @@ Json.class, Jsp.class
         ],
         "url": "localhost:8080",
         "controllerPackage": "me.controllers",
-        "jspPath": "/WEB-INF/jsp/"
+        "jspPath": "/WEB-INF/jsp/",
+        "dateFormat" : "yyyy-MM-dd HH:mm:ss"
       },
       "database": {
         "modelPackage": "me.model",

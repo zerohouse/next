@@ -1,21 +1,22 @@
 package next.mapping.response;
 
 import next.mapping.http.Http;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
+import next.util.GsonInstance;
 
 public class Json implements Response {
 
+	private Boolean error;
+	private String errorMessage;
 	private Object object;
-	private String dateformat;
-
-	public void setDateformat(String dateformat) {
-		this.dateformat = dateformat;
-	}
 
 	public Json() {
+	}
+
+	public Json(Boolean error, String errorMessage, Object object) {
+		super();
+		this.error = error;
+		this.errorMessage = errorMessage;
+		this.object = object;
 	}
 
 	public void setJsonObj(Object jsonObj) {
@@ -26,28 +27,30 @@ public class Json implements Response {
 		this.object = obj;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Response : " + getJsonString();
+		return "Json [error=" + error + ", errorMessage=" + errorMessage + ", object=" + object + "]";
 	}
 
 	public Object getObject() {
 		return object;
 	}
-	
-	public String getJsonString(){
-		Gson gson;
-		if(dateformat!=null)
-			gson = new GsonBuilder().setDateFormat(dateformat).create();
-		else
-			gson = new Gson();
-		return gson.toJson(object);
+
+	public String getJsonString() {
+		return GsonInstance.get().toJson(this);
 	}
 
 	public void render(Http http) {
 		http.setContentType("application/json");
 		http.write(getJsonString());
+	}
+
+	public void setError(Boolean error) {
+		this.error = error;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 
 }

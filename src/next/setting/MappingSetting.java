@@ -3,6 +3,7 @@ package next.setting;
 public class MappingSetting {
 	private Object mappings;
 	private String characterEncoding = "UTF-8";;
+	private String dateFormat = "yyyy-MM-dd HH:mm:ss";
 	private String url;
 	private String controllerPackage;
 	private String jspPath;
@@ -13,6 +14,14 @@ public class MappingSetting {
 
 	public void setMappings(Object mappings) {
 		this.mappings = mappings;
+	}
+
+	public String getDateFormat() {
+		return dateFormat;
+	}
+
+	public void setDateFormat(String dateFormat) {
+		this.dateFormat = dateFormat;
 	}
 
 	public String getCharacterEncoding() {

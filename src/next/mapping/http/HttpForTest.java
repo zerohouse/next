@@ -11,6 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import next.util.GsonInstance;
+
 import com.google.gson.Gson;
 
 public class HttpForTest implements Http {
@@ -28,13 +30,13 @@ public class HttpForTest implements Http {
 
 	@Override
 	public <T> T getJsonObject(Class<T> cLass, String name) {
-		Gson gson = DateBuilder.getGsonBuilder(cLass);
+		Gson gson = GsonInstance.get();
 		return gson.fromJson(parameters.get(name), cLass);
 	}
 
 	@Override
 	public <T> T getJsonObject(Class<T> cLass) {
-		Gson gson = DateBuilder.getGsonBuilder(cLass);
+		Gson gson = GsonInstance.get();
 		return gson.fromJson(gson.toJson(parameters), cLass);
 	}
 

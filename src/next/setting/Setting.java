@@ -3,6 +3,8 @@ package next.setting;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+import next.util.GsonInstance;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
@@ -23,7 +25,7 @@ public class Setting {
 	}
 
 	static {
-		Gson gson = new Gson();
+		Gson gson = GsonInstance.get();
 		try {
 			instance = gson.fromJson(new FileReader(Setting.class.getResource("/nextSetting.json").getFile()), Setting.class);
 		} catch (JsonSyntaxException e) {

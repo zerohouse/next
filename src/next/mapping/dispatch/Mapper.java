@@ -84,6 +84,8 @@ public class Mapper {
 				((Response) returned).render(http);
 				break;
 			}
+			new Json(returned).render(http);
+			break;
 		}
 	}
 
