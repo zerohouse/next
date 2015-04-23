@@ -17,7 +17,7 @@ public class LoggerUtil {
 	private static Level lv;
 
 	static {
-		switch (Setting.get().getLogger().getLevel()) {
+		switch (Setting.get().getLogger().getLevel().toUpperCase()) {
 		case "OFF":
 			lv = Level.OFF;
 			break;
