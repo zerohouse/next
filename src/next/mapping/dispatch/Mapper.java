@@ -60,7 +60,7 @@ public class Mapper {
 			http.sendError(404);
 			return;
 		}
-		DAO dao = new MySql(true);
+		DAO dao = new MySql(false);
 
 		Queue<MethodHolder> todo = new LinkedList<MethodHolder>();
 
@@ -75,7 +75,6 @@ public class Mapper {
 			Object returned = mh.execute(http, dao);
 			if (returned == null)
 				continue;
-			dao.close();
 			if (returned.getClass().getInterfaces().length == 0) {
 				new Json(returned).render(http);
 				break;
@@ -87,6 +86,7 @@ public class Mapper {
 			new Json(returned).render(http);
 			break;
 		}
+		dao.close();
 	}
 
 	private void makeMethodMap(Class<?> eachClass) throws InstantiationException, IllegalAccessException, IllegalArgumentException,

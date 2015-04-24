@@ -25,15 +25,23 @@ public class MySql implements DAO {
 
 	private SqlSupports sqlSupports = SqlSupports.getInstance();
 
-	public MySql(boolean transaction) {
-		conn = ConnectionPool.getConnection(false);
+	private boolean autocommit;
+
+	public MySql(boolean autocommit) {
+		this.autocommit = autocommit;
 	}
 
 	public MySql() {
-		conn = ConnectionPool.getConnection(true);
+		autocommit = true;
+	}
+
+	private void connect() {
+		if (conn == null)
+			conn = ConnectionPool.getConnection(autocommit);
 	}
 
 	private PreparedStatement getPSTMT(String sql, Object... parameters) {
+		connect();
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -170,6 +178,8 @@ public class MySql implements DAO {
 
 	@Override
 	public void close() {
+		if (conn == null)
+			return;
 		try {
 			if (!conn.getAutoCommit())
 				conn.commit();
