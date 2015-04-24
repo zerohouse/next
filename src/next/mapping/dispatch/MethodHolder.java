@@ -77,7 +77,7 @@ public class MethodHolder {
 			if (obj[i].isAnnotationPresent(JsonParameter.class)) {
 				JsonParameter jparam = obj[i].getAnnotation(JsonParameter.class);
 				String name = jparam.value();
-				Object value = http.getJsonObject(Object.class, name);
+				Object value = http.getJsonObject(types[i], name);
 				if (jparam.require() && value == null)
 					throw new RequiredParamNullException("필수 파라미터가 빠졌습니다.");
 				parameterArray.add(value);
