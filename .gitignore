@@ -86,3 +86,5 @@ release.properties
 
 
 !next-0.1.jar
+!next-0.1-javadoc.jar
+!next-0.1-sources.jar
