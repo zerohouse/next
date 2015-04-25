@@ -70,23 +70,26 @@ public class Mapper {
 
 		logger.debug(String.format("%s -> %s", url, todo.toString()));
 
-		while (!todo.isEmpty()) {
-			MethodHolder mh = todo.poll();
-			Object returned = mh.execute(http, dao);
-			if (returned == null)
-				continue;
-			if (returned.getClass().getInterfaces().length == 0) {
+		try {
+			while (!todo.isEmpty()) {
+				MethodHolder mh = todo.poll();
+				Object returned = mh.execute(http, dao);
+				if (returned == null)
+					continue;
+				if (returned.getClass().getInterfaces().length == 0) {
+					new Json(returned).render(http);
+					break;
+				}
+				if (returned.getClass().getInterfaces()[0].equals(Response.class)) {
+					((Response) returned).render(http);
+					break;
+				}
 				new Json(returned).render(http);
 				break;
 			}
-			if (returned.getClass().getInterfaces()[0].equals(Response.class)) {
-				((Response) returned).render(http);
-				break;
-			}
-			new Json(returned).render(http);
-			break;
+		} finally {
+			dao.close();
 		}
-		dao.close();
 	}
 
 	private void makeMethodMap(Class<?> eachClass) throws InstantiationException, IllegalAccessException, IllegalArgumentException,
