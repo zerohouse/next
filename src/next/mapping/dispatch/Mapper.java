@@ -1,5 +1,6 @@
 package next.mapping.dispatch;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -10,8 +11,9 @@ import java.util.Map;
 import java.util.Queue;
 
 import next.database.DAO;
-import next.database.MySql;
+import next.database.MySqlTransaction;
 import next.mapping.annotation.After;
+import next.mapping.annotation.Autowired;
 import next.mapping.annotation.Before;
 import next.mapping.annotation.Controller;
 import next.mapping.annotation.HttpMethod;
@@ -20,6 +22,7 @@ import next.mapping.http.Http;
 import next.mapping.response.Json;
 import next.mapping.response.Response;
 import next.setting.Setting;
+import next.util.ClassUtil;
 import next.util.LoggerUtil;
 
 import org.reflections.Reflections;
@@ -37,6 +40,7 @@ public class Mapper {
 	private List<MethodHolder> afterList;
 
 	Mapper() {
+		instanceMap = new HashMap<Class<?>, Object>();
 		methodMap = new HashMap<UriKey, MethodHolder>();
 		uriMap = new UriMap();
 		beforeList = new ArrayList<MethodHolder>();
@@ -49,6 +53,9 @@ public class Mapper {
 				e.printStackTrace();
 			}
 		});
+		logger.info(methodMap.toString());
+		logger.info(beforeList.toString());
+		logger.info(afterList.toString());
 		ref.getTypesAnnotatedWith(Controller.class).forEach(cLass -> {
 			makeUriMap(cLass);
 		});
@@ -60,7 +67,7 @@ public class Mapper {
 			http.sendError(404);
 			return;
 		}
-		DAO dao = new MySql(false);
+		DAO dao = new MySqlTransaction();
 
 		Queue<MethodHolder> todo = new LinkedList<MethodHolder>();
 
@@ -92,14 +99,19 @@ public class Mapper {
 		}
 	}
 
+	private Map<Class<?>, Object> instanceMap;
+
 	private void makeMethodMap(Class<?> eachClass) throws InstantiationException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException {
-		Object instance = eachClass.getConstructor().newInstance();
+		Object instance = getInstance(eachClass);
+		String prefix = "";
+		if (eachClass.isAnnotationPresent(Mapping.class))
+			prefix = eachClass.getAnnotation(Mapping.class).value()[0];
 		Method methods[] = eachClass.getDeclaredMethods();
 		for (int i = 0; i < methods.length; i++) {
 			if (methods[i].isAnnotationPresent(Mapping.class)) {
 				Mapping mapping = methods[i].getAnnotation(Mapping.class);
-				UriKey key = new UriKey(mapping.method()[0], mapping.value()[0]);
+				UriKey key = new UriKey(mapping.method()[0], prefix + mapping.value()[0]);
 				methodMap.put(key, new MethodHolder(instance, methods[i]));
 			}
 			if (methods[i].isAnnotationPresent(HttpMethod.class)) {
@@ -118,6 +130,41 @@ public class Mapper {
 		}
 	}
 
+	// 인스턴스에 오토와이어드 생성
+	private Object getInstance(Class<?> cLass) {
+		Object obj = instanceMap.get(cLass);
+		if (obj != null)
+			return obj;
+		obj = ClassUtil.newInstance(cLass);
+		Field[] fields = cLass.getDeclaredFields();
+		for (int i = 0; i < fields.length; i++) {
+			if (!fields[i].isAnnotationPresent(Autowired.class))
+				continue;
+			setFields(obj, fields[i]);
+		}
+		instanceMap.put(cLass, obj);
+		return obj;
+	}
+
+	private void setFields(Object obj, Field field) {
+		field.setAccessible(true);
+		try {
+			String value = field.getAnnotation(Autowired.class).value();
+			Object wired = null;
+			Class<?> fieldType = field.getType();
+			if (value.equals(""))
+				wired = getInstance(fieldType);
+			else {
+				String name = fieldType.getName().substring(0, fieldType.getName().length() - fieldType.getSimpleName().length()) + value;
+				Class<?> type = Class.forName(name);
+				wired = getInstance(type);
+			}
+			wired = fieldType.cast(wired);
+			field.set(obj, wired);
+		} catch (IllegalArgumentException | IllegalAccessException | ClassNotFoundException e) {
+		}
+	}
+
 	private void makeUriMap(Class<?> eachClass) {
 		String prefix = "";
 		if (eachClass.isAnnotationPresent(Mapping.class))
@@ -129,7 +176,7 @@ public class Mapper {
 				List<MethodHolder> methodList = new ArrayList<MethodHolder>();
 				String[] before = mapping.before();
 				String[] after = mapping.after();
-				UriKey key = new UriKey(mapping.method()[0], mapping.value()[0]);
+				UriKey key = new UriKey(mapping.method()[0], prefix + mapping.value()[0]);
 				addAll(methodList, before);
 				methodList.add(methodMap.get(key));
 				addAll(methodList, after);

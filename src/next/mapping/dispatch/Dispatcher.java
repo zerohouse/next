@@ -72,8 +72,6 @@ public class Dispatcher extends HttpServlet {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-			} finally {
-				dao.close();
 			}
 		});
 
@@ -84,7 +82,6 @@ public class Dispatcher extends HttpServlet {
 		boolean reset = Setting.get().getDatabase().getCreateOption().getResetTablesOnServerStart();
 		if (!(create || reset))
 			return;
-
 		PackageCreator.createTable(reset, Setting.get().getDatabase().getModelPackage());
 	}
 

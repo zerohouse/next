@@ -17,16 +17,19 @@ import next.util.LoggerUtil;
 
 import org.slf4j.Logger;
 
-public class MySql implements DAO {
+public class MySqlTransaction implements DAO {
 
 	private static final Logger logger = LoggerUtil.getLogger(DAO.class);
 
+	private Connection conn;
+
 	private SqlSupports sqlSupports = SqlSupports.getInstance();
 
-	public MySql() {
+	public MySqlTransaction() {
+		conn = ConnectionPool.getConnection(false);
 	}
 
-	private PreparedStatement getPSTMT(Connection conn, String sql, Object... parameters) {
+	private PreparedStatement getPSTMT(String sql, Object... parameters) {
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -44,11 +47,10 @@ public class MySql implements DAO {
 	@Override
 	public LinkedHashMap<String, Object> getRecord(String sql, Object... parameters) {
 		LinkedHashMap<String, Object> record = null;
-		Connection conn = ConnectionPool.getConnection(true);
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = getPSTMT(conn, sql, parameters);
+			pstmt = getPSTMT(sql, parameters);
 			rs = pstmt.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			int columnCount = metaData.getColumnCount();
@@ -65,7 +67,6 @@ public class MySql implements DAO {
 		} finally {
 			close(pstmt);
 			close(rs);
-			close(conn);
 		}
 		return record;
 	}
@@ -73,11 +74,10 @@ public class MySql implements DAO {
 	@Override
 	public List<LinkedHashMap<String, Object>> getRecords(String sql, Object... parameters) {
 		List<LinkedHashMap<String, Object>> result = null;
-		Connection conn = ConnectionPool.getConnection(true);
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = getPSTMT(conn, sql, parameters);
+			pstmt = getPSTMT(sql, parameters);
 			rs = pstmt.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			int columnCount = metaData.getColumnCount();
@@ -96,7 +96,6 @@ public class MySql implements DAO {
 		} finally {
 			close(pstmt);
 			close(rs);
-			close(conn);
 		}
 		return result;
 	}
@@ -137,9 +136,8 @@ public class MySql implements DAO {
 	@Override
 	public Boolean execute(String sql, Object... parameters) {
 		PreparedStatement pstmt = null;
-		Connection conn = ConnectionPool.getConnection(true);
 		try {
-			pstmt = getPSTMT(conn, sql, parameters);
+			pstmt = getPSTMT(sql, parameters);
 			pstmt.execute();
 			return true;
 		} catch (SQLException e) {
@@ -147,41 +145,44 @@ public class MySql implements DAO {
 			return false;
 		} finally {
 			close(pstmt);
-			close(conn);
 		}
 	}
 
-	private void close(Connection conn) {
+	private static void close(ResultSet rs) {
+		if (rs != null)
+			try {
+				rs.close();
+			} catch (SQLException sqle) {
+			}
+	}
+
+	private static void close(PreparedStatement pstmt) {
+		if (pstmt != null)
+			try {
+				pstmt.close();
+			} catch (SQLException sqle) {
+			}
+	}
+
+	@Override
+	public void close() {
 		if (conn == null)
 			return;
+		try {
+			conn.commit();
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
 		try {
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-	}
-
-	private static void close(ResultSet rs) {
-		if (rs == null)
-			return;
-		try {
-			rs.close();
-		} catch (SQLException sqle) {
-		}
-	}
-
-	private static void close(PreparedStatement pstmt) {
-		if (pstmt == null)
-			return;
-		try {
-			pstmt.close();
-		} catch (SQLException sqle) {
-		}
-	}
-
-	@Override
-	public void close() {
 	}
 
 	public static final String EQ = "=?";
@@ -212,7 +213,6 @@ public class MySql implements DAO {
 
 	@Override
 	public boolean insertIfExistUpdate(Object record) {
-		
 		KeyParams sap = sqlSupports.getKeyParams(record);
 		if (sap.isEmpty())
 			return false;
