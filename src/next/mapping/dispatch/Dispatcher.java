@@ -10,18 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import next.database.DAO;
-import next.database.MySql;
 import next.database.annotation.testdata.Insert;
 import next.database.annotation.testdata.InsertList;
 import next.database.annotation.testdata.TestData;
 import next.database.maker.PackageCreator;
 import next.mapping.http.Http;
 import next.mapping.http.HttpImpl;
+import next.resource.Static;
 import next.setting.Setting;
-
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.scanners.TypeAnnotationsScanner;
 
 //@MultipartConfig(location = "webapp/uploads", maxFileSize = 1024 * 1024 * 10, fileSizeThreshold = 1024 * 1024, maxRequestSize = 1024 * 1024 * 20)
 public class Dispatcher extends HttpServlet {
@@ -48,9 +44,8 @@ public class Dispatcher extends HttpServlet {
 	private void InsertTestData() {
 		if (!Setting.get().getDatabase().getCreateOption().getInsertDataOnServerStart())
 			return;
-		Reflections ref = new Reflections(Setting.get().getDatabase().getTestDataPackage(), new SubTypesScanner(), new TypeAnnotationsScanner());
-		ref.getTypesAnnotatedWith(TestData.class).forEach(each -> {
-			DAO dao = new MySql();
+		Static.getReflections().getTypesAnnotatedWith(TestData.class).forEach(each -> {
+			DAO dao = new DAO();
 			try {
 				Object obj = each.getConstructor().newInstance();
 				Field[] fields = each.getDeclaredFields();
@@ -82,7 +77,7 @@ public class Dispatcher extends HttpServlet {
 		boolean reset = Setting.get().getDatabase().getCreateOption().getResetTablesOnServerStart();
 		if (!(create || reset))
 			return;
-		PackageCreator.createTable(reset, Setting.get().getDatabase().getModelPackage());
+		PackageCreator.createTable(reset);
 	}
 
 }

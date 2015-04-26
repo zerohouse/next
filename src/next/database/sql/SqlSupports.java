@@ -1,20 +1,12 @@
 package next.database.sql;
 
 import java.lang.reflect.Field;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import next.database.annotation.Exclude;
 import next.database.annotation.OtherTable;
 import next.database.annotation.Table;
-import next.setting.Setting;
-import next.util.ClassUtil;
-
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.scanners.TypeAnnotationsScanner;
+import next.resource.Static;
 
 public class SqlSupports {
 
@@ -22,22 +14,13 @@ public class SqlSupports {
 	private Map<Field, SqlField> sqlFieldMap;
 	private Map<Class<?>, String> tableNameMap;
 
-	private static SqlSupports sqlSupports = new SqlSupports();
-
-	public static SqlSupports getInstance() {
-		return sqlSupports;
-	}
-
-	private SqlSupports() {
+	public SqlSupports() {
 		keyParamsMap = new HashMap<Class<?>, KeyParams>();
 		sqlFieldMap = new HashMap<Field, SqlField>();
 		tableNameMap = new HashMap<Class<?>, String>();
-
-		Reflections ref = new Reflections(Setting.get().getDatabase().getModelPackage(), new SubTypesScanner(), new TypeAnnotationsScanner());
-		ref.getTypesAnnotatedWith(Table.class).forEach(cLass -> {
-			defineClass(cLass);
+		Static.getReflections().getTypesAnnotatedWith(Table.class).forEach(each->{
+			defineClass(each);
 		});
-
 	}
 
 	private void defineClass(Class<?> cLass) {
@@ -85,39 +68,6 @@ public class SqlSupports {
 
 	public String getTableName(Class<?> cLass) {
 		return keyParamsMap.get(cLass).getTableName();
-	}
-
-	public <T> T getObject(Class<T> cLass, Map<String, Object> record) {
-		if (record == null)
-			return null;
-		T result = null;
-		result = ClassUtil.newInstance(cLass);
-		setObject(result, record);
-		return result;
-	}
-
-	public boolean setObject(Object record, Map<String, Object> recordMap) {
-		if (recordMap == null)
-			return false;
-		Class<?> cLass = record.getClass();
-		Field[] fields = cLass.getDeclaredFields();
-		for (int i = 0; i < fields.length; i++) {
-			if (fields[i].isAnnotationPresent(Exclude.class))
-				continue;
-			Object obj = recordMap.get(getSqlField(fields[i]).getColumnName());
-			if (obj == null)
-				continue;
-			if (obj.getClass().equals(Timestamp.class)) {
-				obj = new Date(((Timestamp) obj).getTime());
-			}
-			fields[i].setAccessible(true);
-			try {
-				fields[i].set(record, obj);
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
-		return true;
 	}
 
 }

@@ -17,10 +17,6 @@ public class Setting {
 
 	private static Setting instance;
 
-	public static void set(Setting setting) {
-		instance = setting;
-	}
-
 	public static Setting get() {
 		return instance;
 	}
@@ -32,7 +28,7 @@ public class Setting {
 	static {
 		Gson gsons = new Gson();
 		try {
-			instance = gsons.fromJson(new FileReader(Setting.class.getResource("/nextSetting.json").getFile()), Setting.class);
+			instance = gsons.fromJson(new FileReader(Setting.class.getResource("/next.json").getFile()), Setting.class);
 			gson = new GsonBuilder().setDateFormat(Setting.get().getMapping().getDateFormat()).create();
 		} catch (JsonSyntaxException e) {
 			e.printStackTrace();
@@ -41,7 +37,6 @@ public class Setting {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	public MappingSetting getMapping() {

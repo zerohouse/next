@@ -4,35 +4,53 @@
 ### Example
 
     @Controller
-    @Mapping("/api")
-    public class UserController {
-        @Mapping(value = "/user/{}", before = "loginCheck", method = Method.GET)  
-        public void getUser(Http http, DAO dao) { // 메서드 내에서 트랜젝션
-            dao.getObject(User.class, http.getParameter("userId")); 
-            String userId = http.getUriVariable(0); // {}의 변수 사용
-        }
-        
-        @Mapping(value = "/update", before = "loginCheck", method = Method.POST)
-    	public Post updatePost(@JsonParameter("Post") Post post, @SessionAttribute("user") User user) {
-            if(!post.getUserId().equals(user.getId()))
-                return new Json("권한이 없습니다");
-    		return post;
-        }
-        
-	    @HttpMethod("loginCheck")
-	    public Result loginCheck(Http http) {
-	        if(http.getSessionAttribute("user") == null)
-	            return new Result("로그인이 필요한 서비스입니다.");
-            return null;
-	    }
-        
-        @Before // 이 컨트롤러 뿐만 아니라 모든 컨트롤러에 적용
-        public Result before(Http http) {
-	        if(http.getSessionAttribute("user") == null)
-	            return new Result("로그인이 필요한 서비스입니다.");
-            return null;
-	    }
-    }
+	@Mapping("/api/user")
+	public class UserController {
+		@Build
+		DAO dao;
+	
+		@Build
+		@ImplementedBy("DeleteRight")
+		Right right;
+		
+		@Build("user")
+		User user;
+	
+		@Mapping(method = Method.GET)
+		public User getState(@SessionAttribute("user") User user) {
+			return user;
+		}
+	
+		@Mapping(method = Method.POST)
+		public Response register(@JsonParameter("user") User user, Http http) {
+			if (!dao.insert(user))
+				return new Json(true, "DB입력중 오류가 발생했습니다.", null);
+			http.setSessionAttribute("user", user);
+			return new Json(user);
+		}
+	
+		@Mapping(value = "/registeredEmail", method = Method.GET)
+		public boolean registeredCheck(@FromDB(keyParameter = "email") User user) {
+			return true;
+		}
+	
+		@Mapping(value = "/login", method = Method.POST)
+		public Response login(@JsonParameter("user") User user, Http http) {
+			User fromDB = dao.getObject(User.class, user.getEmail());
+			if (fromDB == null)
+				return new Json(true, "가입하지 않은 이메일입니다.", null);
+			if (!fromDB.getPassword().equals(user.getPassword()))
+				return new Json(true, "비밀번호가 다릅니다.", null);
+			http.setSessionAttribute("user", fromDB);
+			return new Json(fromDB);
+		}
+	
+		@Mapping(value = "/logout", method = { Method.POST, Method.GET })
+		public void logout(Http http) {
+			http.removeSessionAttribute("user");
+		}
+
+	}
 
 
 #MVC
@@ -219,7 +237,7 @@ Json.class, Jsp.class
     </web-app>
 
 
-## nextSetting.json (resources/nextSetting.json)
+## next.json (resources/next.json)
 ### Setting Required Options : 아래 옵션은 필수입니다.
 
     {
@@ -377,3 +395,19 @@ Json.class, Jsp.class
         }
       }
     }
+    
+## build.json (resources/build.json)
+### 빌드
+    {
+	  "User" : {
+		"email" : "DeBug",
+		"password" : "DeBug"
+	  },
+	  "JsonView" : {
+	  	"view" : "view"
+	  }
+	}
+	
+### 빌드사용
+	@Build("user")
+	User user;

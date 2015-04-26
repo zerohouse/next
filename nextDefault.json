@@ -3,7 +3,6 @@
     "mappings": [],
     "characterEncoding": "UTF-8",
     "url": "",
-    "controllerPackage": "",
     "jspPath": "",
     "dateFormat" : "yyyy-MM-dd HH:mm:ss"
   },
@@ -13,8 +12,6 @@
     "pattern": "%level [%thread] %msg - %logger{10} : %file:%line %date%n"
   },
   "database": {
-    "modelPackage": "",
-    "testDataPackage": "",
     "connectionSetting": {
       "minConnectionsPerPartition": 0,
       "maxConnectionsPerPartition": 10,

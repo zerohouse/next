@@ -1,0 +1,9 @@
+{
+  "User" : {
+	"email" : "DeBug",
+	"password" : "DeBug"
+  },
+  "JsonView" : {
+  	"view" : "view"
+  }
+}

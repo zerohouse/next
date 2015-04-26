@@ -71,7 +71,7 @@ public class TableMaker {
 				continue;
 			if (fields[i].isAnnotationPresent(Exclude.class))
 				continue;
-			SqlFieldNormal fm = (SqlFieldNormal) SqlSupports.getInstance().getSqlField(fields[i]);
+			SqlFieldNormal fm = (SqlFieldNormal) new SqlSupports().getSqlField(fields[i]);
 			result += fm.getFieldString() + ", ";
 			if (fields[i].isAnnotationPresent(Key.class)) {
 				addFunction(fm, PRIMARY_KEY);

@@ -13,7 +13,6 @@ public class Json implements Response {
 	}
 
 	public Json(Boolean error, String errorMessage, Object object) {
-		super();
 		this.error = error;
 		this.errorMessage = errorMessage;
 		this.response = object;

@@ -2,19 +2,24 @@
   "mapping": {
     "mappings": [
       "/api/*",
-      "/user/*"
+      "*.page"
     ],
     "url": "localhost:8080",
-    "controllerPackage": "me.controllers",
     "jspPath": "/WEB-INF/jsp/"
   },
+  "logger" : {
+  	"level" : "DeBug"
+  },
   "database": {
-    "modelPackage": "me.model",
-    "testDataPackage": "me.model.test",
     "connectionSetting": {
       "jdbcUrl": "jdbc:mysql://localhost:3306/mydb?useUnicode=true&characterEncoding=utf8",
       "username": "root",
       "password": ""
-    }
+    },
+    "createOption": {
+      "createTablesOnServerStart": true,
+      "resetTablesOnServerStart": true,
+      "insertDataOnServerStart": false
+  	}
   }
 }

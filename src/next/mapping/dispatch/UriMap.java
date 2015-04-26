@@ -7,15 +7,18 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import next.instance.wrapper.MethodWrapper;
 import next.mapping.http.Http;
 
 public class UriMap {
 
-	private Map<UriKey, List<MethodHolder>> match = new HashMap<UriKey, List<MethodHolder>>();
+	private Map<UriKey, List<MethodWrapper>> match = new HashMap<UriKey, List<MethodWrapper>>();
 	private Map<String, List<Pattern>> regexMap = new HashMap<String, List<Pattern>>();
-	private Map<Pattern, List<MethodHolder>> PatternMap = new HashMap<Pattern, List<MethodHolder>>();
+	private Map<Pattern, List<MethodWrapper>> PatternMap = new HashMap<Pattern, List<MethodWrapper>>();
 
-	public void put(UriKey key, List<MethodHolder> methodList) {
+	
+	
+	public void put(UriKey key, List<MethodWrapper> methodList) {
 		if (!key.contains("{}")) {
 			match.put(key, methodList);
 			return;
@@ -31,8 +34,8 @@ public class UriMap {
 		PatternMap.put(pattern, methodList);
 	}
 
-	public List<MethodHolder> get(UriKey key, Http http) {
-		List<MethodHolder> methodArray = match.get(key);
+	public List<MethodWrapper> get(UriKey key, Http http) {
+		List<MethodWrapper> methodArray = match.get(key);
 		if (methodArray != null)
 			return methodArray;
 		List<Pattern> regexList = regexMap.get(key.getMethod());
