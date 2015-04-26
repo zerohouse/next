@@ -4,7 +4,7 @@
 ### Example
 
     @Controller
-	@Mapping("/api/user")
+    @Mapping("/api/user")
 	public class UserController {
 		@Build
 		DAO dao;
@@ -13,8 +13,8 @@
 		@ImplementedBy("DeleteRight")
 		Right right;
 		
-		@Build("user")
-		User user;
+		@Build("users.rootUser") // build.json내의 오브젝트
+        User user;
 	
 		@Mapping(method = Method.GET)
 		public User getState(@SessionAttribute("user") User user) {
@@ -85,10 +85,11 @@ HttpImpl.class, HttpForTest.class
     }
 
 ### Response.class : 출력할 형태
-Json.class, Jsp.class
+Json.class, Jsp.class, File.class
 #### Construct
     new Json(JsonObject);
     new Jsp(Jsp파일명);
+    new File(파일명);
 
 ## 2. Annotation
 
@@ -108,8 +109,6 @@ Json.class, Jsp.class
     
     String value() default ""; // 매핑될 이름 값이 없으면 메서드 이름으로 매핑
     
-#### @Before 메서드 실행전 실행될 메서드, @After 메서드 실행 후 실행될 메서드
-
 
 
 ### Parameter Annotations
@@ -223,7 +222,8 @@ Json.class, Jsp.class
 
 # Setting
 1. 아래 web.xml을 webapp디렉토리의 WEB-INF폴더 내에 위치.
-2. resource폴더 내에 nextSetting.json 위치
+2. resource폴더 내에 next.json 위치 (기본 세팅을 담당)
+3. resource폴더 내에 build.json 위치 (빌드할 오브젝트 JsonFormat)
 
 ## web.xml (webapp/WEB-INF/web.xml)
     <?xml version="1.0" encoding="UTF-8"?>
@@ -299,7 +299,6 @@ Json.class, Jsp.class
         "mappings": [],
         "characterEncoding": "UTF-8",
         "url": "",
-        "controllerPackage": "",
         "jspPath": ""
       },
       "logger": {
@@ -308,8 +307,6 @@ Json.class, Jsp.class
         "pattern": "%level [%thread] %msg - %logger{10} : %file:%line %date%n"
       },
       "database": {
-        "modelPackage": "",
-        "testDataPackage": "",
         "connectionSetting": {
           "minConnectionsPerPartition": 0,
           "maxConnectionsPerPartition": 10,
@@ -397,11 +394,11 @@ Json.class, Jsp.class
     }
     
 ## build.json (resources/build.json)
-### 빌드
+### 빌드 example
     {
 	  "User" : {
-		"email" : "DeBug",
-		"password" : "DeBug"
+		"email" : "user1@gmail.com",
+		"gender" : "m"
 	  },
 	  "JsonView" : {
 	  	"view" : "view"
