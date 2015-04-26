@@ -269,7 +269,7 @@ public class DAO {
 	 *            채울 object
 	 * @return boolean 실행결과
 	 */
-	public boolean fill(Object object) {
+	public Object fill(Object object) {
 		KeyParams kp = new NullableParams(Static.getSqlSupports(), object);
 		Map<String, Object> recordMap = getRecord(String.format("SELECT * FROM %s WHERE %s", kp.getTableName(), kp.getKeyFieldNames(EQ, and)), kp
 				.getKeyParams().toArray());

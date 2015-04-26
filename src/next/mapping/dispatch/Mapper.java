@@ -95,15 +95,16 @@ public class Mapper {
 				continue;
 			if (returned.getClass().getInterfaces().length == 0) {
 				new Json(returned).render(http);
-				break;
+				return;
 			}
 			if (returned.getClass().getInterfaces()[0].equals(Response.class)) {
 				((Response) returned).render(http);
-				break;
+				return;
 			}
 			new Json(returned).render(http);
-			break;
+			return;
 		}
+		new Json().render(http);
 	}
 
 }

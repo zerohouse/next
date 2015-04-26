@@ -20,9 +20,9 @@ public class Parser {
 		return result;
 	}
 
-	public static boolean setObject(Object record, Map<String, Object> recordMap) {
+	public static <T> T setObject(T record, Map<String, Object> recordMap) {
 		if (recordMap == null)
-			return false;
+			return null;
 		Class<?> cLass = record.getClass();
 		Field[] fields = cLass.getDeclaredFields();
 		for (int i = 0; i < fields.length; i++) {
@@ -41,7 +41,7 @@ public class Parser {
 				e.printStackTrace();
 			}
 		}
-		return true;
+		return record;
 	}
 
 	@SuppressWarnings("unchecked")
