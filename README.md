@@ -53,6 +53,25 @@
 	}
 
 
+##GET
+###Repository
+	<repository>
+		<id>next-mvn-repo</id>
+		<url>https://raw.github.com/zerohouse/next/mvn-repo/</url>
+		<snapshots>
+			<enabled>true</enabled>
+			<updatePolicy>always</updatePolicy>
+		</snapshots>
+	</repository>
+
+###Dependency
+	<dependency>
+		<groupId>at.begin</groupId>
+		<artifactId>next</artifactId>
+		<version>0.1</version>
+	</dependency>
+
+
 #MVC
 
 ## 1. Class
