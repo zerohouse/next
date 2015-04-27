@@ -148,7 +148,7 @@ public class DAORaw {
 	 *            SQL 실행문
 	 * @param parameters
 	 *            ?에 해당하는 파라미터
-	 * @return List<List<Object> records
+	 * @return List records
 	 */
 
 	public List<List<Object>> getRecordsAsList(String sql, Object... parameters) {
