@@ -10,7 +10,7 @@
 		DAO dao;
 	
 		@Build
-		@ImplementedBy("DeleteRight")
+		@ImplementedBy(DeleteRight.class)
 		Right right;
 		
 		@Build("users.rootUser") // build.json내의 오브젝트
@@ -36,7 +36,7 @@
 	
 		@Mapping(value = "/login", method = Method.POST)
 		public Response login(@JsonParameter("user") User user, Http http) {
-			User fromDB = dao.getObject(User.class, user.getEmail());
+			User fromDB = dao.find(User.class, user.getEmail());
 			if (fromDB == null)
 				return new Json(true, "가입하지 않은 이메일입니다.", null);
 			if (!fromDB.getPassword().equals(user.getPassword()))
@@ -130,14 +130,14 @@ Json.class, Jsp.class, File.class
 ## 1. Class
 
 ## DAO.class
-    List<Object> getRecord(String sql, int resultSize, Object... parameters);
-	Map<String, Object> getRecordMap(String sql, Object... parameters);
-	List<List<Object>> getRecords(String sql, int resultSize, Object... parameters);
-	List<Map<String, Object>> getRecordMaps(String sql, Object... parameters);
-	<T> T getObject(String sql, Class<T> cLass, Object... parameters);
-	<T> T getObject(Class<T> cLass, Object... parameters);
-	<T> List<T> getObjects(String sql, Class<T> cLass, Object... parameters);
-	<T> List<T> getObjects(Class<T> cLass);
+	Map<String, Object> getRecord(String sql, Object... parameters);
+	List<Map<String, Object>> getRecords(String sql, Object... parameters);
+     List<Object> getRecordAsList(String sql, int resultSize, Object... parameters);
+	List<List<Object>> getRecordsAsList(String sql, int resultSize, Object... parameters);
+	<T> T find(String sql, Class<T> cLass, Object... parameters);
+	<T> T find(Class<T> cLass, Object... parameters);
+	<T> List<T> getList(String sql, Class<T> cLass, Object... parameters);
+	<T> List<T> getList(Class<T> cLass);
 	Boolean execute(String sql, Object... parameters);
 	void close();
 	boolean fill(Object record);
@@ -145,12 +145,11 @@ Json.class, Jsp.class, File.class
 	boolean insertIfExistUpdate(Object record);
 	boolean update(Object record);
 	boolean delete(Object record);
-	BigInteger getLastKey();
     
 ### Example Usage
-    DAO dao = new Mysql();
-    User user = dao.getObject(User.class, userId);
-    List<User> users = dao.getObjects(User.class, "SELECT * FROM User Where User_Id=?", userId);
+    DAO dao = new DAO();
+    User user = dao.find(User.class, userId);
+    List<User> users = dao.getList(User.class, "SELECT * FROM User Where User_Id=?", userId);
     dao.insert(user);
     dao.update(user);
     dao.delete(user);
