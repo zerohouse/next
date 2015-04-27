@@ -1,123 +1,22 @@
 package next.database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import next.database.sql.KeyParams;
 import next.database.sql.NullableParams;
 import next.resource.Static;
-import next.util.LoggerUtil;
 import next.util.Parser;
 
-import org.slf4j.Logger;
+public class DAO extends DAORaw {
 
-public class DAO {
-
-	private static final Logger logger = LoggerUtil.getLogger(DAO.class);
+	public DAO(ConnectionManager cm) {
+		super(cm);
+	}
 
 	public DAO() {
-	}
-
-	private PreparedStatement getPSTMT(Connection conn, String sql, Object... parameters) {
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			if (parameters != null)
-				for (int j = 0; j < parameters.length; j++) {
-					pstmt.setObject(j + 1, parameters[j]);
-				}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		logger.debug(pstmt.toString());
-		return pstmt;
-	}
-
-	/**
-	 * 하나의 레코드(Row)에 해당하는 데이터를 LinkedHashMap으로 리턴합니다.
-	 * <p>
-	 *
-	 * @param sql
-	 *            SQL 실행문
-	 * @param parameters
-	 *            ?에 해당하는 파라미터
-	 * @return LinkedHashMap 레코드(Row) 맵
-	 */
-
-	public LinkedHashMap<String, Object> getRecord(String sql, Object... parameters) {
-		LinkedHashMap<String, Object> record = null;
-		Connection conn = ConnectionPool.getConnection(true);
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			pstmt = getPSTMT(conn, sql, parameters);
-			rs = pstmt.executeQuery();
-			ResultSetMetaData metaData = rs.getMetaData();
-			int columnCount = metaData.getColumnCount();
-			while (rs.next()) {
-				if (record == null)
-					record = new LinkedHashMap<String, Object>();
-				for (int i = 1; i <= columnCount; i++) {
-					record.put(metaData.getColumnLabel(i), rs.getObject(i));
-				}
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-			close(rs);
-			close(conn);
-		}
-		return record;
-	}
-
-	/**
-	 * 여러 개의 레코드(Row)에 해당하는 데이터를 LinkedHashMap의 리스트로 리턴합니다.
-	 * <p>
-	 *
-	 * @param sql
-	 *            SQL 실행문
-	 * @param parameters
-	 *            ?에 해당하는 파라미터
-	 * @return LinkedHashMap의 리스트
-	 */
-
-	public List<LinkedHashMap<String, Object>> getRecords(String sql, Object... parameters) {
-		List<LinkedHashMap<String, Object>> result = null;
-		Connection conn = ConnectionPool.getConnection(true);
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			pstmt = getPSTMT(conn, sql, parameters);
-			rs = pstmt.executeQuery();
-			ResultSetMetaData metaData = rs.getMetaData();
-			int columnCount = metaData.getColumnCount();
-			while (rs.next()) {
-				if (result == null)
-					result = new ArrayList<LinkedHashMap<String, Object>>();
-				LinkedHashMap<String, Object> columns = new LinkedHashMap<String, Object>();
-				for (int i = 1; i <= columnCount; i++) {
-					columns.put(metaData.getColumnLabel(i), rs.getObject(i));
-				}
-				result.add(columns);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-			close(rs);
-			close(conn);
-		}
-		return result;
+		super();
 	}
 
 	/**
@@ -136,8 +35,8 @@ public class DAO {
 	 * @return Object
 	 */
 
-	public <T> T getObject(String sql, Class<T> cLass, Object... parameters) {
-		LinkedHashMap<String, Object> record = getRecord(sql, parameters);
+	public <T> T find(String sql, Class<T> cLass, Object... parameters) {
+		Map<String, Object> record = getRecord(sql, parameters);
 		T result = Parser.getObject(cLass, record);
 		return result;
 	}
@@ -155,9 +54,9 @@ public class DAO {
 	 *            Key에 해당하는 파라미터
 	 * @return Object
 	 */
-	public <T> T getObject(Class<T> cLass, Object... parameters) {
+	public <T> T find(Class<T> cLass, Object... parameters) {
 		KeyParams sp = Static.getSqlSupports().getKeyParams(cLass);
-		LinkedHashMap<String, Object> record = getRecord(String.format("SELECT * FROM %s WHERE %s", sp.getTableName(), sp.getKeyFieldNames(EQ, and)),
+		Map<String, Object> record = getRecord(String.format("SELECT * FROM %s WHERE %s", sp.getTableName(), sp.getKeyFieldNames(EQ, and)),
 				parameters);
 		T result = Parser.getObject(cLass, record);
 		return result;
@@ -177,8 +76,8 @@ public class DAO {
 	 *            ?에 파싱할 파라미터
 	 * @return ObjectList
 	 */
-	public <T> List<T> getObjects(String sql, Class<T> cLass, Object... parameters) {
-		List<LinkedHashMap<String, Object>> records = getRecords(sql, parameters);
+	public <T> List<T> getList(String sql, Class<T> cLass, Object... parameters) {
+		List<Map<String, Object>> records = getRecords(sql, parameters);
 		List<T> result = new ArrayList<T>();
 		if (records == null)
 			return null;
@@ -198,63 +97,8 @@ public class DAO {
 	 *            클래스 타입
 	 * @return List
 	 */
-	public <T> List<T> getObjects(Class<T> cLass) {
-		return getObjects(String.format("SELECT * FROM %s", Static.getSqlSupports().getKeyParams(cLass).getTableName()), cLass);
-	}
-
-	/**
-	 * SQL문을 실행합니다.
-	 * <p>
-	 *
-	 * @param sql
-	 *            실행할 sql문
-	 * @param parameters
-	 *            파라미터
-	 * @return boolean 실행결과
-	 */
-	public Boolean execute(String sql, Object... parameters) {
-		PreparedStatement pstmt = null;
-		Connection conn = ConnectionPool.getConnection(true);
-		try {
-			pstmt = getPSTMT(conn, sql, parameters);
-			pstmt.execute();
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		} finally {
-			close(pstmt);
-			close(conn);
-		}
-	}
-
-	private void close(Connection conn) {
-		if (conn == null)
-			return;
-		try {
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	protected static void close(ResultSet rs) {
-		if (rs == null)
-			return;
-		try {
-			rs.close();
-		} catch (SQLException sqle) {
-		}
-	}
-
-	protected static void close(PreparedStatement pstmt) {
-		if (pstmt == null)
-			return;
-		try {
-			pstmt.close();
-		} catch (SQLException sqle) {
-		}
+	public <T> List<T> getList(Class<T> cLass) {
+		return getList(String.format("SELECT * FROM %s", Static.getSqlSupports().getKeyParams(cLass).getTableName()), cLass);
 	}
 
 	public static final String EQ = "=?";

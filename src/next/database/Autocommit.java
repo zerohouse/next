@@ -8,7 +8,7 @@ import next.util.LoggerUtil;
 
 import org.slf4j.Logger;
 
-public class Transaction implements ConnectionManager {
+public class Autocommit implements ConnectionManager {
 
 	private static final Logger logger = LoggerUtil.getLogger(Autocommit.class);
 
@@ -16,8 +16,7 @@ public class Transaction implements ConnectionManager {
 
 	@Override
 	public PreparedStatement getPSTMT(String sql, Object... parameters) {
-		if (conn == null)
-			conn = ConnectionPool.getConnection(false);
+		conn = ConnectionPool.getConnection(true);
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -34,18 +33,12 @@ public class Transaction implements ConnectionManager {
 
 	@Override
 	public void close() {
+	}
+
+	@Override
+	public void closeConnection() {
 		if (conn == null)
 			return;
-		try {
-			conn.commit();
-		} catch (SQLException e) {
-			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
-		}
 		try {
 			conn.close();
 		} catch (SQLException e) {
@@ -53,7 +46,4 @@ public class Transaction implements ConnectionManager {
 		}
 	}
 
-	@Override
-	public void closeConnection() {
-	}
 }

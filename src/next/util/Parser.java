@@ -69,7 +69,7 @@ public class Parser {
 		return null;
 	}
 
-	private static Object getDefaultValue(Class<?> paramType) {
+	static Object getDefaultValue(Class<?> paramType) {
 		if (paramType.equals(byte.class)) {
 			return 0;
 		}

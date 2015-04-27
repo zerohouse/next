@@ -24,8 +24,7 @@ public class InstancePool {
 		ClassWrapper cw = instanceMap.get(type);
 		if (cw != null)
 			return cw.getInstance();
-		cw = new ClassWrapper(type);
-		cw.buildFields(this);
+		cw = new ClassWrapper(type, this);
 		instanceMap.put(type, cw);
 		return cw.getInstance();
 	}
@@ -35,8 +34,7 @@ public class InstancePool {
 		ClassWrapper cw = keyMap.get(key);
 		if (cw != null)
 			return cw.getInstance();
-		cw = new ClassWrapper(fieldType, value);
-		cw.buildFields(this);
+		cw = new ClassWrapper(fieldType, value, this);
 		keyMap.put(key, cw);
 		return cw.getInstance();
 	}

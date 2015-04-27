@@ -13,36 +13,33 @@ public class ClassWrapper {
 	private Class<?> type;
 	private Object instance;
 
-	public ClassWrapper(Class<?> type) {
+	public ClassWrapper(Class<?> type, InstancePool instancePool) {
 		instance = newInstance(type);
 		this.type = type;
+		buildFields(type, instancePool);
 	}
 
-	public ClassWrapper(Class<?> fieldType, String value) {
+	public ClassWrapper(Class<?> fieldType, String value, InstancePool instancePool) {
 		this.instance = Builder.get(fieldType, value);
 		this.type = fieldType;
+		buildFields(type, instancePool);
 	}
 
-	public void buildFields(InstancePool instancePool) {
+	private void buildFields(Class<?> type, InstancePool instancePool) {
 		Field[] fields = type.getDeclaredFields();
 		for (int i = 0; i < fields.length; i++) {
 			if (!fields[i].isAnnotationPresent(Build.class))
 				continue;
 			setFields(instancePool, fields[i]);
 		}
+		Class<?> supperClass = type.getSuperclass();
+		if (supperClass != null)
+			buildFields(supperClass, instancePool);
 	}
 
 	public Class<?> getImplType(Field field) {
 		ImplementedBy impl = field.getAnnotation(ImplementedBy.class);
-		String value = impl.value();
-		Class<?> type = field.getType();
-		if (impl.samePackage())
-			value = type.getName().substring(0, type.getName().length() - type.getSimpleName().length()) + value;
-		try {
-			return Class.forName(value);
-		} catch (ClassNotFoundException e) {
-			return null;
-		}
+		return impl.value();
 	}
 
 	private void setFields(InstancePool instancePool, Field field) {
