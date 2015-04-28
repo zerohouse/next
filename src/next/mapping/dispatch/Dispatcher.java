@@ -39,7 +39,10 @@ public class Dispatcher extends HttpServlet {
 		mapper = new Mapper();
 		databseSetting();
 		InsertTestData();
+		CONTEXT_PATH = getServletContext().getRealPath(java.io.File.separator) + java.io.File.separator;
 	}
+
+	public static String CONTEXT_PATH;
 
 	private void InsertTestData() {
 		if (!Setting.get().getDatabase().getCreateOption().getInsertDataOnServerStart())

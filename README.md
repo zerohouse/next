@@ -221,8 +221,9 @@ Json.class, Jsp.class, File.class
     {
       "mapping": {
         "mappings": [
-          "/api/*",
-          "/user/*"
+          "/",
+          "!*.html"
+          "!/css/*"
         ],
         "url": "localhost:8080",
         "controllerPackage": "me.controllers",
