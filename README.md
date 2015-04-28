@@ -185,7 +185,8 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
         
         @Exclude
     	private static final String EMAIL_PATTERN =
-    	"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    	"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"+
+    		"[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
         
         @RequiredRegex(EMAIL_PATTERN)
         private String email;
