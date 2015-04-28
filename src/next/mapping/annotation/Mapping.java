@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
  * {}를 사용하면 변수를 꺼낼 수 있습니다.
  * 
  * &#064;Mapping("/{abc}");
- * -> http.getUriVariable("abc");
+ * http.getUriVariable("abc");
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
