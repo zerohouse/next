@@ -7,7 +7,7 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 
 ###Repository
     <repository>
-		<id>next-mvn-repo</id>
+    	<id>next-mvn-repo</id>
 		<url>https://raw.github.com/zerohouse/next/mvn-repo/</url>
 	</repository>
 
@@ -19,6 +19,7 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 	</dependency>
 
 
+#MVC
 
 ## Example Usage
 
@@ -44,28 +45,36 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 		}
 	}
 
-#MVC
-
-### Response.class : 출력할 형태
-Json.class, Jsp.class, File.class
+## Method Return Type별 응답
+#### 1. Response.class Interface
 
     new Json(JsonObject);
     new Jsp(Jsp파일명);
     new File(파일명);
+    
+#### 2. Object Return시 new Json(Object)로 간주 JSON으로 응답함.
+#### 3. 리턴값 없으면 empty JSON 오브젝트 리턴
 
-#### @Controller : 컨트롤러 클래스에 사용
 
-#### @Mapping  : Url 매핑 정보를 정의
+
+### Annotations
+#### @Controller [클래스 레벨]
+컨트롤러 클래스에 사용
+
+#### @Mapping [클래스, 메서드 레벨]
+Url 매핑 정보를 정의
     String[] value() default ""; // 매핑될 url들
 	String[] before() default ""; // 해당 메서드를 실행하기 전 실행될 메서드 
 	String[] after() default ""; // 해당 메서드를 실행한 후 실행될 메서드
 	String[] method() default "GET"; // 매핑될 메서드(Post, Get, Put, Delete등) 
 
-#### @HttpMethod : 공통적으로 사용할 메서드 정의 @Mapping의 before, after에서 사용
+#### @HttpMethods [클래스 레벨]
+@HttpMethod메서드 클래스에 선언. @HttpMethod는 컨트롤러에도 사용 가능.
+#### @HttpMethod [메서드 레벨]
+공통적으로 사용할 메서드 정의 @Mapping의 before, after에서 사용
     String value() default ""; // 매핑될 이름 값이 없으면 메서드 이름으로 매핑
     
-### Parameter Annotations
-#### @Parameter, @JsonParameter, @SessionAttribute, @FromDB(keyParameter="?")
+#### @Parameter, @JsonParameter, @SessionAttribute, @FromDB(keyParameter="?") [파라미터 레벨]
 
 #### example
     @Mapping(value = "/update", before = "loginCheck", method = Method.POST)
@@ -75,18 +84,32 @@ Json.class, Jsp.class, File.class
     
 ### Http.class Interface
 HttpImpl.class, HttpForTest.class
+HttpSevlet req와 resp의 익셉션제거
 
 #### example
     @Mapping(method = Method.GET, before="loginCheck")
     public void getAnswers(Http http) {
         http.forward("/index")
 	}
+    
+#### 직접 사용 하는 경우
+    @Mapping(method = Method.GET, before="loginCheck")
+    public void getAnswers(HttpServletRequest req, HttpServletResponse res) {
+        RequestDispatcher rd = req.getRequestDispatcher(path);
+    	try {
+			rd.forward(req, resp);
+		} catch (ServletException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 
         
 ##Build를 통한 Dependency Injection (resources/build.json)
-#### Example
-#### build.json
+### Example
+#### 1. build.json
     {
       "Users" {
        	  "rootUser" : {
@@ -96,9 +119,9 @@ HttpImpl.class, HttpForTest.class
 	       	}
 	}
 	
-#### build
+#### 2. build
 	@Build("Users.rootUser")
-	User user;
+	private User user;
 
 # DAO
 어노테이션 기반 모델 설정 -> JDBC 한줄로 해결
@@ -116,7 +139,7 @@ HttpImpl.class, HttpForTest.class
     
     user.equals(user2); // true
     
-### Transaction : Transaction사용시 반드시 dao를 close해야함.
+### Transaction : 사용후 반드시 DAO를 close해야함.
     DAO dao = new DAO(new Transaction());
     dao.close();
     GDAO<User> gdao = new GDAO<User>(new Transaction());
@@ -166,7 +189,7 @@ HttpImpl.class, HttpForTest.class
     }
     
     
-## TestData 관리
+### TestData 관리
     @TestData
     public class Tests {
         @InsertList
@@ -184,7 +207,7 @@ HttpImpl.class, HttpForTest.class
     }
 
 
-##Logger 사용 
+### Logger 사용 
     LoggerUtil.getLogger(Class<?> type); 
     private static final Logger logger = LoggerUtil.getLogger(Mapper.class);
 
