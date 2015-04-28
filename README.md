@@ -24,7 +24,7 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 ## Example Usage
 
     @Controller
-    @Mapping("/api/user")
+    @Mapping(value="/api/user", before="loginCheck")
 	public class UserController {
 		@Build
 		GDAO<User> userDAO;
@@ -33,7 +33,7 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 		@ImplementedBy(DeleteRight.class)
 		Right right;
 		
-		@Mapping(value = "/login", method = Method.POST)
+		@Mapping(value = "/login", method = Method.POST, before="!loginCheck")
 		public Response login(@JsonParameter("user") User user, Http http) {
 			User fromDB = userDao.find(user.getEmail());
 			if (fromDB == null)
