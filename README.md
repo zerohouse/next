@@ -15,19 +15,16 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 	<dependency>
 		<groupId>at.begin</groupId>
 		<artifactId>next</artifactId>
-		<version>0.1</version>
+		<version>0.1.1</version>
 	</dependency>
 
 
 
-### Example
+## Simple Example
 
     @Controller
     @Mapping("/api/user")
 	public class UserController {
-		@Build
-		DAO dao;
-		
 		@Build
 		GDAO<User> userDAO;
 	
@@ -35,9 +32,6 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 		@ImplementedBy(DeleteRight.class)
 		Right right;
 		
-		@Build("users.rootUser") // build.json내의 오브젝트
-      	  User user;
-	
 		@Mapping(value = "/login", method = Method.POST)
 		public Response login(@JsonParameter("user") User user, Http http) {
 			User fromDB = userDao.find(user.getEmail());
@@ -60,7 +54,6 @@ HttpImpl.class, HttpForTest.class
 ### Response.class : 출력할 형태
 Json.class, Jsp.class, File.class
 
-#### Construct
     new Json(JsonObject);
     new Jsp(Jsp파일명);
     new File(파일명);
@@ -80,14 +73,11 @@ Json.class, Jsp.class, File.class
 
     
 #### @HttpMethod : 공통적으로 사용할 메서드 정의 @Mapping의 before, after에서 사용
-    
     String value() default ""; // 매핑될 이름 값이 없으면 메서드 이름으로 매핑
     
     
 ### Parameter Annotations
 #### @Parameter, @JsonParameter, @SessionAttribute, @FromDB(keyParameter="?")
-    String value(); // 해당하는 속성키
-	boolean require() default true; // True일때, 해당 속성이 없으면 에러를 Response함
         
 #### example
     @Mapping(value = "/update", before = "loginCheck", method = Method.POST)
@@ -95,10 +85,10 @@ Json.class, Jsp.class, File.class
             @JsonParameter("Post") Post post, @SessionAttribute("user") User user) {
     }
         
-        
 #Build를 통한 Dependency Injection
 ## build.json (resources/build.json)
-### 빌드 example
+### Example
+#### build.json
     {
       "Users" {
        	  "rootUser" : {
@@ -108,7 +98,7 @@ Json.class, Jsp.class, File.class
 	       	}
 	}
 	
-### 빌드사용
+#### build
 	@Build("Users.rootUser")
 	User user;
 
@@ -118,9 +108,7 @@ Json.class, Jsp.class, File.class
     
 ## 1. Class
 
-## DAO.class
-
-## GDAO.class
+## DAO.class, GDAO<T>.class
     
 ### Example Usage
     DAO dao = new DAO();
@@ -131,11 +119,11 @@ Json.class, Jsp.class, File.class
     
     user.equals(user2); // true
     
-## TableMaker.class, TableCreator.class
+## TableMaker.class
 아래의 어노테이션 설정하고 모델만 만들면 테이블 만들어줍니다.
 
 ### Example Usage
-    TableCreator.createTable(reset); // 해당 패키지 내의 테이블 생성
+    TableMaker.create(reset); // 모든 테이블 생성
     TableMaker tm = new TableMaker(User.class, dao); // User 테이블 생성
     tm.dropTable();
 	tm.createTable();
@@ -170,21 +158,17 @@ Json.class, Jsp.class, File.class
     @TestData
     public class Tests {
         @InsertList
-    	private List<User> users;
-    	
-    	@Insert
-    	private User user;
-    
-    	public Tests() {
-    		users = new ArrayList<User>();
-    		User user = new User(null, "ab", 1);
-    		users.add(user);
-    		users.add(user);
-    		users.add(user);
-    		users.add(user);
-    		users.add(user);
-    		this.user = user;
-    	}
+	    	private List<User> users;
+	    	
+	    	@Insert
+	    	private User user;
+	    
+	    	public Tests() {
+	    		users = new ArrayList<User>();
+	    		User user = new User(null, "ab", 1);
+	    		users.add(user);
+	    		this.user = user;
+	    	}
     }
 
 

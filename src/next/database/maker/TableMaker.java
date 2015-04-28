@@ -12,10 +12,21 @@ import next.database.annotation.OtherTable;
 import next.database.annotation.Table;
 import next.database.sql.SqlFieldNormal;
 import next.database.sql.SqlSupports;
+import next.resource.Static;
 import next.setting.Setting;
 
 public class TableMaker {
 
+	public static void create(boolean ifExistDrop) {
+		DAO dao = new DAO();
+		Static.getReflections().getTypesAnnotatedWith(Table.class).forEach(cLass -> {
+			TableMaker tm = new TableMaker(cLass, dao);
+			if (ifExistDrop)
+				tm.dropTable();
+			tm.createTable();
+		});
+	}
+	
 	private DAO dao;
 	private Class<?> tableClass;
 	private String tableName;
