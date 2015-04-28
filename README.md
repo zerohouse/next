@@ -1,4 +1,4 @@
-# Next MVC + DAO Library
+# Next MVC + DAO Library 0.1.2
 편합니다!
 
 
@@ -15,7 +15,7 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 	<dependency>
 		<groupId>at.begin</groupId>
 		<artifactId>next</artifactId>
-		<version>0.1.1</version>
+		<version>0.1.2</version>
 	</dependency>
 
 
