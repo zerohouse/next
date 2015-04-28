@@ -1,13 +1,10 @@
 package next.mapping.http;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,7 +40,7 @@ public class HttpForTest implements Http {
 	private String path;
 
 	@Override
-	public void forword(String path) throws ServletException, IOException {
+	public void forword(String path) {
 		this.path = path;
 	}
 
@@ -76,7 +73,7 @@ public class HttpForTest implements Http {
 	private String characterEncoding;
 
 	@Override
-	public void setCharacterEncoding(String encording) throws UnsupportedEncodingException {
+	public void setCharacterEncoding(String encording) {
 		characterEncoding = encording;
 	}
 

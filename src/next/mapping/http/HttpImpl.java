@@ -61,9 +61,15 @@ public class HttpImpl implements Http {
 	}
 
 	@Override
-	public void forword(String path) throws ServletException, IOException {
+	public void forword(String path) {
 		RequestDispatcher rd = req.getRequestDispatcher(path);
-		rd.forward(req, resp);
+		try {
+			rd.forward(req, resp);
+		} catch (ServletException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -93,9 +99,13 @@ public class HttpImpl implements Http {
 	}
 
 	@Override
-	public void setCharacterEncoding(String encording) throws UnsupportedEncodingException {
-		req.setCharacterEncoding(encording);
-		resp.setCharacterEncoding(encording);
+	public void setCharacterEncoding(String encording) {
+		try {
+			req.setCharacterEncoding(encording);
+			resp.setCharacterEncoding(encording);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -164,6 +174,5 @@ public class HttpImpl implements Http {
 	public Object getAttribute(String key) {
 		return req.getAttribute(key);
 	}
-
 
 }

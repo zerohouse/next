@@ -1,14 +1,11 @@
 package next.mapping.response;
 
-import java.io.IOException;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-
 import next.mapping.http.Http;
 import next.setting.Setting;
+
 /**
  * path의 JSP를 리턴합니다.<br>
  * put하여 jstl을 사용할 수 있습니다.
@@ -53,11 +50,7 @@ public class Jsp implements Response {
 		for (Map.Entry<String, Object> entry : variables.entrySet()) {
 			http.setAttribute(entry.getKey(), entry.getValue());
 		}
-		try {
-			http.forword(PATH + jspFileName);
-		} catch (ServletException | IOException e) {
-			e.printStackTrace();
-		}
+		http.forword(PATH + jspFileName);
 	}
 
 	public String getJspFileName() {

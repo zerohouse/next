@@ -1,9 +1,5 @@
 package next.mapping.http;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,7 +11,7 @@ public interface Http {
 
 	<T> T getJsonObject(Class<T> cLass);
 
-	void forword(String path) throws ServletException, IOException;
+	void forword(String path);
 
 	void setContentType(String type);
 
@@ -25,7 +21,7 @@ public interface Http {
 
 	String getUriVariable(int number);
 
-	void setCharacterEncoding(String encording) throws UnsupportedEncodingException;
+	void setCharacterEncoding(String encording);
 
 	void sendNotFound();
 
