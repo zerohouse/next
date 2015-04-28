@@ -2,7 +2,8 @@ package next.mapping.http;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,7 +19,7 @@ public class HttpImpl implements Http {
 
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
-	private ArrayList<String> uriVariables;
+	private Map<String, String> uriVariables;
 
 	@Override
 	public String getParameter(String name) {
@@ -62,6 +63,8 @@ public class HttpImpl implements Http {
 
 	@Override
 	public void forword(String path) {
+		if (path.equals(""))
+			sendError(508);
 		RequestDispatcher rd = req.getRequestDispatcher(path);
 		try {
 			rd.forward(req, resp);
@@ -87,15 +90,17 @@ public class HttpImpl implements Http {
 	}
 
 	@Override
-	public void addUriVariable(String group) {
+	public void putUriVariable(String key, String uriVariable) {
 		if (uriVariables == null)
-			uriVariables = new ArrayList<String>();
-		uriVariables.add(group);
+			uriVariables = new HashMap<String, String>();
+		uriVariables.put(key, uriVariable);
 	}
 
 	@Override
-	public String getUriVariable(int number) {
-		return uriVariables.get(number);
+	public String getUriVariable(String key) {
+		if (uriVariables == null)
+			return null;
+		return uriVariables.get(key);
 	}
 
 	@Override
@@ -140,6 +145,8 @@ public class HttpImpl implements Http {
 
 	@Override
 	public void sendRedirect(String location) {
+		if (location.equals(""))
+			sendError(508);
 		try {
 			resp.sendRedirect(location);
 		} catch (IOException e) {
@@ -173,6 +180,11 @@ public class HttpImpl implements Http {
 	@Override
 	public Object getAttribute(String key) {
 		return req.getAttribute(key);
+	}
+
+	@Override
+	public int getUriVariableSize() {
+		return uriVariables.size();
 	}
 
 }

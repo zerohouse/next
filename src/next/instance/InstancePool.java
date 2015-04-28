@@ -1,7 +1,7 @@
 package next.instance;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import next.instance.wrapper.ClassWrapper;
 
@@ -11,8 +11,8 @@ public class InstancePool {
 	private Map<String, ClassWrapper> keyMap;
 
 	public InstancePool() {
-		instanceMap = new HashMap<Class<?>, ClassWrapper>();
-		keyMap = new HashMap<String, ClassWrapper>();
+		instanceMap = new ConcurrentHashMap<Class<?>, ClassWrapper>();
+		keyMap = new ConcurrentHashMap<String, ClassWrapper>();
 	}
 
 	@Override

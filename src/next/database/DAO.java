@@ -17,18 +17,18 @@ import next.util.Parser;
  * <br>
  * 클래스에 아래의 어노테이션을 사용 가능 합니다.<br>
  * 
- * &#064;Table, &#064;Key, &#064;Column, &#064;Exclude, &#064;OtherTable, &#064;RequiredRegex
+ * &#064;Table, &#064;Key, &#064;Column, &#064;Exclude, &#064;OtherTable,
+ * &#064;RequiredRegex
  * 
  */
 
 public class DAO extends DAORaw {
 
-	public DAO(ConnectionManager cm) {
-		super(cm);
+	public DAO() {
 	}
 
-	public DAO() {
-		super();
+	public DAO(Transaction tran) {
+		super(tran);
 	}
 
 	/**
@@ -106,7 +106,8 @@ public class DAO extends DAORaw {
 	 * 파라미터로 넣으면, age=10인 유저의 리스트를 반환합니다.
 	 * <p>
 	 *
-	 * @param <T> Type
+	 * @param <T>
+	 *            Type
 	 * @param object
 	 *            조건 오브젝트
 	 * @return T List
@@ -114,8 +115,8 @@ public class DAO extends DAORaw {
 	@SuppressWarnings("unchecked")
 	public <T> List<T> findList(T object) {
 		KeyParams kp = new NullableParams(Static.getSqlSupports(), object);
-		return (List<T>) getList(object.getClass(), String.format("SELECT * FROM %s WHERE %s", kp.getTableName(), kp.getKeyFieldNames(EQ, and)), kp.getKeyParams()
-				.toArray());
+		return (List<T>) getList(object.getClass(), String.format("SELECT * FROM %s WHERE %s", kp.getTableName(), kp.getKeyFieldNames(EQ, and)), kp
+				.getKeyParams().toArray());
 	}
 
 	/**
@@ -124,7 +125,9 @@ public class DAO extends DAORaw {
 	 * User { name : null, age : 10, email : null, gender : null }를<br>
 	 * 파라미터로 넣으면, age=10인 유저의 리스트를 반환합니다.
 	 * <p>
-	 * @param <T> Type
+	 * 
+	 * @param <T>
+	 *            Type
 	 * @param object
 	 *            조건 오브젝트
 	 * @param additionalCondition
@@ -135,10 +138,9 @@ public class DAO extends DAORaw {
 	@SuppressWarnings("unchecked")
 	public <T> List<T> findList(T object, String additionalCondition) {
 		KeyParams kp = new NullableParams(Static.getSqlSupports(), object);
-		return (List<T>) getList(object.getClass(), String.format("SELECT * FROM %s WHERE %s %s", kp.getTableName(), kp.getKeyFieldNames(EQ, and), additionalCondition), kp
-				.getKeyParams().toArray());
+		return (List<T>) getList(object.getClass(), String.format("SELECT * FROM %s WHERE %s %s", kp.getTableName(), kp.getKeyFieldNames(EQ, and),
+				additionalCondition), kp.getKeyParams().toArray());
 	}
-
 
 	public static final String EQ = "=?";
 	public static final String and = " and ";

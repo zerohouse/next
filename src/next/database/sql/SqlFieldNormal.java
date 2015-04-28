@@ -13,6 +13,14 @@ import next.setting.TableOptions;
 
 public class SqlFieldNormal implements SqlField {
 
+	private static final String AUTO_INCREMENT = "AUTO_INCREMENT";
+	private static final String UNDER_BAR = "_";
+	private static final String DEFAULT = "DEFAULT";
+	private static final String NOT = "NOT";
+	private static final String NULL = "NULL";
+	private static final String Q = "`";
+	private final static String SPACE = " ";
+
 	SqlFieldNormal(String tableName, Field field) {
 		this.tableName = tableName;
 		this.field = field;
@@ -46,14 +54,12 @@ public class SqlFieldNormal implements SqlField {
 	}
 
 	public String getWrappedColumnName() {
-		return "`" + columnName + "`";
+		return Q + columnName + Q;
 	}
 
 	public String getFieldString() {
 		return fieldString;
 	}
-
-	private final static String SPACE = " ";
 
 	private void setCondition() {
 		Class<?> t = field.getType();
@@ -82,24 +88,24 @@ public class SqlFieldNormal implements SqlField {
 
 	private void setSettings(TableOptions options) {
 		defaultValue = "";
-		nullType = "NULL";
+		nullType = NULL;
 		this.type = options.getDataType();
 		if (!options.getNotNull())
 			return;
-		nullType = "NOT " + nullType;
+		nullType = NOT + SPACE + nullType;
 		if (!options.getHasDefaultValue())
 			return;
 		String defaultvalue = options.getDefaultValue().toString();
-		defaultValue += "DEFAULT " + defaultvalue;
+		defaultValue += DEFAULT + SPACE + defaultvalue;
 	}
 
 	private void setFieldString() {
 		fieldString = "";
-		columnName = tableName + "_" + field.getName();
+		columnName = tableName + UNDER_BAR + field.getName();
 		if (!field.isAnnotationPresent(Column.class)) {
 			fieldString += getWrappedColumnName() + SPACE + type + SPACE;
 			if (field.isAnnotationPresent(Key.class) && field.getAnnotation(Key.class).AUTO_INCREMENT()) {
-				fieldString += "AUTO_INCREMENT" + SPACE + "NOT NULL";
+				fieldString += AUTO_INCREMENT + SPACE + NOT + SPACE + NULL;
 				return;
 			}
 			fieldString += nullType;
@@ -119,21 +125,21 @@ public class SqlFieldNormal implements SqlField {
 			fieldString += column.DATA_TYPE() + SPACE;
 
 		if (field.isAnnotationPresent(Key.class) && field.getAnnotation(Key.class).AUTO_INCREMENT()) {
-			fieldString += "AUTO_INCREMENT" + SPACE;
+			fieldString += AUTO_INCREMENT + SPACE;
 			return;
 		}
 
 		if (column.NULL())
-			fieldString += "NULL" + SPACE;
+			fieldString += NULL + SPACE;
 		else
-			fieldString += "NOT NULL" + SPACE;
+			fieldString += NOT + SPACE + NULL + SPACE;
 
 		if (field.isAnnotationPresent(Key.class))
 			return;
 		if (!column.hasDefaultValue())
 			return;
 		if (!column.DEFAULT().equals(""))
-			fieldString += "DEFAULT" + SPACE + column.DEFAULT();
+			fieldString += DEFAULT + SPACE + column.DEFAULT();
 		else
 			fieldString += defaultValue;
 

@@ -1,8 +1,6 @@
 package next.mapping.http;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,16 +56,16 @@ public class HttpForTest implements Http {
 		httpResult += string;
 	}
 
-	private List<String> uriVariables = new ArrayList<String>();
+	private Map<String, String> uriVariables = new HashMap<String, String>();
 
 	@Override
-	public void addUriVariable(String uriVariable) {
-		uriVariables.add(uriVariable);
+	public void putUriVariable(String key, String uriVariable) {
+		uriVariables.put(key, uriVariable);
 	}
 
 	@Override
-	public String getUriVariable(int number) {
-		return uriVariables.get(number);
+	public String getUriVariable(String key) {
+		return uriVariables.get(key);
 	}
 
 	private String characterEncoding;
@@ -170,6 +168,11 @@ public class HttpForTest implements Http {
 	@Override
 	public HttpServletResponse getResp() {
 		return null;
+	}
+
+	@Override
+	public int getUriVariableSize() {
+		return uriVariables.size();
 	}
 
 }

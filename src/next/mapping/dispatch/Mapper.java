@@ -1,10 +1,12 @@
 package next.mapping.dispatch;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
+import next.database.Transaction;
 import next.instance.InstancePool;
 import next.instance.wrapper.MethodWrapper;
 import next.mapping.annotation.HttpMethod;
@@ -43,14 +45,14 @@ public class Mapper {
 				methodName = m.getName();
 			methodMap.put(methodName, new MethodWrapper(instance, m));
 		});
-		logger.info(methodMap.toString());
+		logger.info(String.format("HttpMethod -> %s", methodMap.toString()));
 	}
 
 	private void makeUriMap() {
 		Static.getReflections().getMethodsAnnotatedWith(Mapping.class).forEach(m -> {
 			Class<?> declaringClass = m.getDeclaringClass();
 			String[] prefix;
-			List<MethodWrapper> methodList = new ArrayList<MethodWrapper>();
+			Queue<MethodWrapper> methodList = new ConcurrentLinkedQueue<MethodWrapper>();
 			String[] beforeClass = null;
 			String[] afterClass = null;
 			if (declaringClass.isAnnotationPresent(Mapping.class)) {
@@ -81,7 +83,7 @@ public class Mapper {
 		});
 	}
 
-	private void addAll(List<MethodWrapper> methodList, String[] stringArray) {
+	private void addAll(Queue<MethodWrapper> methodList, String[] stringArray) {
 		if (stringArray == null)
 			return;
 		for (int i = 0; i < stringArray.length; i++) {
@@ -90,12 +92,12 @@ public class Mapper {
 			MethodWrapper method;
 			if (stringArray[i].charAt(0) == '!') {
 				method = methodMap.get(stringArray[i].substring(1));
-				if (method == null){
+				if (method == null) {
 					logger.warn(String.format("없는 Method [%s]를 제외하려고 했습니다.", stringArray[i]));
 					continue;
-					}		
-						
-				if(!methodList.contains(method)) {
+				}
+
+				if (!methodList.contains(method)) {
 					logger.warn(String.format("실행할 메소드리스트에 추가되지 않은 Method [%s]를 제외하려고 했습니다.", stringArray[i]));
 					continue;
 				}
@@ -111,14 +113,16 @@ public class Mapper {
 	}
 
 	public void execute(UriKey url, Http http) {
-		List<MethodWrapper> methods = uriMap.get(url, http);
+		Queue<MethodWrapper> methods = uriMap.get(url, http);
 		if (methods == null) {
 			http.sendError(404);
 			return;
 		}
 		logger.debug(String.format("%s -> %s", url, methods.toString()));
-		for (int i = 0; i < methods.size(); i++) {
-			Object returned = methods.get(i).execute(http);
+		Iterator<MethodWrapper> miter = methods.iterator();
+		while (miter.hasNext()) {
+			MethodWrapper mw = miter.next();
+			Object returned = mw.execute(http, new Transaction());
 			if (returned == null)
 				continue;
 			if (returned.getClass().getInterfaces().length != 0)
@@ -127,18 +131,47 @@ public class Mapper {
 					return;
 				}
 			if (returned.getClass().equals(String.class)) {
-				String res = returned.toString();
-				if (res.startsWith("redirect:")) {
-					http.sendRedirect(res.substring(9));
-					return;
-				}
-				http.forword(res);
+				stringResponse(http, returned);
 				return;
 			}
 			new Json(returned).render(http);
 			return;
 		}
 		new Json().render(http);
+	}
+
+	private void stringResponse(Http http, Object returned) {
+		String res = returned.toString();
+		if (!res.contains(":")) {
+			http.forword(res);
+			return;
+		}
+		String[] str = res.split(":");
+		if ("redirect".equals(str[0])) {
+			if (str.length == 1) {
+				http.sendError(508);
+				return;
+			}
+			http.sendRedirect(str[1]);
+			return;
+		}
+		if ("error".equals(str[0])) {
+			if (str.length == 3) {
+				http.sendError(Integer.parseInt(str[1]), str[2]);
+				return;
+			}
+			http.sendError(Integer.parseInt(str[1]));
+			return;
+		}
+		if ("forward".equals(str[0])) {
+			if (str.length == 1) {
+				http.sendError(508);
+				return;
+			}
+			http.forword(str[1]);
+			return;
+		}
+		http.forword(res);
 	}
 
 }

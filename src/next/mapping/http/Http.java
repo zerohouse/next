@@ -17,9 +17,9 @@ public interface Http {
 
 	void write(String string);
 
-	void addUriVariable(String uriVariable);
+	void putUriVariable(String key, String uriVariable);
 
-	String getUriVariable(int number);
+	String getUriVariable(String key);
 
 	void setCharacterEncoding(String encording);
 
@@ -46,5 +46,7 @@ public interface Http {
 	HttpServletRequest getReq();
 
 	HttpServletResponse getResp();
+
+	int getUriVariableSize();
 
 }

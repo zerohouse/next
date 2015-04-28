@@ -47,9 +47,6 @@ public class UriKey {
 		return "Uri [method:" + method + ", uri:" + uri + "]";
 	}
 
-	public boolean contains(String string) {
-		return uri.contains(string);
-	}
 
 	public String getUri() {
 		return uri;

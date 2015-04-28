@@ -1,58 +1,63 @@
 package next.mapping.dispatch;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import next.instance.wrapper.MethodWrapper;
+import next.mapping.dispatch.support.PatternAndKeys;
 import next.mapping.http.Http;
 
 public class UriMap {
 
-	private Map<UriKey, List<MethodWrapper>> match = new HashMap<UriKey, List<MethodWrapper>>();
-	private Map<String, List<Pattern>> regexMap = new HashMap<String, List<Pattern>>();
-	private Map<Pattern, List<MethodWrapper>> PatternMap = new HashMap<Pattern, List<MethodWrapper>>();
+	private Map<UriKey, Queue<MethodWrapper>> uriMap;
+	private Map<String, Queue<PatternAndKeys>> regexMap;
+	private Map<PatternAndKeys, Queue<MethodWrapper>> patternMap;
+	private final Pattern pattern;
 
-	
-	
-	public void put(UriKey key, List<MethodWrapper> methodList) {
-		if (!key.contains("{}")) {
-			match.put(key, methodList);
-			return;
-		}
-		String regex = key.getUri().replace("{}", "(.*)");
-		Pattern pattern = Pattern.compile(regex);
-		List<Pattern> regexList = regexMap.get(key.getMethod());
-		if (regexList == null) {
-			regexList = new LinkedList<Pattern>();
-			regexMap.put(key.getMethod(), regexList);
-		}
-		regexList.add(pattern);
-		PatternMap.put(pattern, methodList);
+	public UriMap() {
+		uriMap = new ConcurrentHashMap<UriKey, Queue<MethodWrapper>>();
+		regexMap = new ConcurrentHashMap<String, Queue<PatternAndKeys>>();
+		patternMap = new ConcurrentHashMap<PatternAndKeys, Queue<MethodWrapper>>();
+		pattern = Pattern.compile(PatternAndKeys.REGEX);
 	}
 
-	public List<MethodWrapper> get(UriKey key, Http http) {
-		List<MethodWrapper> methodArray = match.get(key);
+	public void put(UriKey key, Queue<MethodWrapper> methodList) {
+		Matcher matcher = pattern.matcher(key.getUri());
+		if (!key.getUri().contains("*") && !matcher.find()) {
+			uriMap.put(key, methodList);
+			return;
+		}
+		Queue<PatternAndKeys> regexList = regexMap.get(key.getMethod());
+		if (regexList == null) {
+			regexList = new ConcurrentLinkedQueue<PatternAndKeys>();
+			regexMap.put(key.getMethod(), regexList);
+		}
+		PatternAndKeys pak = new PatternAndKeys(key.getUri());
+		regexList.add(pak);
+		patternMap.put(pak, methodList);
+	}
+
+	public Queue<MethodWrapper> get(UriKey key, Http http) {
+		Queue<MethodWrapper> methodArray = uriMap.get(key);
 		if (methodArray != null)
 			return methodArray;
-		List<Pattern> regexList = regexMap.get(key.getMethod());
+		Queue<PatternAndKeys> regexList = regexMap.get(key.getMethod());
 		if (regexList == null)
 			return null;
-		for (int i = 0; i < regexList.size(); i++) {
-			Matcher matcher = regexList.get(i).matcher(key.getUri());
-			if (matcher.matches()) {
-				methodArray = PatternMap.get(regexList.get(i));
-				for (int j = 1; j < matcher.groupCount() + 1; j++) {
-					http.addUriVariable(matcher.group(j));
-				}
+		Iterator<PatternAndKeys> keys = regexList.iterator();
+		while (keys.hasNext()) {
+			PatternAndKeys pak = keys.next();
+			if (pak.find(key.getUri(), http)) {
+				methodArray = patternMap.get(pak);
 				return methodArray;
 			}
 		}
 		return null;
 	}
-	
-	
+
 }

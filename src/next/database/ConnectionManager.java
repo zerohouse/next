@@ -1,6 +1,6 @@
 package next.database;
 
-import java.sql.PreparedStatement;
+import java.sql.Connection;
 
 /**
  * 커넥션을 관리합니다. <br>
@@ -11,10 +11,10 @@ import java.sql.PreparedStatement;
  */
 public interface ConnectionManager {
 
-	public PreparedStatement getPSTMT(String sql, Object... parameters);
-
 	public void close();
 
 	public void closeConnection();
+
+	public Connection getConnection();
 
 }

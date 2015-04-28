@@ -1,8 +1,8 @@
 package next.database.sql;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import next.database.annotation.OtherTable;
 import next.database.annotation.Table;
@@ -15,9 +15,9 @@ public class SqlSupports {
 	private Map<Class<?>, String> tableNameMap;
 
 	public SqlSupports() {
-		keyParamsMap = new HashMap<Class<?>, KeyParams>();
-		sqlFieldMap = new HashMap<Field, SqlField>();
-		tableNameMap = new HashMap<Class<?>, String>();
+		keyParamsMap = new ConcurrentHashMap<Class<?>, KeyParams>();
+		sqlFieldMap = new ConcurrentHashMap<Field, SqlField>();
+		tableNameMap = new ConcurrentHashMap<Class<?>, String>();
 		Static.getReflections().getTypesAnnotatedWith(Table.class).forEach(each->{
 			defineClass(each);
 		});

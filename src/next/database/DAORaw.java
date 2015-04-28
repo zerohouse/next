@@ -1,5 +1,6 @@
 package next.database;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -9,8 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import next.annotation.Build;
-import next.annotation.ImplementedBy;
+import next.util.LoggerUtil;
+
+import org.slf4j.Logger;
 
 /**
  * Database Access 작업을 수행합니다.<br>
@@ -19,16 +21,20 @@ import next.annotation.ImplementedBy;
  */
 public class DAORaw {
 
-	@Build
-	@ImplementedBy(Autocommit.class)
+	private static final Logger logger = LoggerUtil.getLogger(DAORaw.class);
+
 	private ConnectionManager cm;
 
-	public DAORaw(ConnectionManager cm) {
-		this.cm = cm;
+	public DAORaw() {
+	}
+	public DAORaw(Transaction tran) {
+		this.cm = tran;
 	}
 
-	public DAORaw() {
-		this.cm = new Autocommit();
+	public ConnectionManager getConnectionManager() {
+		if (cm == null)
+			return new Autocommit();
+		return cm;
 	}
 
 	/**
@@ -45,8 +51,9 @@ public class DAORaw {
 	public Map<String, Object> getRecord(String sql, Object... parameters) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		ConnectionManager cm = getConnectionManager();
 		try {
-			pstmt = cm.getPSTMT(sql, parameters);
+			pstmt = getPSTMT(cm, sql, parameters);
 			rs = pstmt.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			int columnCount = metaData.getColumnCount();
@@ -81,8 +88,9 @@ public class DAORaw {
 		List<Map<String, Object>> result = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		ConnectionManager cm = getConnectionManager();
 		try {
-			pstmt = cm.getPSTMT(sql, parameters);
+			pstmt = getPSTMT(cm, sql, parameters);
 			rs = pstmt.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			int columnCount = metaData.getColumnCount();
@@ -120,8 +128,9 @@ public class DAORaw {
 	public List<Object> getRecordAsList(String sql, Object... parameters) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		ConnectionManager cm = getConnectionManager();
 		try {
-			pstmt = cm.getPSTMT(sql, parameters);
+			pstmt = getPSTMT(cm, sql, parameters);
 			rs = pstmt.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			int columnCount = metaData.getColumnCount();
@@ -156,8 +165,9 @@ public class DAORaw {
 		List<List<Object>> result = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		ConnectionManager cm = getConnectionManager();
 		try {
-			pstmt = cm.getPSTMT(sql, parameters);
+			pstmt = getPSTMT(cm, sql, parameters);
 			rs = pstmt.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			int columnCount = metaData.getColumnCount();
@@ -192,8 +202,9 @@ public class DAORaw {
 	 */
 	public Boolean execute(String sql, Object... parameters) {
 		PreparedStatement pstmt = null;
+		ConnectionManager cm = getConnectionManager();
 		try {
-			pstmt = cm.getPSTMT(sql, parameters);
+			pstmt = getPSTMT(cm, sql, parameters);
 			pstmt.execute();
 			return true;
 		} catch (SQLException e) {
@@ -230,6 +241,22 @@ public class DAORaw {
 	 */
 	public void close() {
 		cm.close();
+	}
+
+	public static PreparedStatement getPSTMT(ConnectionManager cm, String sql, Object... parameters) {
+		Connection conn = cm.getConnection();
+		PreparedStatement pstmt = null;
+		logger.debug(sql, parameters);
+		try {
+			pstmt = conn.prepareStatement(sql);
+			if (parameters != null)
+				for (int j = 0; j < parameters.length; j++) {
+					pstmt.setObject(j + 1, parameters[j]);
+				}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return pstmt;
 	}
 
 }

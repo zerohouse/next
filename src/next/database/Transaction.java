@@ -1,12 +1,7 @@
 package next.database;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
-import next.util.LoggerUtil;
-
-import org.slf4j.Logger;
 
 /**
  * close 명령이 실행될때 작업을 실행합니다.<br>
@@ -15,27 +10,7 @@ import org.slf4j.Logger;
  */
 public class Transaction implements ConnectionManager {
 
-	private static final Logger logger = LoggerUtil.getLogger(Transaction.class);
-
 	private Connection conn;
-
-	@Override
-	public PreparedStatement getPSTMT(String sql, Object... parameters) {
-		if (conn == null)
-			conn = ConnectionPool.getConnection(false);
-		PreparedStatement pstmt = null;
-		logger.debug(sql, parameters);
-		try {
-			pstmt = conn.prepareStatement(sql);
-			if (parameters != null)
-				for (int j = 0; j < parameters.length; j++) {
-					pstmt.setObject(j + 1, parameters[j]);
-				}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return pstmt;
-	}
 
 	@Override
 	public void close() {
@@ -60,5 +35,12 @@ public class Transaction implements ConnectionManager {
 
 	@Override
 	public void closeConnection() {
+	}
+
+	@Override
+	public Connection getConnection() {
+		if(conn==null)
+			conn = ConnectionPool.getConnection(false);
+		return conn;
 	}
 }

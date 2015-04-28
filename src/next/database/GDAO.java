@@ -17,7 +17,8 @@ import next.util.Parser;
  * <br>
  * 아래의 어노테이션으로 클래스를 정의합니다.<br>
  * 
- * &#064;Table, &#064;Key, &#064;Column, &#064;Exclude, &#064;OtherTable, &#064;RequiredRegex
+ * &#064;Table, &#064;Key, &#064;Column, &#064;Exclude, &#064;OtherTable,
+ * &#064;RequiredRegex
  * 
  */
 
@@ -25,13 +26,12 @@ public class GDAO<T> extends DAORaw {
 
 	private Class<T> type;
 
-	public GDAO(Class<T> type, ConnectionManager cm) {
-		super(cm);
+	public GDAO(Class<T> type) {
 		this.type = type;
 	}
 
-	public GDAO(Class<T> type) {
-		super();
+	public GDAO(Class<T> type, Transaction tran) {
+		super(tran);
 		this.type = type;
 	}
 
@@ -56,7 +56,7 @@ public class GDAO<T> extends DAORaw {
 	 * 클래스에 해당하는 SQL을 생성하여 Object를 찾습니다.<br>
 	 * 
 	 * &#064;Key, &#064;Column 이 필요합니다.
-	 *       <p>
+	 * <p>
 	 *
 	 *
 	 * @param parameters
@@ -127,7 +127,7 @@ public class GDAO<T> extends DAORaw {
 		return getList(String.format("SELECT * FROM %s WHERE %s %s", kp.getTableName(), kp.getKeyFieldNames(EQ, and), additionalCondition), kp
 				.getKeyParams().toArray());
 	}
-	
+
 	public static final String EQ = "=?";
 	public static final String and = " and ";
 	public static final String comma = ", ";

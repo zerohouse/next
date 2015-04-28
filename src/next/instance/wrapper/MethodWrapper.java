@@ -2,6 +2,7 @@ package next.instance.wrapper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,20 +10,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import next.database.DAO;
+import next.database.GDAO;
 import next.database.Transaction;
 import next.mapping.annotation.parameters.FromDB;
 import next.mapping.annotation.parameters.JsonParameter;
 import next.mapping.annotation.parameters.Parameter;
 import next.mapping.annotation.parameters.SessionAttribute;
+import next.mapping.annotation.parameters.UriVariable;
 import next.mapping.exception.RequiredParamNullException;
 import next.mapping.http.Http;
 import next.mapping.response.Json;
+import next.resource.Static;
 
 public class MethodWrapper {
 
 	private Object instance;
 	private Method method;
-
+	
 	public MethodWrapper(Object instance, Method method) {
 		this.method = method;
 		this.instance = instance;
@@ -32,17 +36,14 @@ public class MethodWrapper {
 		return method;
 	}
 
-	public Object execute(Http http) {
+	public Object execute(Http http, Transaction transaction) {
 		Object returnValue = null;
-		DAO dao = new DAO(new Transaction());
 		try {
-			returnValue = method.invoke(instance, getParamArray(http, method, dao));
+			returnValue = method.invoke(instance, getParamArray(http, method, transaction));
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			return new Json(true, e.getMessage(), null);
 		} catch (RequiredParamNullException e) {
 			return new Json(true, e.getMessage(), null);
-		} finally {
-			dao.close();
 		}
 		return returnValue;
 	}
@@ -52,11 +53,7 @@ public class MethodWrapper {
 		return method.getName();
 	}
 
-	public boolean needDAO() {
-		return method.getParameterCount() == 2;
-	}
-
-	public Object[] getParamArray(Http http, Method method, DAO dao) throws RequiredParamNullException {
+	public Object[] getParamArray(Http http, Method method, Transaction transaction) throws RequiredParamNullException {
 		Class<?>[] types = method.getParameterTypes();
 		java.lang.reflect.Parameter[] obj = method.getParameters();
 		List<Object> parameters = new ArrayList<Object>();
@@ -66,7 +63,13 @@ public class MethodWrapper {
 				continue;
 			}
 			if (types[i].equals(DAO.class)) {
-				dao = new DAO(new Transaction());
+				parameters.add(new DAO(transaction));
+				continue;
+			}
+			if (types[i].equals(GDAO.class)) {
+				ParameterizedType param = (ParameterizedType) obj[i].getParameterizedType();
+				@SuppressWarnings({ "unchecked", "rawtypes" })
+				GDAO dao = new GDAO((Class<?>) param.getActualTypeArguments()[0], transaction);
 				parameters.add(dao);
 				continue;
 			}
@@ -111,10 +114,15 @@ public class MethodWrapper {
 				String value = http.getParameter(name);
 				if (param.require() && value == null)
 					throw new RequiredParamNullException(param.errorWhenKeyParamNull());
-				Object fromDB = dao.find(types[i], value);
+				Object fromDB = Static.getDAO().find(types[i], value);
 				if (param.require() && fromDB == null)
 					throw new RequiredParamNullException(param.errorWhenNotExist());
 				parameters.add(fromDB);
+				continue;
+			}
+			if (obj[i].isAnnotationPresent(UriVariable.class)) {
+				UriVariable uri = obj[i].getAnnotation(UriVariable.class);
+				parameters.add(http.getUriVariable(uri.value()));
 				continue;
 			}
 			parameters.add(null);

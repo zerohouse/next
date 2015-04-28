@@ -53,7 +53,15 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
     new File(파일명); // webapp/파일
     
 #### 2-1. String Return시 String에 해당하는 Path로 forward(클라이언트에서 주소 바뀌지 않음)
-#### 2-2. String이 redirect:로 시작할때, redirect뒤의 Path로 reidrect(클라이언트 주소 바뀜) 
+#### 2-2. String이 redirect:로 시작할때, :뒤의 Path로 reidrect(클라이언트 주소 바뀜) 
+#### 2-3. String이 error:(no):(message)로 시작할때, :뒤의 메시지로 에러를 리턴
+	ex)
+	return "/index.html" // forward to : /index.html  
+	return "forward:index.html" // forward to : /index.html 
+	return "redirect:index.html" // redirect to : /index.html 
+	return "error:404" // 404에러 리턴
+	return "error:404:페이지가 없습니다." // 404에러 리턴 + 에러메시지 리턴
+	 
 #### 4. Object Return시 new Json(Object)로 간주 JSON으로 응답함.
 #### 5. 리턴값 없으면 empty JSON 오브젝트 리턴
 
@@ -70,6 +78,13 @@ Url 매핑 정보를 정의
 	String[] before() default ""; // 해당 메서드를 실행하기 전 실행될 메서드 
 	String[] after() default ""; // 해당 메서드를 실행한 후 실행될 메서드
 	String[] method() default "GET"; // 매핑될 메서드(Post, Get, Put, Delete등) 
+	
+### Uri 변수의 사용
+	모든 파라미터를 받을때 {}와 *를 사용합니다.
+	@Mapping("/{variableName}/*");
+     *와 {}의 차이점은 변수를 꺼낼 수 있느냐의 여부입니다.
+	http.getUriVariable("variableName");
+	혹은 파라미터에 @UriVariable("variableName") String uri로 사용가능합니다.
 
 #### @HttpMethods [클래스 레벨]
 @HttpMethod메서드 클래스에 선언.
