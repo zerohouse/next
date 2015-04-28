@@ -6,7 +6,7 @@
 pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 
 ###Repository
-	<repository>
+    <repository>
 		<id>next-mvn-repo</id>
 		<url>https://raw.github.com/zerohouse/next/mvn-repo/</url>
 	</repository>
@@ -20,7 +20,7 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 
 
 
-## Simple Example
+## Example Usage
 
     @Controller
     @Mapping("/api/user")
@@ -46,11 +46,6 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 
 #MVC
 
-## 1. Class
-
-### Http.class Interface
-HttpImpl.class, HttpForTest.class
-
 ### Response.class : 출력할 형태
 Json.class, Jsp.class, File.class
 
@@ -58,42 +53,45 @@ Json.class, Jsp.class, File.class
     new Jsp(Jsp파일명);
     new File(파일명);
 
-## 2. Annotation
+#### @Controller : 컨트롤러 클래스에 사용
 
-### Class Annotations
-#### @Controller : 컨트롤러 클래스에 사용, @Mapping  : Url 매핑 정보를 정의,
-
-### Method Annotations
-
-#### @Mapping 클래스, 메서드 모두 사용
+#### @Mapping  : Url 매핑 정보를 정의
     String[] value() default ""; // 매핑될 url들
 	String[] before() default ""; // 해당 메서드를 실행하기 전 실행될 메서드 
 	String[] after() default ""; // 해당 메서드를 실행한 후 실행될 메서드
 	String[] method() default "GET"; // 매핑될 메서드(Post, Get, Put, Delete등) 
 
-    
 #### @HttpMethod : 공통적으로 사용할 메서드 정의 @Mapping의 before, after에서 사용
     String value() default ""; // 매핑될 이름 값이 없으면 메서드 이름으로 매핑
     
-    
 ### Parameter Annotations
 #### @Parameter, @JsonParameter, @SessionAttribute, @FromDB(keyParameter="?")
-        
+
 #### example
     @Mapping(value = "/update", before = "loginCheck", method = Method.POST)
     public void updatePost(@Parameter("userId") String parameter, @FromDB(keyParameter="userId") User user2,
             @JsonParameter("Post") Post post, @SessionAttribute("user") User user) {
     }
+    
+### Http.class Interface
+HttpImpl.class, HttpForTest.class
+
+#### example
+    @Mapping(method = Method.GET, before="loginCheck")
+    public void getAnswers(Http http) {
+        http.forward("/index")
+	}
+
+
         
-#Build를 통한 Dependency Injection
-## build.json (resources/build.json)
-### Example
+##Build를 통한 Dependency Injection (resources/build.json)
+#### Example
 #### build.json
     {
       "Users" {
        	  "rootUser" : {
 	        	       "email" : "user1@gmail.com",
-		            "gender" : "m"
+		               "gender" : "m"
 	  	            	}
 	       	}
 	}
@@ -106,7 +104,6 @@ Json.class, Jsp.class, File.class
 어노테이션 기반 모델 설정 -> JDBC 한줄로 해결
 테이블 생성 SQL 파일도 필요없습니다.
     
-## 1. Class
 
 ## DAO.class, GDAO<T>.class
     
@@ -119,18 +116,33 @@ Json.class, Jsp.class, File.class
     
     user.equals(user2); // true
     
+### Transaction : Transaction사용시 반드시 dao를 close해야함.
+    DAO dao = new DAO(new Transaction());
+    dao.close();
+    GDAO<User> gdao = new GDAO<User>(new Transaction());
+    gdao.close();
+    
+#### example
+    @Mapping(method = Method.GET, before="loginCheck")
+    public void getAnswers(DAO dao, GDAO<User> userDAO) {
+        // 파라미터에서 사용시 메서드 내에서 트랜젝션
+        dao.insert(user);
+        dao.update(user);
+        userDAO.delete(user);
+    }
+    
 ## TableMaker.class
 아래의 어노테이션 설정하고 모델만 만들면 테이블 만들어줍니다.
 
 ### Example Usage
-    TableMaker.create(reset); // 모든 테이블 생성
+    boolean ifExistDrop = false;
+    TableMaker.create(ifExsitDrop); // 모든 테이블 생성
     TableMaker tm = new TableMaker(User.class, dao); // User 테이블 생성
     tm.dropTable();
 	tm.createTable();
     tm.reset(); // 드롭 후 크리에이트
     
     
-## 2. Annotation
 ### @Table, @Key, @Column, @Exclude, @RequiredRegex
 
 ### Example Model
@@ -154,7 +166,7 @@ Json.class, Jsp.class, File.class
     }
     
     
-## ### TestData 관리
+## TestData 관리
     @TestData
     public class Tests {
         @InsertList
