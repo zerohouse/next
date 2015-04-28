@@ -144,6 +144,8 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
     user.equals(user2); // true
     
 ### Transaction : 사용후 반드시 DAO를 close해야함.
+메서드 파라미터에서 사용시, 메서드 레벨 실행 후 close()호출함
+ 
     DAO dao = new DAO(new Transaction());
     dao.close();
     GDAO<User> gdao = new GDAO<User>(new Transaction());
@@ -156,7 +158,7 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
         dao.insert(user);
         dao.update(user);
         userDAO.delete(user);
-    }
+    } // 이후에 close()호출되므로 close()하지 않아도 됨.
     
 ## TableMaker.class
 아래의 어노테이션 설정하고 모델만 만들면 테이블 만들어줍니다.
