@@ -96,7 +96,7 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
         http.forward("/index")
 	}
     
-#### 직접 사용 하는 경우
+#### vs 직접 사용 하는 경우
     @Mapping(method = Method.GET, before="loginCheck")
     public void getAnswers(HttpServletRequest req, HttpServletResponse res) {
         RequestDispatcher rd = req.getRequestDispatcher(path);
