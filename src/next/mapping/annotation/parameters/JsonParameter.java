@@ -8,7 +8,6 @@ import java.lang.annotation.Target;
  * request의 파라미터를 JSON으로 파싱합니다.<br>
  * require일 경우, 해당 오브젝트가 없으면 에러를 발생시킵니다.
  * 
- * @see RequiredParamNullException
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)

@@ -7,12 +7,12 @@ import java.lang.annotation.Target;
 
 /**
  * 해당 필드의 인스턴스를 빌드합니다.<br>
- * 필드가 인터페이스일 경우 @ImplementedBy 어노테이션을 사용해야 합니다.<br>
+ * 필드가 인터페이스일 경우 &#064;ImplementedBy 어노테이션을 사용해야 합니다.<br>
  * value를 지정하면 build.json을 읽어 Object화 합니다.<br>
  * <p>
  * ex)
  * <pre>
- * @Build("users.root")
+ * &#064;Build("users.root")
  * private User user
  * 
  * build.json

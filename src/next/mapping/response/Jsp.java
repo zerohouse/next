@@ -40,7 +40,6 @@ public class Jsp implements Response {
 	 *            사용할 변수의 key
 	 * @param obj
 	 *            사용할 변수
-	 * @return void
 	 */
 	public void put(String key, Object obj) {
 		variables.put(key, obj);

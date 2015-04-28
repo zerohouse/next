@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
  * String으로 사용합니다.<br>
  * require일 경우, 해당 오브젝트가 없으면 에러를 발생시킵니다.
  * 
- * @see RequiredParamNullException
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)

@@ -17,7 +17,7 @@ import next.util.Parser;
  * <br>
  * 아래의 어노테이션으로 클래스를 정의합니다.<br>
  * 
- * @Table, @Key, @Column, @Exclude, @OtherTable, @RequiredRegex
+ * &#064;Table, &#064;Key, &#064;Column, &#064;Exclude, &#064;OtherTable, &#064;RequiredRegex
  * 
  */
 
@@ -55,7 +55,7 @@ public class GDAO<T> extends DAORaw {
 	/**
 	 * 클래스에 해당하는 SQL을 생성하여 Object를 찾습니다.<br>
 	 * 
-	 * @Key, @Column 이 필요합니다.
+	 * &#064;Key, &#064;Column 이 필요합니다.
 	 *       <p>
 	 *
 	 *
@@ -77,8 +77,6 @@ public class GDAO<T> extends DAORaw {
 	 *
 	 * @param sql
 	 *            sql문
-	 * @param <T>
-	 *            클래스 타입
 	 * @param parameters
 	 *            ?에 파싱할 파라미터
 	 * @return T List

@@ -17,7 +17,7 @@ import next.util.Parser;
  * <br>
  * 클래스에 아래의 어노테이션을 사용 가능 합니다.<br>
  * 
- * @Table, @Key, @Column, @Exclude, @OtherTable, @RequiredRegex
+ * &#064;Table, &#064;Key, &#064;Column, &#064;Exclude, &#064;OtherTable, &#064;RequiredRegex
  * 
  */
 
@@ -106,6 +106,7 @@ public class DAO extends DAORaw {
 	 * 파라미터로 넣으면, age=10인 유저의 리스트를 반환합니다.
 	 * <p>
 	 *
+	 * @param <T> Type
 	 * @param object
 	 *            조건 오브젝트
 	 * @return T List
@@ -123,7 +124,7 @@ public class DAO extends DAORaw {
 	 * User { name : null, age : 10, email : null, gender : null }를<br>
 	 * 파라미터로 넣으면, age=10인 유저의 리스트를 반환합니다.
 	 * <p>
-	 *
+	 * @param <T> Type
 	 * @param object
 	 *            조건 오브젝트
 	 * @param additionalCondition

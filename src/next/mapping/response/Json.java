@@ -9,8 +9,7 @@ import org.slf4j.Logger;
 /**
  * 생성시 넘어온 Object를 JsonParsing하여 렌더링합니다. <br>
  * object는 response로 리턴됩니다.<br>
- * error와 errorMessage를 지정할 수 있습니다.
- * <p>
+ * error와 errorMessage를 지정할 수 있습니다.<br>
  * 
  * <pre>
  * ex)
