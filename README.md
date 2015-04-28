@@ -9,10 +9,6 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 	<repository>
 		<id>next-mvn-repo</id>
 		<url>https://raw.github.com/zerohouse/next/mvn-repo/</url>
-		<snapshots>
-			<enabled>true</enabled>
-			<updatePolicy>always</updatePolicy>
-		</snapshots>
 	</repository>
 
 ###Dependency
