@@ -80,8 +80,10 @@ Url 매핑 정보를 정의
 
 #### example
     @Mapping(value = "/update", before = "loginCheck", method = Method.POST)
-    public void updatePost(@Parameter("userId") String parameter, @FromDB(keyParameter="userId") User user2,
-            @JsonParameter("Post") Post post, @SessionAttribute("user") User user) {
+    public void updatePost(@Parameter("userId") String parameter,
+     		@FromDB(keyParameter="userId") User user2,
+              @JsonParameter("Post") Post post,
+              @SessionAttribute("user") User user) {
     }
     
 ### Http.class Interface
@@ -180,7 +182,8 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
     	private Integer age;
         
         @Exclude
-    	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    	private static final String EMAIL_PATTERN =
+    	"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
         
         @RequiredRegex(EMAIL_PATTERN)
         private String email;
@@ -223,7 +226,8 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
     <?xml version="1.0" encoding="UTF-8"?>
     <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://java.sun.com/xml/ns/javaee"
-    	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+    	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
     	version="3.0">
     	<listener>
     		<listener-class>next.Next</listener-class>
