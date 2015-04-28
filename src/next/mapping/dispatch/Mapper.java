@@ -87,8 +87,23 @@ public class Mapper {
 		for (int i = 0; i < stringArray.length; i++) {
 			if (stringArray[i].equals(""))
 				continue;
+			MethodWrapper method;
 			if (stringArray[i].charAt(0) == '!') {
-				methodList.remove(methodMap.get(stringArray[i].substring(1)));
+				method = methodMap.get(stringArray[i].substring(1));
+				if (method == null){
+					logger.warn(String.format("없는 Method [%s]를 제외하려고 했습니다.", stringArray[i]));
+					continue;
+					}		
+						
+				if(!methodList.contains(method)) {
+					logger.warn(String.format("실행할 메소드리스트에 추가되지 않은 Method [%s]를 제외하려고 했습니다.", stringArray[i]));
+					continue;
+				}
+				methodList.remove(method);
+			}
+			method = methodMap.get(stringArray[i]);
+			if (method == null) {
+				logger.warn(String.format("없는 Method [%s]를 매핑하려고 했습니다.", stringArray[i]));
 				continue;
 			}
 			methodList.add(methodMap.get(stringArray[i]));
