@@ -50,10 +50,12 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 
     new Json(JsonObject);
     new Jsp(Jsp파일명);
-    new File(파일명);
+    new File(파일명); // webapp/파일
     
-#### 2. Object Return시 new Json(Object)로 간주 JSON으로 응답함.
-#### 3. 리턴값 없으면 empty JSON 오브젝트 리턴
+#### 2-1. String Return시 String에 해당하는 Path로 forward(클라이언트에서 주소 바뀌지 않음)
+#### 2-2. String이 redirect:로 시작할때, redirect뒤의 Path로 reidrect(클라이언트 주소 바뀜) 
+#### 4. Object Return시 new Json(Object)로 간주 JSON으로 응답함.
+#### 5. 리턴값 없으면 empty JSON 오브젝트 리턴
 
 
 
@@ -70,7 +72,8 @@ Url 매핑 정보를 정의
 	String[] method() default "GET"; // 매핑될 메서드(Post, Get, Put, Delete등) 
 
 #### @HttpMethods [클래스 레벨]
-@HttpMethod메서드 클래스에 선언. @HttpMethod는 컨트롤러에도 사용 가능.
+@HttpMethod메서드 클래스에 선언.
+
 #### @HttpMethod [메서드 레벨]
 공통적으로 사용할 메서드 정의 @Mapping의 before, after에서 사용
 

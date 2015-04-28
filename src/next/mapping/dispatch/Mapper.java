@@ -50,18 +50,25 @@ public class Mapper {
 		Static.getReflections().getMethodsAnnotatedWith(Mapping.class).forEach(m -> {
 			Class<?> declaringClass = m.getDeclaringClass();
 			String[] prefix;
+			List<MethodWrapper> methodList = new ArrayList<MethodWrapper>();
+			String[] beforeClass = null;
+			String[] afterClass = null;
 			if (declaringClass.isAnnotationPresent(Mapping.class)) {
-				prefix = declaringClass.getAnnotation(Mapping.class).value();
+				Mapping mapping = declaringClass.getAnnotation(Mapping.class);
+				prefix = mapping.value();
+				beforeClass = mapping.before();
+				afterClass = mapping.after();
 			} else {
 				prefix = new String[] { "" };
 			}
 			Mapping mapping = m.getAnnotation(Mapping.class);
-			List<MethodWrapper> methodList = new ArrayList<MethodWrapper>();
 			String[] before = mapping.before();
 			String[] after = mapping.after();
+			addAll(methodList, beforeClass);
 			addAll(methodList, before);
 			methodList.add(new MethodWrapper(instancePool.getInstance(declaringClass), m));
 			addAll(methodList, after);
+			addAll(methodList, afterClass);
 			for (int i = 0; i < prefix.length; i++)
 				for (int j = 0; j < mapping.method().length; j++)
 					for (int k = 0; k < mapping.value().length; k++) {
@@ -75,9 +82,15 @@ public class Mapper {
 	}
 
 	private void addAll(List<MethodWrapper> methodList, String[] stringArray) {
+		if (stringArray == null)
+			return;
 		for (int i = 0; i < stringArray.length; i++) {
 			if (stringArray[i].equals(""))
 				continue;
+			if (stringArray[i].charAt(0) == '!') {
+				methodList.remove(methodMap.get(stringArray[i].substring(1)));
+				continue;
+			}
 			methodList.add(methodMap.get(stringArray[i]));
 		}
 	}
@@ -93,12 +106,18 @@ public class Mapper {
 			Object returned = methods.get(i).execute(http);
 			if (returned == null)
 				continue;
-			if (returned.getClass().getInterfaces().length == 0) {
-				new Json(returned).render(http);
-				return;
-			}
-			if (returned.getClass().getInterfaces()[0].equals(Response.class)) {
-				((Response) returned).render(http);
+			if (returned.getClass().getInterfaces().length != 0)
+				if (returned.getClass().getInterfaces()[0].equals(Response.class)) {
+					((Response) returned).render(http);
+					return;
+				}
+			if (returned.getClass().equals(String.class)) {
+				String res = returned.toString();
+				if (res.startsWith("redirect:")) {
+					http.sendRedirect(res.substring(9));
+					return;
+				}
+				http.forword(res);
 				return;
 			}
 			new Json(returned).render(http);

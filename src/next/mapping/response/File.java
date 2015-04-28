@@ -19,7 +19,7 @@ public class File implements Response {
 	private String path;
 
 	public File(String path) {
-		this.path = path;
+		this.path = Dispatcher.CONTEXT_PATH + path;
 	}
 
 	@Override
@@ -27,12 +27,11 @@ public class File implements Response {
 		ServletOutputStream out;
 		try {
 			out = http.getResp().getOutputStream();
-			InputStream in = new FileInputStream(Dispatcher.CONTEXT_PATH + path);
+			InputStream in = new FileInputStream(path);
 			copy(in, out);
 			out.flush();
 			out.close();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
