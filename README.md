@@ -63,6 +63,7 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 
 #### @Mapping [클래스, 메서드 레벨]
 Url 매핑 정보를 정의
+
     String[] value() default ""; // 매핑될 url들
 	String[] before() default ""; // 해당 메서드를 실행하기 전 실행될 메서드 
 	String[] after() default ""; // 해당 메서드를 실행한 후 실행될 메서드
@@ -72,6 +73,7 @@ Url 매핑 정보를 정의
 @HttpMethod메서드 클래스에 선언. @HttpMethod는 컨트롤러에도 사용 가능.
 #### @HttpMethod [메서드 레벨]
 공통적으로 사용할 메서드 정의 @Mapping의 before, after에서 사용
+
     String value() default ""; // 매핑될 이름 값이 없으면 메서드 이름으로 매핑
     
 #### @Parameter, @JsonParameter, @SessionAttribute, @FromDB(keyParameter="?") [파라미터 레벨]
@@ -84,7 +86,7 @@ Url 매핑 정보를 정의
     
 ### Http.class Interface
 HttpImpl.class, HttpForTest.class
-HttpSevlet req와 resp의 익셉션제거
+HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
 
 #### example
     @Mapping(method = Method.GET, before="loginCheck")
