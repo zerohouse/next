@@ -8,9 +8,14 @@ import next.util.LoggerUtil;
 
 import org.slf4j.Logger;
 
+/**
+ * close 명령이 실행될때 작업을 실행합니다.<br>
+ * 트랜젝션을 사용합니다.
+ *
+ */
 public class Transaction implements ConnectionManager {
 
-	private static final Logger logger = LoggerUtil.getLogger(Autocommit.class);
+	private static final Logger logger = LoggerUtil.getLogger(Transaction.class);
 
 	private Connection conn;
 
@@ -19,6 +24,7 @@ public class Transaction implements ConnectionManager {
 		if (conn == null)
 			conn = ConnectionPool.getConnection(false);
 		PreparedStatement pstmt = null;
+		logger.debug(sql, parameters);
 		try {
 			pstmt = conn.prepareStatement(sql);
 			if (parameters != null)
@@ -28,7 +34,6 @@ public class Transaction implements ConnectionManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		logger.debug(pstmt.toString());
 		return pstmt;
 	}
 

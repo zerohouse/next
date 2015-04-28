@@ -1,12 +1,14 @@
 package next.instance.wrapper;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
 import next.annotation.Build;
 import next.annotation.ImplementedBy;
 import next.build.Builder;
+import next.database.GDAO;
 import next.instance.InstancePool;
 
 public class ClassWrapper {
@@ -60,8 +62,21 @@ public class ClassWrapper {
 			else {
 				build = instancePool.getInstance(fieldType, value);
 			}
+			if(field.getType().equals(GDAO.class))
+				setTypeField(field, build);
 			field.set(instance, build);
 		} catch (Exception e) {
+		}
+	}
+
+	private void setTypeField(Field field, Object build) {
+		try {
+			Field typeField = field.getType().getDeclaredField("type");
+			typeField.setAccessible(true);
+			ParameterizedType type = (ParameterizedType) field.getGenericType();
+			typeField.set(build, type.getActualTypeArguments()[0]);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
 	}
 

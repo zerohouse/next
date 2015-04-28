@@ -50,6 +50,8 @@ public class TableMaker {
 	private static final String DROP_TABLE = "DROP TABLE IF EXISTS `%s`";
 
 	public void dropTable() {
+		if (tableClass.getAnnotation(Table.class).neverDrop())
+			return;
 		String sql = String.format(DROP_TABLE, tableName);
 		dao.execute(sql);
 	}

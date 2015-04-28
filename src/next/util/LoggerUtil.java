@@ -40,6 +40,16 @@ public class LoggerUtil {
 		Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 		root.setLevel(lv);
 	}
+	
+	
+	/**
+	 * 로거를 사용합니다..
+	 * <p>
+	 *
+	 * @param cLass
+	 *            클래스 타입
+	 * @return Logger
+	 */
 
 	public static org.slf4j.Logger getLogger(Class<?> cLass) {
 		LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();

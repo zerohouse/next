@@ -6,6 +6,10 @@ import javax.servlet.ServletException;
 
 import next.mapping.http.Http;
 
+/**
+ * 패스를 지정한 static 파일을 리턴합니다.
+ * 
+ */
 public class File implements Response {
 
 	private String path;

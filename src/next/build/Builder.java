@@ -9,6 +9,9 @@ import next.setting.Setting;
 
 import com.google.gson.stream.JsonReader;
 
+/**
+ * build.json을 Jobject로 인스턴스화합니다.<br>
+ */
 public class Builder {
 
 	@Override

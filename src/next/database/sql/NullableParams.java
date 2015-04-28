@@ -9,6 +9,7 @@ import next.database.annotation.OtherTable;
 public class NullableParams extends KeyParams {
 	public NullableParams(SqlSupports sqlSupports, Object record) {
 		Class<?> cLass = record.getClass();
+		tableName = sqlSupports.getTableName(cLass);
 		Field[] fields = cLass.getDeclaredFields();
 		params = new ArrayList<FieldObject>();
 		keyParams = new ArrayList<FieldObject>();

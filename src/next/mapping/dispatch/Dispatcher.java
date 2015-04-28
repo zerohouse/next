@@ -13,7 +13,7 @@ import next.database.DAO;
 import next.database.annotation.testdata.Insert;
 import next.database.annotation.testdata.InsertList;
 import next.database.annotation.testdata.TestData;
-import next.database.maker.PackageCreator;
+import next.database.maker.TableCreator;
 import next.mapping.http.Http;
 import next.mapping.http.HttpImpl;
 import next.resource.Static;
@@ -77,7 +77,7 @@ public class Dispatcher extends HttpServlet {
 		boolean reset = Setting.get().getDatabase().getCreateOption().getResetTablesOnServerStart();
 		if (!(create || reset))
 			return;
-		PackageCreator.createTable(reset);
+		TableCreator.createTable(reset);
 	}
 
 }

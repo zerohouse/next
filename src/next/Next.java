@@ -11,6 +11,10 @@ import javax.servlet.annotation.WebListener;
 
 import next.setting.Setting;
 
+/**
+ * 디스패쳐를 등록하는 리스너 클래스입니다.<br>
+ * 매핑의 세팅을 읽어와 매핑된 URL들을 등록합니다.
+ */
 @WebListener
 public class Next implements ServletContextListener {
 

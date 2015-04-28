@@ -10,67 +10,64 @@ import next.resource.Static;
 import next.util.Parser;
 
 /**
- * Database Access 작업을 수행합니다.<br>
- * 패스하는 클래스에 따라<br>
+ * 정의한 클래스의 테이블에 연관되는 작업을 수행합니다.<br>
  * 기본 테이블명은 [클래스명]<br>
  * 기본 칼럼명은 [클래스명]_[칼럼명]으로 정의되어 있으며,<br>
+ * 키 칼럼이 필요합니다.<br>
  * <br>
- * 클래스에 아래의 어노테이션을 사용 가능 합니다.<br>
+ * 아래의 어노테이션으로 클래스를 정의합니다.<br>
  * 
  * @Table, @Key, @Column, @Exclude, @OtherTable, @RequiredRegex
  * 
  */
 
-public class DAO extends DAORaw {
+public class GDAO<T> extends DAORaw {
 
-	public DAO(ConnectionManager cm) {
+	private Class<T> type;
+
+	public GDAO(Class<T> type, ConnectionManager cm) {
 		super(cm);
+		this.type = type;
 	}
 
-	public DAO() {
+	public GDAO(Class<T> type) {
 		super();
+		this.type = type;
 	}
 
 	/**
-	 * SQL에 해당하는 레코드를 Object로 리턴합니다.
+	 * SQL에 해당하는 Object를 리턴합니다.
 	 * <p>
 	 *
 	 * @param sql
 	 *            SQL 실행문
-	 * @param <T>
-	 *            클래스 타입
-	 * @param cLass
-	 *            클래스 타입
 	 * @param parameters
 	 *            SQL 파라미터
 	 * @return T
 	 */
 
-	public <T> T get(Class<T> cLass, String sql, Object... parameters) {
+	public T get(String sql, Object... parameters) {
 		Map<String, Object> record = getRecord(sql, parameters);
-		T result = Parser.getObject(cLass, record);
+		T result = Parser.getObject(type, record);
 		return result;
 	}
 
 	/**
 	 * 클래스에 해당하는 SQL을 생성하여 Object를 찾습니다.<br>
-	 * 해당 클래스의 키 어노테이션 지정이 필요합니다.
-	 * <p>
+	 * 
+	 * @Key, @Column 이 필요합니다.
+	 *       <p>
 	 *
 	 *
-	 * @param <T>
-	 *            클래스 타입
-	 * @param cLass
-	 *            클래스 타입
 	 * @param parameters
 	 *            Key에 해당하는 파라미터
 	 * @return T
 	 */
-	public <T> T find(Class<T> cLass, Object... parameters) {
-		KeyParams sp = Static.getSqlSupports().getKeyParams(cLass);
+	public T find(Object... parameters) {
+		KeyParams sp = Static.getSqlSupports().getKeyParams(type);
 		Map<String, Object> record = getRecord(String.format("SELECT * FROM %s WHERE %s", sp.getTableName(), sp.getKeyFieldNames(EQ, and)),
 				parameters);
-		T result = Parser.getObject(cLass, record);
+		T result = Parser.getObject(type, record);
 		return result;
 	}
 
@@ -78,23 +75,21 @@ public class DAO extends DAORaw {
 	 * SQL에 해당하는 Object를 리스트로 만들어 리턴합니다.
 	 * <p>
 	 *
-	 * @param <T>
-	 *            클래스 타입
-	 * @param cLass
-	 *            클래스 타입
 	 * @param sql
 	 *            sql문
+	 * @param <T>
+	 *            클래스 타입
 	 * @param parameters
 	 *            ?에 파싱할 파라미터
 	 * @return T List
 	 */
-	public <T> List<T> getList(Class<T> cLass, String sql, Object... parameters) {
+	public List<T> getList(String sql, Object... parameters) {
 		List<Map<String, Object>> records = getRecords(sql, parameters);
 		List<T> result = new ArrayList<T>();
 		if (records == null)
 			return null;
 		records.forEach(record -> {
-			result.add(Parser.getObject(cLass, record));
+			result.add(Parser.getObject(type, record));
 		});
 		return result;
 	}
@@ -110,11 +105,9 @@ public class DAO extends DAORaw {
 	 *            조건 오브젝트
 	 * @return T List
 	 */
-	@SuppressWarnings("unchecked")
-	public <T> List<T> findList(T object) {
+	public List<T> findList(T object) {
 		KeyParams kp = new NullableParams(Static.getSqlSupports(), object);
-		return (List<T>) getList(object.getClass(), String.format("SELECT * FROM %s WHERE %s", kp.getTableName(), kp.getKeyFieldNames(EQ, and)), kp.getKeyParams()
-				.toArray());
+		return getList(String.format("SELECT * FROM %s WHERE %s", kp.getTableName(), kp.getKeyFieldNames(EQ, and)), kp.getKeyParams().toArray());
 	}
 
 	/**
@@ -131,14 +124,12 @@ public class DAO extends DAORaw {
 	 *            ex)"order by User_id limit 0,3"
 	 * @return T List
 	 */
-	@SuppressWarnings("unchecked")
-	public <T> List<T> findList(T object, String additionalCondition) {
+	public List<T> findList(T object, String additionalCondition) {
 		KeyParams kp = new NullableParams(Static.getSqlSupports(), object);
-		return (List<T>) getList(object.getClass(), String.format("SELECT * FROM %s WHERE %s %s", kp.getTableName(), kp.getKeyFieldNames(EQ, and), additionalCondition), kp
+		return getList(String.format("SELECT * FROM %s WHERE %s %s", kp.getTableName(), kp.getKeyFieldNames(EQ, and), additionalCondition), kp
 				.getKeyParams().toArray());
 	}
-
-
+	
 	public static final String EQ = "=?";
 	public static final String and = " and ";
 	public static final String comma = ", ";
@@ -148,13 +139,13 @@ public class DAO extends DAORaw {
 	 * 만약 조건에 맞는 Object가 결과가 없다면 null이 리턴됩니다.<br>
 	 * User { name : null, age : 10, email : mail@mail.com, gender : null }를<br>
 	 * 파라미터로 넣으면, age=10, mail=mail@mail.com인 유저의 오브젝트가 리턴됩니다.<br>
-	 * <p>
+	 * 
 	 *
 	 * @param object
 	 *            채울 object
 	 * @return boolean 실행결과
 	 */
-	public Object fill(Object object) {
+	public T fill(T object) {
 		KeyParams kp = new NullableParams(Static.getSqlSupports(), object);
 		Map<String, Object> recordMap = getRecord(String.format("SELECT * FROM %s WHERE %s", kp.getTableName(), kp.getKeyFieldNames(EQ, and)), kp
 				.getKeyParams().toArray());
@@ -171,7 +162,7 @@ public class DAO extends DAORaw {
 	 *            삽입할 object
 	 * @return boolean 실행결과
 	 */
-	public boolean insert(Object object) {
+	public boolean insert(T object) {
 		KeyParams sap = Static.getSqlSupports().getKeyParams(object);
 		if (sap.isEmpty())
 			return false;
@@ -190,7 +181,7 @@ public class DAO extends DAORaw {
 	 *            삽입 / 업데이트할 object
 	 * @return boolean 실행결과
 	 */
-	public boolean insertIfExistUpdate(Object object) {
+	public boolean insertIfExistUpdate(T object) {
 
 		KeyParams sap = Static.getSqlSupports().getKeyParams(object);
 		if (sap.isEmpty())
@@ -221,7 +212,7 @@ public class DAO extends DAORaw {
 	 *            업데이트할 object
 	 * @return boolean 실행결과
 	 */
-	public boolean update(Object object) {
+	public boolean update(T object) {
 		KeyParams sap = Static.getSqlSupports().getKeyParams(object);
 		if (!sap.hasKeyParams())
 			return false;
@@ -244,7 +235,7 @@ public class DAO extends DAORaw {
 	 *            삭제할 object
 	 * @return boolean 실행결과
 	 */
-	public boolean delete(Object object) {
+	public boolean delete(T object) {
 		KeyParams sap = Static.getSqlSupports().getKeyParams(object);
 		if (!sap.hasKeyParams())
 			return false;

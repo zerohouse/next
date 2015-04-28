@@ -12,6 +12,11 @@ import java.util.Map;
 import next.annotation.Build;
 import next.annotation.ImplementedBy;
 
+/**
+ * Database Access 작업을 수행합니다.<br>
+ * SQL을 실행하여 실행결과를 Boolean, 맵, List로 반환합니다.<br>
+ * 
+ */
 public class DAORaw {
 
 	@Build
@@ -38,7 +43,6 @@ public class DAORaw {
 	 */
 
 	public Map<String, Object> getRecord(String sql, Object... parameters) {
-		Map<String, Object> record = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
@@ -46,21 +50,20 @@ public class DAORaw {
 			rs = pstmt.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			int columnCount = metaData.getColumnCount();
-			while (rs.next()) {
-				if (record == null)
-					record = new HashMap<String, Object>();
-				for (int i = 1; i <= columnCount; i++) {
-					record.put(metaData.getColumnLabel(i), rs.getObject(i));
-				}
+			if (!rs.next())
+				return null;
+			Map<String, Object> record = new HashMap<String, Object>();
+			for (int i = 1; i <= columnCount; i++) {
+				record.put(metaData.getColumnLabel(i), rs.getObject(i));
 			}
+			return record;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			return null;
 		} finally {
 			close(pstmt);
 			close(rs);
 			cm.closeConnection();
 		}
-		return record;
 	}
 
 	/**
@@ -115,7 +118,6 @@ public class DAORaw {
 	 */
 
 	public List<Object> getRecordAsList(String sql, Object... parameters) {
-		List<Object> record = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
@@ -123,21 +125,20 @@ public class DAORaw {
 			rs = pstmt.executeQuery();
 			ResultSetMetaData metaData = rs.getMetaData();
 			int columnCount = metaData.getColumnCount();
-			if (rs.next()) {
-				if (record == null)
-					record = new ArrayList<Object>();
-				for (int i = 1; i <= columnCount; i++) {
-					record.add(rs.getObject(i));
-				}
+			if (!rs.next())
+				return null;
+			List<Object> record = new ArrayList<Object>();
+			for (int i = 1; i <= columnCount; i++) {
+				record.add(rs.getObject(i));
 			}
+			return record;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			return null;
 		} finally {
 			close(pstmt);
 			close(rs);
 			cm.closeConnection();
 		}
-		return record;
 	}
 
 	/**
@@ -204,7 +205,7 @@ public class DAORaw {
 		}
 	}
 
-	public void close(ResultSet rs) {
+	protected static void close(ResultSet rs) {
 		if (rs == null)
 			return;
 		try {
@@ -213,7 +214,7 @@ public class DAORaw {
 		}
 	}
 
-	public void close(PreparedStatement pstmt) {
+	protected static void close(PreparedStatement pstmt) {
 		if (pstmt == null)
 			return;
 		try {
@@ -222,6 +223,11 @@ public class DAORaw {
 		}
 	}
 
+	/**
+	 * DAO의 커넥션을 종료합니다.<br>
+	 * 트랜젝션을 사용한경우 작업후 반드시 종료해줘야 합니다.
+	 *
+	 */
 	public void close() {
 		cm.close();
 	}

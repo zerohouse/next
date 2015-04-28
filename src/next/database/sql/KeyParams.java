@@ -36,9 +36,9 @@ public class KeyParams {
 		}
 	}
 
-	public KeyParams(Object record, SqlSupports sqlSupports, String tableName) {
-		this.tableName = tableName;
+	public KeyParams(Object record, SqlSupports sqlSupports) {
 		Class<?> cLass = record.getClass();
+		this.tableName = sqlSupports.getTableName(cLass);
 		Field[] fields = cLass.getDeclaredFields();
 		params = new ArrayList<FieldObject>();
 		keyParams = new ArrayList<FieldObject>();

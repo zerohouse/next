@@ -1,6 +1,7 @@
 package next.mapping.response;
 
 import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,10 @@ import javax.servlet.ServletException;
 
 import next.mapping.http.Http;
 import next.setting.Setting;
-
+/**
+ * path의 JSP를 리턴합니다.<br>
+ * put하여 jstl을 사용할 수 있습니다.
+ */
 public class Jsp implements Response {
 
 	private String jspFileName;
@@ -28,6 +32,16 @@ public class Jsp implements Response {
 		this.jspFileName = jspFileName;
 	}
 
+	/**
+	 * JSP에 변수를 설정합니다.
+	 * <p>
+	 *
+	 * @param key
+	 *            사용할 변수의 key
+	 * @param obj
+	 *            사용할 변수
+	 * @return void
+	 */
 	public void put(String key, Object obj) {
 		variables.put(key, obj);
 	}

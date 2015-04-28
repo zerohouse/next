@@ -44,9 +44,7 @@ public class SqlSupports {
 		keyParamsMap.put(cLass, new KeyParams(cLass, this, tableName));
 	}
 
-	public KeyParams getKeyParams(Object record) {
-		return new KeyParams(record, this, tableNameMap.get(record.getClass()));
-	}
+	
 
 	public KeyParams getKeyParams(Class<?> cLass) {
 		KeyParams result = keyParamsMap.get(cLass);
@@ -65,9 +63,13 @@ public class SqlSupports {
 		}
 		return result;
 	}
+	
+	public KeyParams getKeyParams(Object record) {
+		return new KeyParams(record, this);
+	}
 
 	public String getTableName(Class<?> cLass) {
-		return keyParamsMap.get(cLass).getTableName();
+		return getKeyParams(cLass).getTableName();
 	}
 
 }
