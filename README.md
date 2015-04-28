@@ -245,12 +245,9 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
       "mapping": {
         "mappings": [],
         "url": "",
-        "controllerPackage": "",
         "jspPath": ""
       },
       "database": {
-        "modelPackage": "",
-        "testDataPackage": "",
         "connectionSetting": {
           "jdbcUrl": "",
           "username": "",
@@ -270,13 +267,10 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
           "!/css/*"
         ],
         "url": "localhost:8080",
-        "controllerPackage": "me.controllers",
         "jspPath": "/WEB-INF/jsp/",
         "dateFormat" : "yyyy-MM-dd HH:mm:ss"
       },
       "database": {
-        "modelPackage": "me.model",
-        "testDataPackage": "me.model.test",
         "connectionSetting": {
           "jdbcUrl": "jdbc:mysql://localhost:3306/mydb?useUnicode=true&characterEncoding=utf8",
           "username": "root",
