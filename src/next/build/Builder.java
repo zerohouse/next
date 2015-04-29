@@ -19,8 +19,8 @@ public class Builder {
 		return "Builder [builder=" + builder + "]";
 	}
 
-	JMap node;
-	static Builder builder = new Builder();
+	private JMap node;
+	private static Builder builder = new Builder();
 
 	private Builder() {
 		try {

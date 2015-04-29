@@ -14,9 +14,13 @@ import com.google.gson.JsonParseException;
 
 public class DateParser implements JsonDeserializer<Date> {
 
-	private List<String> dateformats = new ArrayList<String>();
-	
-	public void addFormat(String format){
+	private List<String> dateformats;
+
+	public DateParser() {
+		dateformats = new ArrayList<String>();
+	}
+
+	public void addFormat(String format) {
 		dateformats.add(format);
 	}
 

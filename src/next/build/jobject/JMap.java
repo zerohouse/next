@@ -12,7 +12,7 @@ import com.google.gson.stream.JsonToken;
 
 public class JMap implements JObject {
 
-	Map<Object, Object> childs = new HashMap<Object, Object>();
+	private Map<Object, Object> childs = new HashMap<Object, Object>();
 
 	public JMap(JsonReader reader) throws IOException {
 		reader.beginObject();

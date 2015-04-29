@@ -23,9 +23,10 @@ public class PatternAndKeys {
 		REGEXPattern = Pattern.compile(REGEX);
 	}
 
-	Queue<String> keys = new ConcurrentLinkedQueue<String>();
+	private Queue<String> keys;
 
 	public PatternAndKeys(String uri) {
+		keys = new ConcurrentLinkedQueue<String>();
 		uri = uri.replace("*", "{}");
 		Matcher matcher = REGEXPattern.matcher(uri);
 		while (matcher.find()) {

@@ -4,8 +4,8 @@ import next.database.exception.RegexNotMatchedException;
 
 public class FieldObject {
 
-	Object param;
-	SqlField field;
+	private Object param;
+	private SqlField field;
 
 	public FieldObject(Object param, SqlField field) {
 		this.param = param;

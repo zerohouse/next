@@ -12,7 +12,7 @@ import com.google.gson.stream.JsonToken;
 
 public class JArray implements JObject {
 
-	List<Object> childs = new ArrayList<Object>();
+	private List<Object> childs = new ArrayList<Object>();
 
 	public JArray(JsonReader reader) throws IOException {
 		reader.beginArray();
