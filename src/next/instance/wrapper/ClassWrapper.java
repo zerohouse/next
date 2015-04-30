@@ -7,7 +7,7 @@ import java.util.List;
 
 import next.annotation.Build;
 import next.annotation.ImplementedBy;
-import next.build.Builder;
+import next.build.BuildMap;
 import next.database.GDAO;
 import next.instance.InstancePool;
 
@@ -22,7 +22,7 @@ public class ClassWrapper {
 	}
 
 	public ClassWrapper(Class<?> fieldType, String value, InstancePool instancePool) {
-		this.instance = Builder.get(fieldType, value);
+		this.instance = BuildMap.get(fieldType, value);
 		this.type = fieldType;
 		buildFields(type, instancePool);
 	}

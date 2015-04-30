@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 import next.setting.Setting;
 
@@ -12,9 +14,10 @@ import com.google.gson.stream.JsonToken;
 
 public class JArray implements JObject {
 
-	private List<Object> childs = new ArrayList<Object>();
+	private List<Object> childs;
 
 	public JArray(JsonReader reader) throws IOException {
+		childs = new ArrayList<Object>();
 		reader.beginArray();
 		while (reader.hasNext()) {
 			JsonToken peek = reader.peek();
@@ -72,6 +75,8 @@ public class JArray implements JObject {
 		Object result = childs.get(Integer.parseInt(key));
 		if (result != null)
 			return result;
+		if (!key.contains("."))
+			return null;
 		String[] keys = key.split("\\.");
 		return get(keys);
 	}
@@ -92,6 +97,8 @@ public class JArray implements JObject {
 		for (int i = 0; i < length; i++) {
 			if (i == length - 1)
 				return tnode.get(keys[i]);
+			if (tnode == null)
+				return null;
 			tnode = tnode.getNode(keys[i]);
 		}
 		return null;
@@ -99,6 +106,17 @@ public class JArray implements JObject {
 
 	public void add(Object obj) {
 		childs.add(obj);
+	}
+
+	public void forEach(Consumer<Object> action) {
+		Objects.requireNonNull(action);
+		for (Object t : this.childs) {
+//			if (t.getClass().equals(JMap.class))
+//				((JMap) t).forEach(action);
+//			if (t.getClass().equals(JArray.class))
+//				((JArray) t).forEach(action);
+			action.accept(t);
+		}
 	}
 
 }

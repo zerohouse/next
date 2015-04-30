@@ -1,0 +1,25 @@
+{
+  "mapping": {
+    "mappings": [
+      "/api/*",
+      "*.page"
+    ],
+    "url": "localhost:8080",
+    "jspPath": "/WEB-INF/jsp/"
+  },
+  "logger" : {
+  	"level" : "DeBug"
+  },
+  "database": {
+    "connectionSetting": {
+      "jdbcUrl": "jdbc:mysql://localhost:3306/mydb?useUnicode=true&characterEncoding=utf8",
+      "username": "root",
+      "password": ""
+    },
+    "createOption": {
+      "createTablesOnServerStart": true,
+      "resetTablesOnServerStart": true,
+      "insertDataOnServerStart": false
+  	}
+  }
+}

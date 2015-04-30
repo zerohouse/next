@@ -73,9 +73,6 @@ public class Parser {
 		if (paramType.equals(byte.class)) {
 			return 0;
 		}
-		if (paramType.equals(byte.class)) {
-			return 0;
-		}
 		if (paramType.equals(short.class)) {
 			return 0;
 		}
@@ -96,6 +93,30 @@ public class Parser {
 		}
 		if (paramType.equals(boolean.class)) {
 			return false;
+		}
+		if (paramType.equals(byte[].class)) {
+			return new byte[]{0};
+		}
+		if (paramType.equals(short[].class)) {
+			return new short[]{0};
+		}
+		if (paramType.equals(int[].class)) {
+			return new int[]{0};
+		}
+		if (paramType.equals(long[].class)) {
+			return new long[]{0L};
+		}
+		if (paramType.equals(float[].class)) {
+			return new float[]{0.0f};
+		}
+		if (paramType.equals(double[].class)) {
+			return new double[]{0.0d};
+		}
+		if (paramType.equals(char[].class)) {
+			return new char[]{'\u0000'};
+		}
+		if (paramType.equals(boolean[].class)) {
+			return new boolean[]{false};
 		}
 		return null;
 	}

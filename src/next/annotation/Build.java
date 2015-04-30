@@ -36,5 +36,5 @@ import java.lang.annotation.Target;
 public @interface Build {
 
 	String value() default "";
-	
+
 }

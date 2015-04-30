@@ -2,8 +2,13 @@ package next.build.jobject;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.BiConsumer;
 
 import next.setting.Setting;
 
@@ -12,9 +17,10 @@ import com.google.gson.stream.JsonToken;
 
 public class JMap implements JObject {
 
-	private Map<Object, Object> childs = new HashMap<Object, Object>();
+	private Map<Object, Object> childs;
 
 	public JMap(JsonReader reader) throws IOException {
+		childs = new HashMap<Object, Object>();
 		reader.beginObject();
 		while (reader.hasNext()) {
 			if (reader.peek() == JsonToken.NAME) {
@@ -75,6 +81,8 @@ public class JMap implements JObject {
 		Object result = childs.get(key);
 		if (result != null)
 			return result;
+		if (!key.contains("."))
+			return null;
 		String[] keys = key.split("\\.");
 		return get(keys);
 	}
@@ -95,6 +103,8 @@ public class JMap implements JObject {
 		for (int i = 0; i < length; i++) {
 			if (i == length - 1)
 				return tnode.get(keys[i]);
+			if (tnode == null)
+				return null;
 			tnode = tnode.getNode(keys[i]);
 		}
 		return null;
@@ -102,6 +112,29 @@ public class JMap implements JObject {
 
 	public void put(String key, Object value) {
 		childs.put(key, value);
+	}
+
+	public void forEach(BiConsumer<? super Object, ? super Object> action) {
+		Objects.requireNonNull(action);
+		for (Entry<Object, Object> entry : childs.entrySet()) {
+			Object k;
+			Object v;
+			try {
+				k = entry.getKey();
+				v = entry.getValue();
+			} catch (IllegalStateException ise) {
+				throw new ConcurrentModificationException(ise);
+			}
+			action.accept(k, v);
+		}
+	}
+
+	public void remove(Object key, Object value) {
+		childs.remove(key, value);
+	}
+
+	public Set<Entry<Object, Object>> entrySet() {
+		return childs.entrySet();
 	}
 
 }
