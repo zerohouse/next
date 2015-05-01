@@ -12,6 +12,7 @@ import next.instance.wrapper.MethodWrapper;
 import next.mapping.annotation.HttpMethod;
 import next.mapping.annotation.Mapping;
 import next.mapping.http.Http;
+import next.mapping.http.Store;
 import next.mapping.response.Json;
 import next.mapping.response.Response;
 import next.resource.Static;
@@ -120,24 +121,33 @@ public class Mapper {
 		}
 		logger.debug(String.format("%s -> %s", url, methods.toString()));
 		Iterator<MethodWrapper> miter = methods.iterator();
-		while (miter.hasNext()) {
-			MethodWrapper mw = miter.next();
-			Object returned = mw.execute(http, new Transaction());
-			if (returned == null)
-				continue;
-			if (returned.getClass().getInterfaces().length != 0)
-				if (returned.getClass().getInterfaces()[0].equals(Response.class)) {
-					((Response) returned).render(http);
+		Transaction t = new Transaction();
+		Store store = new Store(); // 생각을 좀 해봅시다..ㅇㅅㅇ;;
+		try {
+			while (miter.hasNext()) {
+				MethodWrapper mw = miter.next();
+				Object returned = mw.execute(http, t, store);
+			
+				if (returned == null)
+					continue;
+				if (returned.getClass().getInterfaces().length != 0)
+					if (returned.getClass().getInterfaces()[0].equals(Response.class)) {
+						((Response) returned).render(http);
+						return;
+					}
+				if (returned.getClass().equals(String.class)) {
+					stringResponse(http, returned);
 					return;
 				}
-			if (returned.getClass().equals(String.class)) {
-				stringResponse(http, returned);
+				new Json(returned).render(http);
 				return;
 			}
-			new Json(returned).render(http);
-			return;
+			new Json().render(http);
+		} catch (Exception e) {
+			new Json(true, e.getMessage(), null);
+		} finally {
+			t.close();
 		}
-		new Json().render(http);
 	}
 
 	private void stringResponse(Http http, Object returned) {

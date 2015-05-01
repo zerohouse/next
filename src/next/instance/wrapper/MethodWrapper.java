@@ -8,25 +8,27 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import next.database.DAO;
 import next.database.GDAO;
 import next.database.Transaction;
-import next.mapping.annotation.parameters.FromDB;
+import next.mapping.annotation.parameters.DB;
 import next.mapping.annotation.parameters.JsonParameter;
 import next.mapping.annotation.parameters.Parameter;
 import next.mapping.annotation.parameters.SessionAttribute;
+import next.mapping.annotation.parameters.Stored;
 import next.mapping.annotation.parameters.UriVariable;
 import next.mapping.exception.RequiredParamNullException;
 import next.mapping.http.Http;
-import next.mapping.response.Json;
+import next.mapping.http.Store;
 import next.resource.Static;
 
 public class MethodWrapper {
 
 	private Object instance;
 	private Method method;
-	
+
 	public MethodWrapper(Object instance, Method method) {
 		this.method = method;
 		this.instance = instance;
@@ -36,16 +38,9 @@ public class MethodWrapper {
 		return method;
 	}
 
-	public Object execute(Http http, Transaction transaction) {
-		Object returnValue = null;
-		try {
-			returnValue = method.invoke(instance, getParamArray(http, method, transaction));
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			return new Json(true, e.getMessage(), null);
-		} catch (RequiredParamNullException e) {
-			return new Json(true, e.getMessage(), null);
-		}
-		return returnValue;
+	public Object execute(Http http, Transaction transaction, Store store) throws IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, RequiredParamNullException {
+		return method.invoke(instance, getParamArray(http, method, transaction, store));
 	}
 
 	@Override
@@ -53,7 +48,7 @@ public class MethodWrapper {
 		return method.getName();
 	}
 
-	public Object[] getParamArray(Http http, Method method, Transaction transaction) throws RequiredParamNullException {
+	public Object[] getParamArray(Http http, Method method, Transaction transaction, Store store) throws RequiredParamNullException {
 		Class<?>[] types = method.getParameterTypes();
 		java.lang.reflect.Parameter[] obj = method.getParameters();
 		List<Object> parameters = new ArrayList<Object>();
@@ -73,8 +68,20 @@ public class MethodWrapper {
 				parameters.add(dao);
 				continue;
 			}
+			if (types[i].equals(Store.class)) {
+				parameters.add(store);
+				continue;
+			}
 			if (types[i].equals(HttpServletRequest.class)) {
 				parameters.add(http.getReq());
+				continue;
+			}
+			if (types[i].equals(HttpServletResponse.class)) {
+				parameters.add(http.getResp());
+				continue;
+			}
+			if (types[i].equals(HttpSession.class)) {
+				parameters.add(http.getReq().getSession());
 				continue;
 			}
 			if (types[i].equals(HttpServletResponse.class)) {
@@ -108,8 +115,8 @@ public class MethodWrapper {
 				parameters.add(value);
 				continue;
 			}
-			if (obj[i].isAnnotationPresent(FromDB.class)) {
-				FromDB param = obj[i].getAnnotation(FromDB.class);
+			if (obj[i].isAnnotationPresent(DB.class)) {
+				DB param = obj[i].getAnnotation(DB.class);
 				String name = param.keyParameter();
 				String value = http.getParameter(name);
 				if (param.require() && value == null)
@@ -123,6 +130,15 @@ public class MethodWrapper {
 			if (obj[i].isAnnotationPresent(UriVariable.class)) {
 				UriVariable uri = obj[i].getAnnotation(UriVariable.class);
 				parameters.add(http.getUriVariable(uri.value()));
+				continue;
+			}
+			if (obj[i].isAnnotationPresent(Stored.class)) {
+				Stored stored = obj[i].getAnnotation(Stored.class);
+				if (stored.value().equals("")) {
+					parameters.add(store.get(types[i]));
+					continue;
+				}
+				parameters.add(store.get(stored.value()));
 				continue;
 			}
 			parameters.add(null);

@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface FromDB {
+public @interface DB {
 
 	public static final String PARAM_NULL = "필수 파라미터가 빠졌습니다.";
 	public static final String NOT_EXIST = "없는 레코드 입니다.";

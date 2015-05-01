@@ -94,14 +94,16 @@ Url 매핑 정보를 정의
 
     String value() default ""; // 매핑될 이름 값이 없으면 메서드 이름으로 매핑
     
-#### @Parameter, @JsonParameter, @SessionAttribute, @FromDB(keyParameter="?") [파라미터 레벨]
+#### @Parameter, @JsonParameter, @SessionAttribute, @DB(keyParameter="?"), @Stored [파라미터 레벨]
 
 #### example
     @Mapping(value = "/update", before = "loginCheck", method = Method.POST)
     public void updatePost(@Parameter("userId") String parameter,
      		@FromDB(keyParameter="userId") User user2,
               @JsonParameter("Post") Post post,
-              @SessionAttribute("user") User user) {
+              @SessionAttribute("user") User user, @Stored List<String> mylist) {
+              //Stored의 경우
+              //Store store를 꺼내 저장한 속성을 뺄 수 있음.
     }
     
 ### Http.class Interface
