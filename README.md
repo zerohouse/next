@@ -57,8 +57,8 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 #### 2-3. String이 error:(no):(message)로 시작할때, :뒤의 메시지로 에러를 리턴
 	ex)
 	return "/index.html" // forward to : /index.html  
-	return "forward:index.html" // forward to : /index.html 
-	return "redirect:index.html" // redirect to : /index.html 
+	return "forward:/index.html" // forward to : /index.html 
+	return "redirect:/index.html" // redirect to : /index.html 
 	return "error:404" // 404에러 리턴
 	return "error:404:페이지가 없습니다." // 404에러 리턴 + 에러메시지 리턴
 	 
