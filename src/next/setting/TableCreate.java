@@ -1,17 +1,17 @@
 package next.setting;
 
-public class CreateOption {
+public class TableCreate {
 
 	private Boolean createTablesOnServerStart = true;
 	private Boolean resetTablesOnServerStart = false;
 	private Boolean insertDataOnServerStart = false;
 	private String table_suffix = "ENGINE = InnoDB DEFAULT CHARACTER SET utf8";
-	private TableOptions stringOptions = new TableOptions("VARCHAR(255)", true, true, "");
-	private TableOptions integerOptions = new TableOptions("INTEGER", true, true, 0);
-	private TableOptions booleanOptions = new TableOptions("TINYINT(1)", true, true, 0);
-	private TableOptions dateOptions = new TableOptions("DATETIME", true, true, "CURRENT_TIMESTAMP");
-	private TableOptions floatOptions = new TableOptions("FLOAT", true, true, 0);
-	private TableOptions longOptions = new TableOptions("BIGINT", true, true, 0);
+	private Table stringOptions = new Table("VARCHAR(255)", true, true, "");
+	private Table integerOptions = new Table("INTEGER", true, true, 0);
+	private Table booleanOptions = new Table("TINYINT(1)", true, true, 0);
+	private Table dateOptions = new Table("DATETIME", true, true, "CURRENT_TIMESTAMP");
+	private Table floatOptions = new Table("FLOAT", true, true, 0);
+	private Table longOptions = new Table("BIGINT", true, true, 0);
 
 	public Boolean getCreateTablesOnServerStart() {
 		return createTablesOnServerStart;
@@ -45,51 +45,51 @@ public class CreateOption {
 		this.table_suffix = table_suffix;
 	}
 
-	public TableOptions getStringOptions() {
+	public Table getStringOptions() {
 		return stringOptions;
 	}
 
-	public void setStringOptions(TableOptions stringOptions) {
+	public void setStringOptions(Table stringOptions) {
 		this.stringOptions = stringOptions;
 	}
 
-	public TableOptions getIntegerOptions() {
+	public Table getIntegerOptions() {
 		return integerOptions;
 	}
 
-	public void setIntegerOptions(TableOptions integerOptions) {
+	public void setIntegerOptions(Table integerOptions) {
 		this.integerOptions = integerOptions;
 	}
 
-	public TableOptions getBooleanOptions() {
+	public Table getBooleanOptions() {
 		return booleanOptions;
 	}
 
-	public void setBooleanOptions(TableOptions booleanOptions) {
+	public void setBooleanOptions(Table booleanOptions) {
 		this.booleanOptions = booleanOptions;
 	}
 
-	public TableOptions getDateOptions() {
+	public Table getDateOptions() {
 		return dateOptions;
 	}
 
-	public void setDateOptions(TableOptions dateOptions) {
+	public void setDateOptions(Table dateOptions) {
 		this.dateOptions = dateOptions;
 	}
 
-	public TableOptions getFloatOptions() {
+	public Table getFloatOptions() {
 		return floatOptions;
 	}
 
-	public void setFloatOptions(TableOptions floatOptions) {
+	public void setFloatOptions(Table floatOptions) {
 		this.floatOptions = floatOptions;
 	}
 
-	public TableOptions getLongOptions() {
+	public Table getLongOptions() {
 		return longOptions;
 	}
 
-	public void setLongOptions(TableOptions longOptions) {
+	public void setLongOptions(Table longOptions) {
 		this.longOptions = longOptions;
 	}
 

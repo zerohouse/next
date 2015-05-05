@@ -14,11 +14,11 @@ import next.mapping.http.Http;
  * 패스를 지정한 static 파일을 리턴합니다.
  * 
  */
-public class File implements Response {
+public class StaticFile implements Response {
 
 	private String path;
 
-	public File(String path) {
+	public StaticFile(String path) {
 		this.path = Dispatcher.CONTEXT_PATH + path;
 	}
 

@@ -50,7 +50,7 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 
     new Json(JsonObject);
     new Jsp(Jsp파일명);
-    new File(파일명); // webapp/파일
+    new StaticFile(파일명); // webapp/파일
     
 #### 2-1. String Return시 String에 해당하는 Path로 forward(클라이언트에서 주소 바뀌지 않음)
 #### 2-2. String이 redirect:로 시작할때, :뒤의 Path로 reidrect(클라이언트 주소 바뀜) 
@@ -331,101 +331,109 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
 
 ### Default Setting : 기본 세팅은 아래와 같습니다.
     {
-      "mapping": {
-        "mappings": [],
-        "characterEncoding": "UTF-8",
-        "url": "",
-        "jspPath": ""
-      },
-      "logger": {
-        "level": "ALL",
-        "logFilePath": "/log/",
-        "pattern": "%level [%thread] %msg - %logger{10} : %file:%line %date%n"
-      },
-      "database": {
-        "connectionSetting": {
-          "minConnectionsPerPartition": 0,
-          "maxConnectionsPerPartition": 10,
-          "acquireIncrement": 2,
-          "partitionCount": 1,
-          "jdbcUrl": "",
-          "username": "",
-          "password": "",
-          "idleConnectionTestPeriodInSeconds": 14400,
-          "idleMaxAgeInSeconds": 3600,
-          "statementsCacheSize": 0,
-          "statementsCachedPerConnection": 0,
-          "releaseHelperThreads": 0,
-          "statementReleaseHelperThreads": 0,
-          "closeConnectionWatch": false,
-          "logStatementsEnabled": false,
-          "acquireRetryDelayInMs": 7000,
-          "acquireRetryAttempts": 5,
-          "lazyInit": false,
-          "transactionRecoveryEnabled": false,
-          "disableJMX": false,
-          "queryExecuteTimeLimitInMs": 0,
-          "poolAvailabilityThreshold": 0,
-          "disableConnectionTracking": false,
-          "connectionTimeoutInMs": 0,
-          "closeConnectionWatchTimeoutInMs": 0,
-          "maxConnectionAgeInSeconds": 0,
-          "serviceOrder": "FIFO",
-          "statisticsEnabled": false,
-          "defaultAutoCommit": true,
-          "defaultReadOnly": false,
-          "defaultTransactionIsolationValue": -1,
-          "externalAuth": false,
-          "deregisterDriverOnClose": false,
-          "nullOnConnectionTimeout": false,
-          "resetConnectionOnClose": false,
-          "detectUnresolvedTransactions": false,
-          "poolStrategy": "DEFAULT",
-          "closeOpenStatements": false,
-          "detectUnclosedStatements": false
-        },
-        "createOption": {
-          "createTablesOnServerStart": true,
-          "resetTablesOnServerStart": false,
-          "insertDataOnServerStart": false,
-          "table_suffix": "ENGINE \u003d InnoDB DEFAULT CHARACTER SET utf8",
-          "stringOptions": {
-            "dataType": "VARCHAR(255)",
-            "notNull": true,
-            "hasDefaultValue": true,
-            "defaultValue": ""
-          },
-          "integerOptions": {
-            "dataType": "INTEGER",
-            "notNull": true,
-            "hasDefaultValue": true,
-            "defaultValue": 0
-          },
-          "booleanOptions": {
-            "dataType": "TINYINT(1)",
-            "notNull": true,
-            "hasDefaultValue": true,
-            "defaultValue": 0
-          },
-          "dateOptions": {
-            "dataType": "DATETIME",
-            "notNull": true,
-            "hasDefaultValue": true,
-            "defaultValue": "CURRENT_TIMESTAMP"
-          },
-          "floatOptions": {
-            "dataType": "FLOAT",
-            "notNull": true,
-            "hasDefaultValue": true,
-            "defaultValue": 0
-          },
-          "longOptions": {
-            "dataType": "BIGINT",
-            "notNull": true,
-            "hasDefaultValue": true,
-            "defaultValue": 0
-          }
-        }
-      }
-    }
+	  "mapping": {
+	    "mappings": [],
+	    "characterEncoding": "UTF-8",
+	    "url": "",
+	    "jspPath": "",
+	    "dateFormat" : "yyyy-MM-dd HH:mm:ss",
+	    "upload" : {
+	    	"tempLocation" : "webapp/uploads",
+	    	"maxFileSize" : 1024*1024*5,
+	    	"maxRequestSize" : 1024*1024*5*5,
+	    	"fileSizeThreshold" : 1024*1024
+	    }
+	  },
+	  "logger": {
+	    "level": "ALL",
+	    "logFilePath": "/log/",
+	    "pattern": "%level [%thread] %msg - %logger{10} : %file:%line %date%n"
+	  },
+	  "database": {
+	    "connectionSetting": {
+	      "minConnectionsPerPartition": 0,
+	      "maxConnectionsPerPartition": 10,
+	      "acquireIncrement": 2,
+	      "partitionCount": 1,
+	      "jdbcUrl": "",
+	      "username": "",
+	      "password": "",
+	      "idleConnectionTestPeriodInSeconds": 14400,
+	      "idleMaxAgeInSeconds": 3600,
+	      "statementsCacheSize": 0,
+	      "statementsCachedPerConnection": 0,
+	      "releaseHelperThreads": 0,
+	      "statementReleaseHelperThreads": 0,
+	      "closeConnectionWatch": false,
+	      "logStatementsEnabled": false,
+	      "acquireRetryDelayInMs": 7000,
+	      "acquireRetryAttempts": 5,
+	      "lazyInit": false,
+	      "transactionRecoveryEnabled": false,
+	      "disableJMX": false,
+	      "queryExecuteTimeLimitInMs": 0,
+	      "poolAvailabilityThreshold": 0,
+	      "disableConnectionTracking": false,
+	      "connectionTimeoutInMs": 0,
+	      "closeConnectionWatchTimeoutInMs": 0,
+	      "maxConnectionAgeInSeconds": 0,
+	      "serviceOrder": "FIFO",
+	      "statisticsEnabled": false,
+	      "defaultAutoCommit": true,
+	      "defaultReadOnly": false,
+	      "defaultTransactionIsolationValue": -1,
+	      "externalAuth": false,
+	      "deregisterDriverOnClose": false,
+	      "nullOnConnectionTimeout": false,
+	      "resetConnectionOnClose": false,
+	      "detectUnresolvedTransactions": false,
+	      "poolStrategy": "DEFAULT",
+	      "closeOpenStatements": false,
+	      "detectUnclosedStatements": false
+	    },
+	    "createOption": {
+	      "createTablesOnServerStart": true,
+	      "resetTablesOnServerStart": false,
+	      "insertDataOnServerStart": false,
+	      "table_suffix": "ENGINE \u003d InnoDB DEFAULT CHARACTER SET utf8",
+	      "stringOptions": {
+	        "dataType": "VARCHAR(255)",
+	        "notNull": true,
+	        "hasDefaultValue": true,
+	        "defaultValue": ""
+	      },
+	      "integerOptions": {
+	        "dataType": "INTEGER",
+	        "notNull": true,
+	        "hasDefaultValue": true,
+	        "defaultValue": 0
+	      },
+	      "booleanOptions": {
+	        "dataType": "TINYINT(1)",
+	        "notNull": true,
+	        "hasDefaultValue": true,
+	        "defaultValue": 0
+	      },
+	      "dateOptions": {
+	        "dataType": "DATETIME",
+	        "notNull": true,
+	        "hasDefaultValue": true,
+	        "defaultValue": "CURRENT_TIMESTAMP"
+	      },
+	      "floatOptions": {
+	        "dataType": "FLOAT",
+	        "notNull": true,
+	        "hasDefaultValue": true,
+	        "defaultValue": 0
+	      },
+	      "longOptions": {
+	        "dataType": "BIGINT",
+	        "notNull": true,
+	        "hasDefaultValue": true,
+	        "defaultValue": 0
+	      }
+	    }
+	  }
+	}
+
     

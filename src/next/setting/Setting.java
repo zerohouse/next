@@ -11,9 +11,9 @@ import com.google.gson.JsonSyntaxException;
 public class Setting {
 	private static Gson gson;
 
-	private MappingSetting mapping = new MappingSetting();
-	private LoggerSetting logger = new LoggerSetting();
-	private DatabaseSetting database = new DatabaseSetting();
+	private Mapping mapping = new Mapping();
+	private Logger logger = new Logger();
+	private Database database = new Database();
 
 	private static Setting instance;
 
@@ -39,27 +39,27 @@ public class Setting {
 		}
 	}
 
-	public MappingSetting getMapping() {
+	public Mapping getMapping() {
 		return mapping;
 	}
 
-	public void setMapping(MappingSetting mapping) {
+	public void setMapping(Mapping mapping) {
 		this.mapping = mapping;
 	}
 
-	public LoggerSetting getLogger() {
+	public Logger getLogger() {
 		return logger;
 	}
 
-	public void setLogger(LoggerSetting logger) {
+	public void setLogger(Logger logger) {
 		this.logger = logger;
 	}
 
-	public DatabaseSetting getDatabase() {
+	public Database getDatabase() {
 		return database;
 	}
 
-	public void setDatabase(DatabaseSetting database) {
+	public void setDatabase(Database database) {
 		this.database = database;
 	}
 

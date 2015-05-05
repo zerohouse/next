@@ -1,12 +1,12 @@
 package next.setting;
 
-public class TableOptions {
+public class Table {
 	private String dataType;
 	private Boolean notNull;
 	private Boolean hasDefaultValue;
 	private Object defaultValue;
 
-	public TableOptions(String dataType, Boolean notNull, Boolean hasDefaultValue, Object defaultValue) {
+	public Table(String dataType, Boolean notNull, Boolean hasDefaultValue, Object defaultValue) {
 		this.dataType = dataType;
 		this.notNull = notNull;
 		this.hasDefaultValue = hasDefaultValue;

@@ -2,10 +2,10 @@ package next.setting;
 
 import com.jolbox.bonecp.BoneCPConfig;
 
-public class DatabaseSetting {
+public class Database {
 
 	private BoneCPConfig connectionSetting;
-	private CreateOption createOption = new CreateOption();
+	private TableCreate createOption = new TableCreate();
 
 	public BoneCPConfig getConnectionSetting() {
 		return connectionSetting;
@@ -15,11 +15,11 @@ public class DatabaseSetting {
 		this.connectionSetting = connectionSetting;
 	}
 
-	public CreateOption getCreateOption() {
+	public TableCreate getCreateOption() {
 		return createOption;
 	}
 
-	public void setCreateOption(CreateOption createOption) {
+	public void setCreateOption(TableCreate createOption) {
 		this.createOption = createOption;
 	}
 

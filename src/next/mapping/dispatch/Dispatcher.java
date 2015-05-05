@@ -19,7 +19,6 @@ import next.mapping.http.HttpImpl;
 import next.resource.Static;
 import next.setting.Setting;
 
-//@MultipartConfig(location = "webapp/uploads", maxFileSize = 1024 * 1024 * 10, fileSizeThreshold = 1024 * 1024, maxRequestSize = 1024 * 1024 * 20)
 public class Dispatcher extends HttpServlet {
 
 	private static final long serialVersionUID = -2929326068606297558L;

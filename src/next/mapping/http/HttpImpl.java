@@ -9,6 +9,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import next.setting.Setting;
 
@@ -185,6 +186,18 @@ public class HttpImpl implements Http {
 	@Override
 	public int getUriVariableSize() {
 		return uriVariables.size();
+	}
+
+	@Override
+	public Part getPart(String name) {
+		try {
+			return req.getPart(name);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ServletException e) {
+			e.printStackTrace();
+		};
+		return null;
 	}
 
 }

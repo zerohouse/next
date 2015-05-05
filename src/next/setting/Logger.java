@@ -1,6 +1,6 @@
 package next.setting;
 
-public class LoggerSetting {
+public class Logger {
 
 	private String level = "ALL";
 	private String logFilePath = "/log/";

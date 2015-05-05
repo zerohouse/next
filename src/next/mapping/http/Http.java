@@ -2,6 +2,7 @@ package next.mapping.http;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 public interface Http {
 
@@ -48,5 +49,7 @@ public interface Http {
 	HttpServletResponse getResp();
 
 	int getUriVariableSize();
+
+	Part getPart(String name);
 
 }

@@ -4,7 +4,13 @@
     "characterEncoding": "UTF-8",
     "url": "",
     "jspPath": "",
-    "dateFormat" : "yyyy-MM-dd HH:mm:ss"
+    "dateFormat" : "yyyy-MM-dd HH:mm:ss",
+    "upload" : {
+    	"tempLocation" : "webapp/uploads",
+    	"maxFileSize" : 1024*1024*5,
+    	"maxRequestSize" : 1024*1024*5*5,
+    	"fileSizeThreshold" : 1024*1024
+    }
   },
   "logger": {
     "level": "ALL",

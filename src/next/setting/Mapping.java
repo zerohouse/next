@@ -1,11 +1,12 @@
 package next.setting;
 
-public class MappingSetting {
+public class Mapping {
 	private Object mappings;
-	private String characterEncoding = "UTF-8";;
+	private String characterEncoding = "UTF-8";
 	private String dateFormat = "yyyy-MM-dd HH:mm:ss";
 	private String url;
 	private String jspPath;
+	private Upload upload = new Upload();
 
 	public Object getMappings() {
 		return mappings;
@@ -45,6 +46,10 @@ public class MappingSetting {
 
 	public void setJspPath(String jspPath) {
 		this.jspPath = jspPath;
+	}
+
+	public Upload getUploadSetting() {
+		return upload;
 	}
 
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import next.database.DAO;
 import next.database.GDAO;
@@ -91,7 +92,11 @@ public class MethodWrapper {
 			if (obj[i].isAnnotationPresent(Parameter.class)) {
 				Parameter param = obj[i].getAnnotation(Parameter.class);
 				String name = param.value();
-				String value = http.getParameter(name);
+				Object value = null;
+				if (types[i].equals(String.class))
+					value = http.getParameter(name);
+				if (types[i].equals(Part.class))
+					value = http.getPart(name);
 				if (param.require() && value == null)
 					throw new RequiredParamNullException(param.errorWhenParamNull());
 				parameters.add(value);
@@ -145,5 +150,4 @@ public class MethodWrapper {
 		}
 		return parameters.toArray();
 	}
-
 }

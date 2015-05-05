@@ -7,9 +7,9 @@ import java.util.regex.Pattern;
 import next.database.annotation.Column;
 import next.database.annotation.Key;
 import next.database.annotation.RequiredRegex;
-import next.setting.CreateOption;
+import next.setting.TableCreate;
 import next.setting.Setting;
-import next.setting.TableOptions;
+import next.setting.Table;
 
 public class SqlFieldNormal implements SqlField {
 
@@ -63,11 +63,11 @@ public class SqlFieldNormal implements SqlField {
 
 	private void setCondition() {
 		Class<?> t = field.getType();
-		CreateOption options = Setting.get().getDatabase().getCreateOption();
+		TableCreate options = Setting.get().getDatabase().getCreateOption();
 		if (t.equals(Integer.class) || t.equals(int.class)) {
 			setSettings(options.getIntegerOptions());
 		} else if (t.equals(String.class)) {
-			TableOptions to = options.getStringOptions();
+			Table to = options.getStringOptions();
 			if (to.getDefaultValue().equals(""))
 				to.setDefaultValue("''");
 			setSettings(to);
@@ -86,7 +86,7 @@ public class SqlFieldNormal implements SqlField {
 	private String nullType;
 	private String type;
 
-	private void setSettings(TableOptions options) {
+	private void setSettings(Table options) {
 		defaultValue = "";
 		nullType = NULL;
 		this.type = options.getDataType();

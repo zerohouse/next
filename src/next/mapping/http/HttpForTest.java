@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import next.setting.Setting;
 
@@ -173,6 +174,11 @@ public class HttpForTest implements Http {
 	@Override
 	public int getUriVariableSize() {
 		return uriVariables.size();
+	}
+
+	@Override // [TODO] 구현
+	public Part getPart(String name) {
+		return null;
 	}
 
 	
