@@ -2,6 +2,7 @@ package next.mapping.http;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,12 +12,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.slf4j.Logger;
+
 import next.setting.Setting;
+import next.util.LoggerUtil;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 public class HttpImpl implements Http {
+	
+	private final static Logger logger = LoggerUtil.getLogger(HttpImpl.class);
 
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
@@ -43,6 +49,7 @@ public class HttpImpl implements Http {
 		try {
 			return gson.fromJson(req.getParameter(name), cLass);
 		} catch (JsonSyntaxException e) {
+			logger.warn(e.getMessage());
 			return null;
 		}
 	}
@@ -53,6 +60,7 @@ public class HttpImpl implements Http {
 		try {
 			return gson.fromJson(gson.toJson(req.getParameterMap()), cLass);
 		} catch (JsonSyntaxException e) {
+			logger.warn(e.getMessage());
 			return null;
 		}
 	}
@@ -70,9 +78,9 @@ public class HttpImpl implements Http {
 		try {
 			rd.forward(req, resp);
 		} catch (ServletException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 	}
 
@@ -86,7 +94,7 @@ public class HttpImpl implements Http {
 		try {
 			resp.getWriter().write(string);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 	}
 
@@ -110,7 +118,7 @@ public class HttpImpl implements Http {
 			req.setCharacterEncoding(encording);
 			resp.setCharacterEncoding(encording);
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 	}
 
@@ -119,7 +127,7 @@ public class HttpImpl implements Http {
 		try {
 			resp.sendError(404, req.getRequestURI());
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 	}
 
@@ -151,7 +159,7 @@ public class HttpImpl implements Http {
 		try {
 			resp.sendRedirect(location);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 	}
 
@@ -169,7 +177,7 @@ public class HttpImpl implements Http {
 		try {
 			resp.sendError(errorNo, errorMesage);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 	}
 
@@ -189,14 +197,22 @@ public class HttpImpl implements Http {
 	}
 
 	@Override
+	public Collection<Part> getParts() {
+		try {
+			return req.getParts();
+		} catch (IOException | ServletException e) {
+			logger.warn(e.getMessage());
+		}
+		return null;
+	}
+
+	@Override
 	public Part getPart(String name) {
 		try {
 			return req.getPart(name);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ServletException e) {
-			e.printStackTrace();
-		};
+		} catch (IOException | ServletException e) {
+			logger.warn(e.getMessage());
+		}
 		return null;
 	}
 

@@ -1,5 +1,7 @@
 package next.mapping.http;
 
+import java.util.Collection;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
@@ -51,5 +53,7 @@ public interface Http {
 	int getUriVariableSize();
 
 	Part getPart(String name);
+
+	Collection<Part> getParts();
 
 }

@@ -1,5 +1,6 @@
 package next.mapping.http;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -178,6 +179,11 @@ public class HttpForTest implements Http {
 
 	@Override // [TODO] 구현
 	public Part getPart(String name) {
+		return null;
+	}
+
+	@Override
+	public Collection<Part> getParts() {
 		return null;
 	}
 
