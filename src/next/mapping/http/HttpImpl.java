@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 public class HttpImpl implements Http {
-	
+
 	private final static Logger logger = LoggerUtil.getLogger(HttpImpl.class);
 
 	private HttpServletRequest req;
@@ -193,6 +193,8 @@ public class HttpImpl implements Http {
 
 	@Override
 	public int getUriVariableSize() {
+		if (uriVariables == null)
+			return 0;
 		return uriVariables.size();
 	}
 
