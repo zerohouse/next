@@ -47,6 +47,11 @@ public class UploadFile implements Part {
 		part.write(Dispatcher.CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getTempSaveLocation() + fileName);
 	}
 
+	public void writeWithExtention(String name) throws IOException {
+		String fileName = part.getSubmittedFileName().replaceFirst("[\\w\\.]+(\\.\\w+)$", name + "$1");
+		part.write(Dispatcher.CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getTempSaveLocation() + fileName);
+	}
+
 	@Override
 	public void delete() throws IOException {
 		part.delete();
