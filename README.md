@@ -303,7 +303,7 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
       "mapping": {
         "mappings": [
           "/",
-          "!*.html"
+          "!*.html",
           "!/css/*"
         ],
         "url": "localhost:8080",
@@ -316,14 +316,14 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
           "username": "root",
           "password": "",
           "maxConnectionsPerPartition": 30,
-          "partitionCount": 2,
+          "partitionCount": 2
         },
         "createOption": {
           "resetTablesOnServerStart": true,
           "insertDataOnServerStart": true,
           "table_suffix": "ENGINE \u003d InnoDB DEFAULT CHARACTER SET utf8",
           "stringOptions": {
-            "dataType": "TEXT",
+            "dataType": "TEXT"
          }
       }
     }
