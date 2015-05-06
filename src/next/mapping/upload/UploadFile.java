@@ -44,12 +44,12 @@ public class UploadFile implements Part {
 
 	@Override
 	public void write(String fileName) throws IOException {
-		part.write(Dispatcher.CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getTempSaveLocation() + fileName);
+		part.write(Dispatcher.CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getLocation() + fileName);
 	}
 
 	public void writeWithExtention(String name) throws IOException {
 		String fileName = part.getSubmittedFileName().replaceFirst("[\\w\\.]+(\\.\\w+)$", name + "$1");
-		part.write(Dispatcher.CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getTempSaveLocation() + fileName);
+		part.write(Dispatcher.CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getLocation() + fileName);
 	}
 
 	@Override

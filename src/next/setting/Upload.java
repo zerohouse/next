@@ -2,10 +2,12 @@ package next.setting;
 
 import javax.servlet.MultipartConfigElement;
 
+import next.mapping.dispatch.Dispatcher;
+
 public class Upload {
 
 	private String location = "uploads/";
-	private String tempSaveLocation = "uploads/temp";
+	private String tempSaveLocation = "uploads/temp/";
 	private Long maxFileSize = 1024 * 1024 * 5L;
 	private Long maxRequestSize = 1024 * 1024 * 5 * 5L;
 	private Integer fileSizeThreshold = 1024 * 1024;
@@ -31,7 +33,7 @@ public class Upload {
 	}
 
 	public MultipartConfigElement getMultipartConfig() {
-		return new MultipartConfigElement(tempSaveLocation, maxFileSize, maxRequestSize, fileSizeThreshold);
+		return new MultipartConfigElement(Dispatcher.CONTEXT_PATH + tempSaveLocation, maxFileSize, maxRequestSize, fileSizeThreshold);
 	}
 
 }

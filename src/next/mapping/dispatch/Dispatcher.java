@@ -5,6 +5,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+import javax.servlet.ServletRegistration.Dynamic;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,6 +42,8 @@ public class Dispatcher extends HttpServlet {
 		databseSetting();
 		InsertTestData();
 		CONTEXT_PATH = getServletContext().getRealPath(java.io.File.separator) + java.io.File.separator;
+		ServletRegistration.Dynamic dispatcher = (Dynamic) getServletContext().getServletRegistration("Dispatcher");
+		dispatcher.setMultipartConfig(Setting.get().getMapping().getUploadSetting().getMultipartConfig());
 		DirectoryMaker.mkDir(CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getTempSaveLocation());
 		DirectoryMaker.mkDir(CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getLocation());
 	}

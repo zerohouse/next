@@ -339,7 +339,7 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
 	    "dateFormat" : "yyyy-MM-dd HH:mm:ss",
 	    "upload" : {
 		  "location" : "uploads/",
-		  "tempSaveLocation" : "uploads/",
+		  "tempSaveLocation" : "uploads/temp/",
 		  "maxFileSize" : 1024*1024*5,
 		  "maxRequestSize" : 1024*1024*5*5,
 		  "fileSizeThreshold" : 1024*1024
