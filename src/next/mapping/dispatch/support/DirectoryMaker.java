@@ -2,14 +2,13 @@ package next.mapping.dispatch.support;
 
 import java.io.File;
 
-import next.mapping.dispatch.Mapper;
 import next.util.LoggerUtil;
 
 import org.slf4j.Logger;
 
 public class DirectoryMaker {
 
-	private static final Logger logger = LoggerUtil.getLogger(Mapper.class);
+	private static final Logger logger = LoggerUtil.getLogger(DirectoryMaker.class);
 
 	public static void mkDir(String string) {
 		File theDir = new File(string);

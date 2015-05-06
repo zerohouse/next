@@ -27,6 +27,7 @@ public class DAORaw {
 
 	public DAORaw() {
 	}
+
 	public DAORaw(Transaction tran) {
 		this.cm = tran;
 	}
@@ -246,13 +247,13 @@ public class DAORaw {
 	public static PreparedStatement getPSTMT(ConnectionManager cm, String sql, Object... parameters) {
 		Connection conn = cm.getConnection();
 		PreparedStatement pstmt = null;
-		logger.debug(sql, parameters);
 		try {
 			pstmt = conn.prepareStatement(sql);
 			if (parameters != null)
 				for (int j = 0; j < parameters.length; j++) {
 					pstmt.setObject(j + 1, parameters[j]);
 				}
+			logger.debug(pstmt.toString());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

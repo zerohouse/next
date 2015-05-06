@@ -42,7 +42,6 @@ public class Dispatcher extends HttpServlet {
 		CONTEXT_PATH = getServletContext().getRealPath(java.io.File.separator) + java.io.File.separator;
 		DirectoryMaker.mkDir(CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getTempSaveLocation());
 		DirectoryMaker.mkDir(CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getLocation());
-		
 	}
 
 	public static String CONTEXT_PATH;
