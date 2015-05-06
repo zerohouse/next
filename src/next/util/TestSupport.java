@@ -7,10 +7,11 @@ public class TestSupport {
 
 	private static InstancePool instancePool;
 
-	public static Object getInstance(Class<?> cLass) {
+	@SuppressWarnings("unchecked")
+	public static <T> T getInstance(Class<T> cLass) {
 		if (instancePool == null)
 			instancePool = new InstancePool();
 		ClassWrapper cip = new ClassWrapper(cLass, instancePool);
-		return cip.getInstance();
+		return (T) cip.getInstance();
 	}
 }
