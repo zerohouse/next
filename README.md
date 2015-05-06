@@ -52,17 +52,17 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
     new Jsp(Jsp파일명);
     new StaticFile(파일명); // webapp/파일
     
-#### 2-1. String Return시 String에 해당하는 Path로 forward(클라이언트에서 주소 바뀌지 않음)
+#### 2-1. String이 forward:로 시작할때 :뒤의 Path로 forward(클라이언트에서 주소 바뀌지 않음)
 #### 2-2. String이 redirect:로 시작할때, :뒤의 Path로 reidrect(클라이언트 주소 바뀜) 
 #### 2-3. String이 error:(no):(message)로 시작할때, :뒤의 메시지로 에러를 리턴
 	ex)
-	return "/index.html" // forward to : /index.html  
 	return "forward:/index.html" // forward to : /index.html 
 	return "redirect:/index.html" // redirect to : /index.html 
 	return "error:404" // 404에러 리턴
 	return "error:404:페이지가 없습니다." // 404에러 리턴 + 에러메시지 리턴
-	 
 #### 4. Object Return시 new Json(Object)로 간주 JSON으로 응답함.
+	ex)
+	return "/index.html" // JsonObject Return {"response":"/index.html"}
 #### 5. 리턴값 없으면 empty JSON 오브젝트 리턴
 
 
