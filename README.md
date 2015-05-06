@@ -338,10 +338,11 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
 	    "jspPath": "",
 	    "dateFormat" : "yyyy-MM-dd HH:mm:ss",
 	    "upload" : {
-	    	"tempLocation" : "webapp/uploads",
-	    	"maxFileSize" : 1024*1024*5,
-	    	"maxRequestSize" : 1024*1024*5*5,
-	    	"fileSizeThreshold" : 1024*1024
+		  "location" : "uploads/",
+		  "tempSaveLocation" : "uploads/",
+		  "maxFileSize" : 1024*1024*5,
+		  "maxRequestSize" : 1024*1024*5*5,
+		  "fileSizeThreshold" : 1024*1024
 	    }
 	  },
 	  "logger": {

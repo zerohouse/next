@@ -127,7 +127,7 @@ public class Mapper {
 			while (miter.hasNext()) {
 				MethodWrapper mw = miter.next();
 				Object returned = mw.execute(http, t, store);
-			
+
 				if (returned == null)
 					continue;
 				if (returned.getClass().getInterfaces().length != 0)
@@ -136,52 +136,52 @@ public class Mapper {
 						return;
 					}
 				if (returned.getClass().equals(String.class)) {
-					stringResponse(http, returned);
-					return;
+					if (stringResponse(http, returned))
+						return;
 				}
 				new Json(returned).render(http);
 				return;
 			}
 			new Json().render(http);
 		} catch (Exception e) {
-			new Json(true, e.getMessage(), null).render(http);;
+			new Json(true, e.getMessage(), null).render(http);
+			;
 		} finally {
 			t.close();
 		}
 	}
 
-	private void stringResponse(Http http, Object returned) {
+	private boolean stringResponse(Http http, Object returned) {
 		String res = returned.toString();
 		if (!res.contains(":")) {
-			http.forword(res);
-			return;
+			return false;
 		}
 		String[] str = res.split(":");
+		if ("forward".equals(str[0])) {
+			if (str.length == 1) {
+				http.sendError(508);
+				return true;
+			}
+			http.forword(str[1]);
+			return true;
+		}
 		if ("redirect".equals(str[0])) {
 			if (str.length == 1) {
 				http.sendError(508);
-				return;
+				return true;
 			}
 			http.sendRedirect(str[1]);
-			return;
+			return true;
 		}
 		if ("error".equals(str[0])) {
 			if (str.length == 3) {
 				http.sendError(Integer.parseInt(str[1]), str[2]);
-				return;
+				return true;
 			}
 			http.sendError(Integer.parseInt(str[1]));
-			return;
+			return true;
 		}
-		if ("forward".equals(str[0])) {
-			if (str.length == 1) {
-				http.sendError(508);
-				return;
-			}
-			http.forword(str[1]);
-			return;
-		}
-		http.forword(res);
+		return false;
 	}
 
 }

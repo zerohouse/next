@@ -3,13 +3,19 @@ package next.setting;
 import javax.servlet.MultipartConfigElement;
 
 public class Upload {
-	private String tempLocation = "webapp/uploads";
+
+	private String location = "uploads/";
+	private String tempSaveLocation = "uploads/temp";
 	private Long maxFileSize = 1024 * 1024 * 5L;
 	private Long maxRequestSize = 1024 * 1024 * 5 * 5L;
 	private Integer fileSizeThreshold = 1024 * 1024;
 
-	public String getTempLocation() {
-		return tempLocation;
+	public String getLocation() {
+		return location;
+	}
+
+	public String getTempSaveLocation() {
+		return tempSaveLocation;
 	}
 
 	public Long getMaxFileSize() {
@@ -25,7 +31,7 @@ public class Upload {
 	}
 
 	public MultipartConfigElement getMultipartConfig() {
-		return new MultipartConfigElement(tempLocation, maxFileSize, maxRequestSize, fileSizeThreshold);
+		return new MultipartConfigElement(tempSaveLocation, maxFileSize, maxRequestSize, fileSizeThreshold);
 	}
 
 }

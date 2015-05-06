@@ -23,6 +23,7 @@ import next.mapping.annotation.parameters.UriVariable;
 import next.mapping.exception.RequiredParamNullException;
 import next.mapping.http.Http;
 import next.mapping.http.Store;
+import next.mapping.upload.UploadFile;
 import next.resource.Static;
 
 public class MethodWrapper {
@@ -93,10 +94,14 @@ public class MethodWrapper {
 				Parameter param = obj[i].getAnnotation(Parameter.class);
 				String name = param.value();
 				Object value = null;
+
 				if (types[i].equals(String.class))
 					value = http.getParameter(name);
-				if (types[i].equals(Part.class))
+				else if (types[i].equals(UploadFile.class))
+					value = new UploadFile(http.getPart(name));
+				else if (types[i].equals(Part.class))
 					value = http.getPart(name);
+
 				if (param.require() && value == null)
 					throw new RequiredParamNullException(param.errorWhenParamNull());
 				parameters.add(value);

@@ -31,6 +31,7 @@ public class Next implements ServletContextListener {
 		ServletRegistration defaultDispatcher = sc.getServletRegistration("default");
 		dispatcher.setLoadOnStartup(1);
 		dispatcher.setMultipartConfig(Setting.get().getMapping().getUploadSetting().getMultipartConfig());
+		
 		if (mappings.getClass().equals(String.class)) {
 			register(mappings.toString(), dispatcher, defaultDispatcher);
 			return;
