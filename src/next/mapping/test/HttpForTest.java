@@ -1,4 +1,4 @@
-package next.mapping.http;
+package next.mapping.test;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import next.mapping.http.Http;
 import next.setting.Setting;
 
 import com.google.gson.Gson;
