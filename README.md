@@ -34,13 +34,13 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 		Right right;
 		
 		@Mapping(value = "/login", method = Method.POST, before="!loginCheck")
-		public Response login(@JsonParameter("user") User user, Http http) {
+		public Response login(@JsonParameter("user") User user, HttpSession session) {
 			User fromDB = userDao.find(user.getEmail());
 			if (fromDB == null)
 				return new Json(true, "가입하지 않은 이메일입니다.", null);
 			if (!fromDB.getPassword().equals(user.getPassword()))
 				return new Json(true, "비밀번호가 다릅니다.", null);
-			http.setSessionAttribute("user", fromDB);
+			session.setAttribute("user", fromDB);
 			return new Json(fromDB);
 		}
 	}
