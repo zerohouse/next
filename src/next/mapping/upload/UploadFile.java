@@ -50,16 +50,6 @@ public class UploadFile implements Part {
 		return path;
 	}
 
-	public void setPath(String path) {
-		this.path = path;
-		pathEndCheck();
-	}
-
-	public void addPath(String path) {
-		this.path += path;
-		pathEndCheck();
-	}
-
 	public String getFullPath() {
 		return Dispatcher.CONTEXT_PATH + path + getFullName();
 	}

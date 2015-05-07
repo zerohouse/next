@@ -144,7 +144,6 @@ public class Mapper {
 			new Json().render(http);
 		} catch (Exception e) {
 			new Json(true, e.getMessage(), null).render(http);
-			;
 		} finally {
 			t.close();
 		}
