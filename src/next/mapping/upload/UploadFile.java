@@ -22,6 +22,12 @@ public class UploadFile implements Part {
 		extention = part.getSubmittedFileName().replaceFirst("\\S+\\.(\\w+)", "$1");
 		fileName = part.getSubmittedFileName().replaceFirst("(\\S+)\\.\\w+", "$1");
 		path = Setting.get().getMapping().getUpload().getLocation();
+		pathEndCheck();
+	}
+
+	private void pathEndCheck() {
+		if (path.charAt(path.length() - 1) != '/')
+			path = path + '/';
 	}
 
 	public String getFileName() {
@@ -46,6 +52,12 @@ public class UploadFile implements Part {
 
 	public void setPath(String path) {
 		this.path = path;
+		pathEndCheck();
+	}
+
+	public void addPath(String path) {
+		this.path += path;
+		pathEndCheck();
 	}
 
 	public String getFullPath() {
