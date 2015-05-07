@@ -130,11 +130,10 @@ public class Mapper {
 
 				if (returned == null)
 					continue;
-				if (returned.getClass().getInterfaces().length != 0)
-					if (returned.getClass().getInterfaces()[0].equals(Response.class)) {
-						((Response) returned).render(http);
-						return;
-					}
+				if (returned.getClass().isAssignableFrom(Response.class)) {
+					((Response) returned).render(http);
+					return;
+				}
 				if (returned.getClass().equals(String.class)) {
 					if (stringResponse(http, returned))
 						return;
