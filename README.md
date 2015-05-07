@@ -8,7 +8,7 @@ pom.xml에 아래의 레파지토리와 Dependency설정을 추가합니다.
 ###Repository
     <repository>
         <id>next-mvn-repo</id>
-		<url>https://raw.github.com/zerohouse/next/mvn-repo/</url>
+    	<url>https://raw.github.com/zerohouse/next/mvn-repo/</url>
 	</repository>
 
 ###Dependency
@@ -106,29 +106,6 @@ Url 매핑 정보를 정의
               //Store store를 꺼내 저장한 속성을 뺄 수 있음.
     }
     
-### Http.class Interface
-HttpImpl.class, HttpForTest.class
-HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
-
-#### example
-    @Mapping(method = Method.GET, before="loginCheck")
-    public void getAnswers(Http http) {
-        http.forward("/index")
-	}
-    
-#### vs 직접 사용 하는 경우
-    @Mapping(method = Method.GET, before="loginCheck")
-    public void getAnswers(HttpServletRequest req, HttpServletResponse res) {
-        RequestDispatcher rd = req.getRequestDispatcher(path);
-    	try {
-			rd.forward(req, resp);
-		} catch (ServletException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 
         
 ##Build를 통한 Dependency Injection (resources/build.json)
@@ -166,6 +143,7 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
     @Build("right")
     @ImplementedBy(AllRight.class) // 인터페이스일 경우 구현체
     private Right right;
+    
 
 # DAO
 어노테이션 기반 모델 설정 -> JDBC 한줄로 해결
@@ -253,6 +231,56 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
 	    		this.user = user;
 	    	}
     }
+
+
+### UploadFile.class
+쉬운 파일 업로드. 파라미터에서 받고, 파일이름 바꾸고, 세이브.
+#### File Upload Example
+    
+    
+    @Controller
+    @Mapping(value = "/api/upload")
+    public class UploadController {
+    
+        @Build
+    	DAO dao;
+    
+    	@Mapping(value = "/profilePhoto", method = Method.POST)
+    	public Object profile(@SessionAttribute("user") User user,
+            @Parameter("photo") UploadFile file) throws IOException {
+    		file.setFileName("profile_" + user.getEmail().replace('@', '_'));
+    		user.setPhotoUrl(file.getUriPath());
+    		file.save();
+    		dao.update(user);
+    		return user;
+    	}
+    
+    }
+
+
+### Http.class Interface
+HttpImpl.class, HttpForTest.class
+HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
+
+#### example
+    @Mapping(method = Method.GET, before="loginCheck")
+    public void getAnswers(Http http) {
+        http.forward("/index")
+    }
+    
+#### vs 직접 사용 하는 경우
+    @Mapping(method = Method.GET, before="loginCheck")
+    public void getAnswers(HttpServletRequest req, HttpServletResponse res) {
+        RequestDispatcher rd = req.getRequestDispatcher(path);
+    	try {
+			rd.forward(req, resp);
+		} catch (ServletException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 
 ### Logger 사용 
