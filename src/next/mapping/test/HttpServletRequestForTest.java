@@ -47,7 +47,7 @@ public class HttpServletRequestForTest implements HttpServletRequest {
 	@Override
 	public void setCharacterEncoding(String env) throws UnsupportedEncodingException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -143,13 +143,13 @@ public class HttpServletRequestForTest implements HttpServletRequest {
 	@Override
 	public void setAttribute(String name, Object o) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removeAttribute(String name) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -413,13 +413,13 @@ public class HttpServletRequestForTest implements HttpServletRequest {
 	@Override
 	public void login(String username, String password) throws ServletException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void logout() throws ServletException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
