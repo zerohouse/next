@@ -13,8 +13,47 @@ public class UploadFile implements Part {
 
 	Part part;
 
+	private String fileName;
+	private String extention;
+	private String path;
+
 	public UploadFile(Part part) {
 		this.part = part;
+		extention = part.getSubmittedFileName().replaceFirst("\\S+\\.(\\w+)", "$1");
+		fileName = part.getSubmittedFileName().replaceFirst("(\\S+)\\.\\w+", "$1");
+		path = Dispatcher.CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getLocation();
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getExtention() {
+		return extention;
+	}
+
+	public void setExtention(String extention) {
+		this.extention = extention;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public String getFullFilePath() {
+		return path + fileName + extention;
+	}
+
+	public void save() throws IOException {
+		part.write(path + fileName + extention);
 	}
 
 	@Override
@@ -44,12 +83,7 @@ public class UploadFile implements Part {
 
 	@Override
 	public void write(String fileName) throws IOException {
-		part.write(Dispatcher.CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getLocation() + fileName);
-	}
-
-	public void writeWithExtention(String name) throws IOException {
-		String fileName = part.getSubmittedFileName().replaceFirst("[\\w\\.]+(\\.\\w+)$", name + "$1");
-		part.write(Dispatcher.CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getLocation() + fileName);
+		part.write(Dispatcher.CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getTempSaveLocation() + fileName);
 	}
 
 	@Override
