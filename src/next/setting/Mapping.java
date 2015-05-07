@@ -33,7 +33,9 @@ public class Mapping {
 	}
 
 	public String getUrl() {
-		return url;
+		if (url.charAt(url.length() - 1) == '/')
+			return url;
+		return url + '/';
 	}
 
 	public void setUrl(String url) {
@@ -48,7 +50,7 @@ public class Mapping {
 		this.jspPath = jspPath;
 	}
 
-	public Upload getUploadSetting() {
+	public Upload getUpload() {
 		return upload;
 	}
 

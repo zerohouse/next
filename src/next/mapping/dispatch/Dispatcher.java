@@ -43,9 +43,8 @@ public class Dispatcher extends HttpServlet {
 		InsertTestData();
 		CONTEXT_PATH = getServletContext().getRealPath(java.io.File.separator) + java.io.File.separator;
 		ServletRegistration.Dynamic dispatcher = (Dynamic) getServletContext().getServletRegistration("Dispatcher");
-		dispatcher.setMultipartConfig(Setting.get().getMapping().getUploadSetting().getMultipartConfig());
-		DirectoryMaker.mkDir(CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getTempSaveLocation());
-		DirectoryMaker.mkDir(CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getLocation());
+		dispatcher.setMultipartConfig(Setting.get().getMapping().getUpload().getMultipartConfig());
+		DirectoryMaker.makeDirectories();
 	}
 
 	public static String CONTEXT_PATH;
