@@ -21,7 +21,7 @@ public class UploadFile implements Part {
 		this.part = part;
 		extention = part.getSubmittedFileName().replaceFirst("\\S+\\.(\\w+)", "$1");
 		fileName = part.getSubmittedFileName().replaceFirst("(\\S+)\\.\\w+", "$1");
-		path = Dispatcher.CONTEXT_PATH + Setting.get().getMapping().getUploadSetting().getLocation();
+		path = Setting.get().getMapping().getUploadSetting().getLocation();
 	}
 
 	public String getFileName() {
@@ -48,12 +48,16 @@ public class UploadFile implements Part {
 		this.path = path;
 	}
 
-	public String getFullFilePath() {
-		return path + fileName + extention;
+	public String getFullPath() {
+		return Dispatcher.CONTEXT_PATH + path + fileName + extention;
+	}
+
+	public String getUriPath() {
+		return Setting.get().getMapping().getUrl() + path + fileName + extention;
 	}
 
 	public void save() throws IOException {
-		part.write(path + fileName + extention);
+		part.write(getFullPath());
 	}
 
 	@Override
