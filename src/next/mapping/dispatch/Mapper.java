@@ -130,7 +130,7 @@ public class Mapper {
 
 				if (returned == null)
 					continue;
-				if (returned.getClass().isAssignableFrom(Response.class)) {
+				if (Response.class.isAssignableFrom(returned.getClass())) {
 					((Response) returned).render(http);
 					return;
 				}
