@@ -33,7 +33,14 @@ public class UploadFile implements Part {
 	public String getFileName() {
 		return fileName;
 	}
-
+	
+	/**
+	 * 파일명을 지정합니다. 확장자는 유지됩니다.
+	 * <p>
+	 *
+	 * @param fileName
+	 *            업데이트할 파일명
+	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
@@ -46,21 +53,55 @@ public class UploadFile implements Part {
 		this.extention = extention;
 	}
 
+	/**
+	 * 상대경로를 리턴합니다.
+	 * <p>
+	 *
+	 * @return String 상대경로
+	 */
 	public String getPath() {
 		return path;
 	}
 
+	/**
+	 * 서버내의 절대경로를 리턴합니다.
+	 * <p>
+	 *
+	 * @return String 절대경로
+	 */
 	public String getFullPath() {
 		return Dispatcher.CONTEXT_PATH + path + getFullName();
 	}
 
+	/**
+	 * 확장자를 포함한파일명을 리턴합니다.
+	 * <p>
+	 *
+	 * @return String 파일명
+	 */
 	public String getFullName() {
 		return fileName + DOT + extention;
 	}
 
 	private static final char DOT = '.';
 
+	/**
+	 * 파일의 경로를 리턴합니다.
+	 * <p>
+	 *
+	 * @return String 경로
+	 */
 	public String getUriPath() {
+		return path + getFullName();
+	}
+	
+	/**
+	 * 서버의 Uri주소를 합친 경로를 리턴합니다.
+	 * <p>
+	 *
+	 * @return String 경로
+	 */
+	public String getUriFullPath() {
 		return Setting.get().getMapping().getUrl() + path + getFullName();
 	}
 
