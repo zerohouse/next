@@ -194,11 +194,10 @@ public class DAO extends DAORaw {
 	 * @return boolean 실행결과
 	 */
 	public boolean insertIfExistUpdate(Object object) {
-
 		KeyParams sap = Static.getSqlSupports().getKeyParams(object);
 		if (sap.isEmpty())
 			return false;
-		String fieldsNames = sap.getFieldNames("", comma) + comma + sap.getKeyFieldNames("", comma);
+		String fieldsNames = sap.getIntegratedFieldNames("", comma);
 		int size = sap.getParams().size() + sap.getKeyParams().size();
 		String questions = "";
 		for (int i = 0; i < size; i++) {
