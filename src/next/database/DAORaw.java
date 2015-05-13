@@ -244,7 +244,7 @@ public class DAORaw {
 		cm.close();
 	}
 
-	public static PreparedStatement getPSTMT(ConnectionManager cm, String sql, Object... parameters) {
+	protected static PreparedStatement getPSTMT(ConnectionManager cm, String sql, Object... parameters) {
 		Connection conn = cm.getConnection();
 		PreparedStatement pstmt = null;
 		try {
