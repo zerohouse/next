@@ -11,6 +11,7 @@ import com.google.gson.JsonSyntaxException;
 public class Setting {
 	private static Gson gson;
 
+	private String basePackage = "";
 	private Mapping mapping = new Mapping();
 	private Logger logger = new Logger();
 	private Database database = new Database();
@@ -21,10 +22,10 @@ public class Setting {
 		return instance;
 	}
 
-	public static Gson getGson(){
+	public static Gson getGson() {
 		return gson;
 	}
-	
+
 	static {
 		Gson gsons = new Gson();
 		try {
@@ -61,6 +62,10 @@ public class Setting {
 
 	public void setDatabase(Database database) {
 		this.database = database;
+	}
+
+	public String getBasePackage() {
+		return basePackage;
 	}
 
 }

@@ -328,6 +328,7 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
 ### Setting Example : 필요한 옵션을 더 세팅하여 세팅 파일을 만듭니다.
 
     {
+      "basePackage: "next",
       "mapping": {
         "mappings": [
           "/",
@@ -359,6 +360,7 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
 
 ### Default Setting : 기본 세팅은 아래와 같습니다.
     {
+      "basePackage: "",
 	  "mapping": {
 	    "mappings": [],
 	    "characterEncoding": "UTF-8",
@@ -368,7 +370,6 @@ HttpSevlet req와 resp의 Wrapper 클래스, 익셉션제거
 	    "upload" : {
 		  "location" : "uploads/",
 		  "tempSaveLocation" : "uploads/temp/",
-		  "needDirectories" : [],
 		  "maxFileSize" : 1024*1024*5,
 		  "maxRequestSize" : 1024*1024*5*5,
 		  "fileSizeThreshold" : 1024*1024

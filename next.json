@@ -1,4 +1,5 @@
 {
+  "basePackage: "",
   "mapping": {
     "mappings": [
       "/api/*",

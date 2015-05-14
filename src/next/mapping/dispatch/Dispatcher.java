@@ -16,7 +16,6 @@ import next.database.annotation.testdata.Insert;
 import next.database.annotation.testdata.InsertList;
 import next.database.annotation.testdata.TestData;
 import next.database.maker.TableMaker;
-import next.mapping.dispatch.support.DirectoryMaker;
 import next.mapping.http.Http;
 import next.mapping.http.HttpImpl;
 import next.resource.Static;
@@ -44,7 +43,6 @@ public class Dispatcher extends HttpServlet {
 		CONTEXT_PATH = getServletContext().getRealPath(java.io.File.separator) + java.io.File.separator;
 		ServletRegistration.Dynamic dispatcher = (Dynamic) getServletContext().getServletRegistration("Dispatcher");
 		dispatcher.setMultipartConfig(Setting.get().getMapping().getUpload().getMultipartConfig());
-		DirectoryMaker.makeDirectories();
 	}
 
 	public static String CONTEXT_PATH;
