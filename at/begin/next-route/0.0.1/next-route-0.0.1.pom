@@ -12,7 +12,7 @@
 	<repositories>
 		<repository>
 			<id>next-mvn-repo</id>
-			<url>https://raw.github.com/zerohouse/next/mvn-repo/</url>
+			<url>https://raw.github.com/zerohouse/next-route/mvn-repo/</url>
 		</repository>
 	</repositories>
 
